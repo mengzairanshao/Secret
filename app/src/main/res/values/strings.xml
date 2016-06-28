@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Secret</string>
+    <string name="phone">Phone</string>
+    <string name="get_code">Get Code</string>
+    <string name="code">Code</string>
+    <string name="login">Login</string>
+    <string name="publish_message">Publish Message</string>
+</resources>
