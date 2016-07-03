@@ -8,17 +8,21 @@ import android.content.SharedPreferences.Editor;
  */
 public class Config {
 
+    public static final String Base_URL="http://192.168.191.1/api/mobile/index.php";
+    public static final String Login_URL="http://192.168.191.1/api/mobile/index.php?version=4&module=login&action=login&loginsubmit=yes&infloat=yes&lssubmit=yes";
     public static final String KEY_TOKEN="token";
+    public static final String UERNAME="username";
+    public static final String PASSWORD="password";
+    public static final String ACTION="action";
     public static final String APP_ID="hanzy.secret";
     public static final String CHARSET ="utf-8" ;
+    public static final String SUCCEED_LOGIN="succeed login";
+    public static final String FAILED_LOGIN="failed login";
+    public static final String MOBILE="mobile";
+    public static final String MOBILE_IS="no";
+    public static final String MODULE="module";
+    public static final String MODULE_FORUMINDEX="forumindex";
+    public static final String VERSION="version";
+    public static final String VERSION_NUM = "4";
 
-    public static String getCachedToken(Context context){
-        return context.getSharedPreferences(APP_ID,Context.MODE_PRIVATE).getString(KEY_TOKEN,null);
-
-    }
-    public static void cachedToken(Context context,String token){
-        Editor editor=context.getSharedPreferences(APP_ID,Context.MODE_PRIVATE).edit();
-        editor.putString(KEY_TOKEN,token);
-        editor.commit();
-    }
 }

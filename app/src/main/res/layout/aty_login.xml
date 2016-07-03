@@ -22,7 +22,7 @@
         <EditText
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:inputType="phone"
+            android:inputType="none"
             android:singleLine="true"
             android:id="@+id/phoneNum"/>
     </LinearLayout>
@@ -55,4 +55,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/btnLogin"
         android:text="@string/login"/>
+
 </LinearLayout>
