@@ -17,8 +17,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //List cookies = CookiesSet.Utils.getCookies();
+        String cookies = CookiesSet.getCookieText(MainActivity.this);
+        if(cookies!=null)
         startActivity(new Intent(this,AtyTimeLine.class));
+        else
+            startActivity(new Intent(this,AtyLogin.class));
         finish();
     }
 }

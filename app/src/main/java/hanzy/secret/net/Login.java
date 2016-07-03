@@ -24,7 +24,6 @@ public class Login {
                     if (result!=null) {
                         if (result.contains("login_succeed")){
                             Log.e(TAG,"Login Success:"+userName);
-                            //Log.e(TAG,"Key:"+Config.getCachedToken(context));
                             if (successCallback!=null)successCallback.onSuccess(Config.SUCCEED_LOGIN);
                         }
                         else if(failCallback!=null){

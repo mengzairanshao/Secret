@@ -19,13 +19,12 @@ public class CookiesSet {
     public static String getCookieText(Context context) {
         PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
         List<Cookie> cookies = myCookieStore.getCookies();
-        String Value="";
+        String Value=null;
         Log.d(TAG, "cookies.size() = " + cookies.size());
         Utils.setCookies(cookies);
         for (Cookie cookie : cookies) {
             if(cookie.getName().equals("auth"))
                 Value=cookie.getValue();
-            Log.d(TAG, cookie.getName() + " = " + cookie.getValue());
         }
         StringBuffer stringBuffer = new StringBuffer();
         for (int i = 0; i < cookies.size(); i++) {

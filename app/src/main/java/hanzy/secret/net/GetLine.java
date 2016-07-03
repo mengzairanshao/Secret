@@ -9,8 +9,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import hanzy.secret.net.HttpMethod;
-import hanzy.secret.net.NetConnection;
 import hanzy.secret.secret.Config;
 
 
@@ -21,7 +19,7 @@ public class GetLine {
     public String TAG="GetLine";
     public GetLine(final Context context,final SuccessCallback successCallback, final FailCallback failCallback){
 
-        new NetConnection(context, Config.Login_URL, HttpMethod.POST, new NetConnection.SuccessCallback() {
+        new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
             public void onSuccess(String result) {
                 try {
@@ -29,9 +27,8 @@ public class GetLine {
                     if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null"))
                     {
                         Log.e(TAG,"获取json数据:"+result);
-                        JSONArray jsonArray=new JSONArray();
-                        jsonArray=jsonObject.getJSONObject("Variables").getJSONArray("catlist");
-                        JSONObject jsonObject1=new JSONObject();
+                        JSONArray jsonArray=jsonObject.getJSONObject("Variables").getJSONArray("catlist");
+                        JSONObject jsonObject1;
                         List<Message> megs=new ArrayList<>();
                         for (int i=0;i<jsonArray.length();i++){
                             jsonObject1=jsonArray.getJSONObject(i);
@@ -43,6 +40,10 @@ public class GetLine {
                         }
 
                         if (successCallback!=null)successCallback.onSuccess(megs);
+                    }else {
+                        Log.e(TAG,"获取json数据失败");
+                        if (failCallback!=null)failCallback.onFail();
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -53,11 +54,11 @@ public class GetLine {
         }, new NetConnection.FailCallback() {
             @Override
             public void onFail() {
+                Log.e(TAG,"获取json数据失败(onFail)");
                 if (failCallback!=null)failCallback.onFail();
             }
-        },Config.MOBILE,Config.MOBILE_IS,
-          Config.MODULE,Config.MODULE_FORUMINDEX,
-          Config.VERSION,Config.VERSION_NUM);
+        },Config.MOBILE,Config.MOBILE_IS,Config.VERSION,Config.VERSION_NUM,
+          Config.MODULE,Config.MODULE_FORUMINDEX);
 
     }
 

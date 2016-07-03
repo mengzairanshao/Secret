@@ -32,7 +32,6 @@ public class NetConnection {
             client.post(url,params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    CookiesSet.getCookieText(context);
                     Log.e(TAG,"POST成功"+responseBody);
                     if (successCallback!=null)successCallback.onSuccess(new String(responseBody));
                 }

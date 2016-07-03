@@ -38,7 +38,4 @@ public class AtyTimeLine extends ListActivity {
         });
     }
 
-    private void loadMessage(){
-
-    }
 }
