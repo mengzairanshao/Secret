@@ -18,10 +18,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         String cookies = CookiesSet.getCookieText(MainActivity.this);
-        if(cookies!=null)
-        startActivity(new Intent(this,AtyTimeLine.class));
-        else
+        if(!cookies.equals("")){
+            startActivity(new Intent(this,AtyTimeLine.class));
+        }
+        else{
             startActivity(new Intent(this,AtyLogin.class));
+        }
         finish();
     }
 }

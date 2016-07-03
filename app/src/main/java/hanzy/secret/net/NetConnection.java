@@ -53,7 +53,6 @@ public class NetConnection {
             client.get(url, params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    CookiesSet.getCookieText(context);
                     String json=new String(responseBody);
                     Log.e(TAG,"GET连接成功"+json);
                     if (successCallback!=null)successCallback.onSuccess(json);
@@ -61,8 +60,7 @@ public class NetConnection {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    String json=new String(responseBody);
-                    Log.e(TAG,"GET连接失败"+json);
+                    Log.e(TAG,"GET连接失败");
                     if (failCallback!=null)failCallback.onFail();
                 }
             });

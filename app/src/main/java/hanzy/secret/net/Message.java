@@ -12,9 +12,10 @@ public class Message {
     private String name=null;
     private String forumlist[]=null;
 
-    public Message(String fid,String catlist,String[] forumlist){
-        this.name=catlist;
+    public Message(String fid,String name,String[] forumlist){
+        this.name=name;
         this.forumlist=forumlist;
+        this.fid=fid;
     }
 
     public String getFid() {
