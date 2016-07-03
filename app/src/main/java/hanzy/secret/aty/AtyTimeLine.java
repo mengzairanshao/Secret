@@ -19,16 +19,20 @@ import hanzy.secret.net.Message;
  */
 public class AtyTimeLine extends ListActivity {
 
+    AtyTimeLineMessageListAdapter adapter=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_timeline);
 
+        adapter=new AtyTimeLineMessageListAdapter(AtyTimeLine.this);
+        setListAdapter(adapter);
         final ProgressDialog progressDialog=ProgressDialog.show(AtyTimeLine.this,"Wait","A");
         new GetLine(AtyTimeLine.this, new GetLine.SuccessCallback() {
             @Override
             public void onSuccess(List<Message> timeline) {
                 progressDialog.dismiss();
+                adapter.addAll(timeline);
             }
         }, new GetLine.FailCallback() {
             @Override

@@ -35,7 +35,6 @@ public class GetLine {
                             }
                             megs.add(new Message(jsonObject1.getString("fid"), jsonObject1.getString("name"), formList));
                         }
-
                         if (successCallback != null) successCallback.onSuccess(megs);
                     } else {
                         if (failCallback != null) failCallback.onFail();

@@ -9,6 +9,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
+import org.json.JSONObject;
 
 /**
  * Created by h on 2016/6/28.
@@ -32,13 +33,14 @@ public class NetConnection {
             client.post(url,params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    Log.e(TAG,"POST成功"+responseBody);
-                    if (successCallback!=null)successCallback.onSuccess(new String(responseBody));
+                    String json=new String(responseBody);
+                    Log.e(TAG,"POST成功"+json);
+                    if (successCallback!=null)successCallback.onSuccess(json);
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Log.e(TAG,"POST失败"+responseBody);
+                    Log.e(TAG,"POST失败");
                     if (failCallback!=null)failCallback.onFail();
                 }
             });
