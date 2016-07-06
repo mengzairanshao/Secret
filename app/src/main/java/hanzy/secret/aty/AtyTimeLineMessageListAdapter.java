@@ -1,7 +1,6 @@
 package hanzy.secret.aty;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hanzy.secret.R;
-import hanzy.secret.net.Message;
+import hanzy.secret.net.CatalogMessage;
 
 /**
  * Created by h on 2016/7/3.
@@ -28,9 +27,9 @@ public class AtyTimeLineMessageListAdapter extends BaseAdapter{
         return context;
     }
 
-    private List<Message> data=new ArrayList<Message>();
+    private List<CatalogMessage> data=new ArrayList<CatalogMessage>();
 
-    public void addAll(List<Message> data){
+    public void addAll(List<CatalogMessage> data){
         this.data=data;
         notifyDataSetChanged();
     }
@@ -64,7 +63,7 @@ public class AtyTimeLineMessageListAdapter extends BaseAdapter{
             convertView.setTag(new listCell((TextView) convertView.findViewById(R.id.tvCelllable)));
         }
         listCell lc= (listCell) convertView.getTag();
-        Message msg= (Message) getItem(position);
+        CatalogMessage msg= (CatalogMessage) getItem(position);
         lc.getTvCellabel().setText(msg.getName());
         return convertView;
     }

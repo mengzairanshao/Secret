@@ -26,17 +26,18 @@ public class GetLine {
                         JSONArray jsonArray = new JSONArray();
                         jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("catlist");
                         JSONObject jsonObject1 = new JSONObject();
-                        List<Message> megs = new ArrayList<>();
+                        List<CatalogMessage> megs = new ArrayList<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             jsonObject1 = jsonArray.getJSONObject(i);
                             String[] formList = new String[jsonObject1.getJSONArray("forums").length()];
                             for (int j = 0; j < jsonObject1.getJSONArray("forums").length(); j++) {
                                 formList[j] = jsonObject1.getJSONArray("forums").getString(j);
                             }
-                            megs.add(new Message(jsonObject1.getString("fid"), jsonObject1.getString("name"), formList));
+                            megs.add(new CatalogMessage(jsonObject1.getString("fid"), jsonObject1.getString("name"), formList));
                         }
                         if (successCallback != null) successCallback.onSuccess(megs);
                     } else {
+                        Log.e(TAG,"Failed Get Json Data(auth==null)");
                         if (failCallback != null) failCallback.onFail();
                     }
                 } catch (JSONException e) {
@@ -57,7 +58,7 @@ public class GetLine {
     }
 
     public static interface SuccessCallback {
-        void onSuccess(List<Message> timeline);
+        void onSuccess(List<CatalogMessage> timeline);
     }
 
     public static interface FailCallback {

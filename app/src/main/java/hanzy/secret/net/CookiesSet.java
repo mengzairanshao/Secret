@@ -23,8 +23,7 @@ public class CookiesSet {
         Log.d(TAG, "cookies.size() = " + cookies.size());
         Utils.setCookies(cookies);
         for (Cookie cookie : cookies) {
-            if(cookie.getName().contains("auth")){ Value=cookie.getValue();
-            Log.e(TAG,"Value"+Value);}
+            if(cookie.getName().contains("auth")) Value=cookie.getValue();
         }
         StringBuffer stringBuffer = new StringBuffer();
         for (int i = 0; i < cookies.size(); i++) {
@@ -43,19 +42,25 @@ public class CookiesSet {
     }
 
     public static class Utils {
+        //cookies are only a copy of the cookies that get from Net.
+        //the cookies can make it easy to us to check it
         private  static List<Cookie> cookies;
+        //Get Current Cookies
         public static List<Cookie> getCookies() {
             return cookies != null ? cookies : new ArrayList<Cookie>();
         }
+        //Copy the cookies get from the Net
         public  static void setCookies(List<Cookie> cookies) {
             Utils.cookies = cookies;
         }
 
+        //clear the cookies that are on the local disk
         public static void clearCookies(Context context){
             PersistentCookieStore cookieStore = new PersistentCookieStore(context);
             cookieStore.clear();
         }
 
+        //store the cookies on the local disk
         public static void saveCookies(AsyncHttpClient client, Context context) {
             PersistentCookieStore cookieStore = new PersistentCookieStore(context);
             client.setCookieStore(cookieStore);

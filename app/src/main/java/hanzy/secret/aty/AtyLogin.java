@@ -38,7 +38,6 @@ public class AtyLogin extends Activity {
                         if (token.equals(Config.SUCCEED_LOGIN)) {
                             Toast.makeText(AtyLogin.this, Config.SUCCEED_LOGIN, Toast.LENGTH_LONG).show();
                             Intent i = new Intent(AtyLogin.this, AtyTimeLine.class);
-                            i.putExtra(Config.KEY_TOKEN, token);
                             startActivity(i);
                             finish();
                         }

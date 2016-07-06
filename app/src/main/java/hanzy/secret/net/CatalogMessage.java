@@ -6,13 +6,13 @@ import java.util.List;
 /**
  * Created by h on 2016/7/3.
  */
-public class Message {
+public class CatalogMessage {
 
     private String fid=null;
     private String name=null;
     private String forumlist[]=null;
 
-    public Message(String fid,String name,String[] forumlist){
+    public CatalogMessage(String fid, String name, String[] forumlist){
         this.name=name;
         this.forumlist=forumlist;
         this.fid=fid;
