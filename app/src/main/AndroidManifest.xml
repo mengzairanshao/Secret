@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".aty.AtyLogin"></activity>
-        <activity android:name=".aty.AtyTimeLine"></activity>
+        <activity android:name=".aty.AtyCatalog"></activity>
         <activity android:name=".aty.AtyMessage"></activity>
         <activity android:name=".aty.AtyPubMessage"></activity>
     </application>

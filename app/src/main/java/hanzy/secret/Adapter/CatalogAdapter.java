@@ -1,4 +1,4 @@
-package hanzy.secret.aty;
+package hanzy.secret.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,15 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hanzy.secret.R;
-import hanzy.secret.net.CatalogMessage;
+import hanzy.secret.Message.CatalogMessage;
 
 /**
  * Created by h on 2016/7/3.
  */
-public class AtyTimeLineMessageListAdapter extends BaseAdapter{
+public class CatalogAdapter extends BaseAdapter{
 
     private Context context=null;
-    public AtyTimeLineMessageListAdapter(Context context){
+    public CatalogAdapter(Context context){
         this.context=context;
     }
 

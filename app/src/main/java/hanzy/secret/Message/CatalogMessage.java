@@ -1,4 +1,4 @@
-package hanzy.secret.net;
+package hanzy.secret.Message;
 
 import java.lang.reflect.Array;
 import java.util.List;
