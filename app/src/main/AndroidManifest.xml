@@ -20,6 +20,7 @@
         <activity android:name=".aty.AtyCatalog"></activity>
         <activity android:name=".aty.AtyMessage"></activity>
         <activity android:name=".aty.AtyPubMessage"></activity>
+        <activity android:name=".aty.AtyThreads"></activity>
     </application>
 
 </manifest>

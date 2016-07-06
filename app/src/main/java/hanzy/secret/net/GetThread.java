@@ -10,7 +10,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import hanzy.secret.Adapter.ThreadAdapter;
 import hanzy.secret.Message.CatalogMessage;
+import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.secret.Config;
 
 /**
@@ -29,18 +31,16 @@ public class GetThread {
                     if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
                         Log.e(TAG, "Get Json Data:" + jsonObject.toString());
                         JSONArray jsonArray = new JSONArray();
-                        jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("catlist");
+                        jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("forum_threadlist");
                         JSONObject jsonObject1 = new JSONObject();
-                        List<CatalogMessage> megs = new ArrayList<>();
+                        List<ThreadsMessage> megs = new ArrayList<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             jsonObject1 = jsonArray.getJSONObject(i);
-                            String[] formList = new String[jsonObject1.getJSONArray("forums").length()];
-                            for (int j = 0; j < jsonObject1.getJSONArray("forums").length(); j++) {
-                                formList[j] = jsonObject1.getJSONArray("forums").getString(j);
-                            }
-                            megs.add(new CatalogMessage(jsonObject1.getString("fid"), jsonObject1.getString("name"), formList));
+                            Log.e(TAG,"ThreadMessage"+jsonObject1.getString("author")+jsonObject1.getString("dblastpost")+jsonObject1.getString("subject")+jsonObject1.getString("views")+jsonObject1.getString("replies"));
+                            megs.add(new ThreadsMessage(jsonObject1.getString("author"),jsonObject1.getString("dblastpost"),jsonObject1.getString("subject"),jsonObject1.getString("views"),jsonObject1.getString("replies")));
                         }
-                        if (successCallback != null) successCallback.onSuccess(result);
+
+                        if (successCallback != null) successCallback.onSuccess(megs);
                     } else {
                         Log.e(TAG,"Failed Get Json Data(auth==null)");
                         if (failCallback != null) failCallback.onFail();
@@ -56,12 +56,12 @@ public class GetThread {
             public void onFail() {
                 if (failCallback != null) failCallback.onFail();
             }
-        }, "version","4","module","viewthread","tid","4");
+        }, "version","4","module","forumdisplay","fid","2","page","1");
 
     }
 
     public static interface SuccessCallback {
-        void onSuccess(String timeline);
+        void onSuccess(List<ThreadsMessage> threadsMessages);
     }
 
     public static interface FailCallback {

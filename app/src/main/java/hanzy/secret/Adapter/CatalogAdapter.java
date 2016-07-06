@@ -18,6 +18,7 @@ import hanzy.secret.Message.CatalogMessage;
  */
 public class CatalogAdapter extends BaseAdapter{
 
+
     private Context context=null;
     public CatalogAdapter(Context context){
         this.context=context;

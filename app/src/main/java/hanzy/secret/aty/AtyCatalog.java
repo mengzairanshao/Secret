@@ -6,6 +6,7 @@ import android.os.Bundle;
 import java.util.List;
 
 import hanzy.secret.Adapter.CatalogAdapter;
+import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.R;
 import hanzy.secret.net.GetCatalog;
 import hanzy.secret.net.GetThread;
@@ -25,12 +26,12 @@ public class AtyCatalog extends ListActivity {
         adapter=new CatalogAdapter(AtyCatalog.this);
         setListAdapter(adapter);
         final ProgressDialog progressDialog=ProgressDialog.show(AtyCatalog.this,"oha","waiting");
-        new GetThread(AtyCatalog.this, new GetThread.SuccessCallback() {
+        new GetCatalog(AtyCatalog.this, new GetCatalog.SuccessCallback() {
             @Override
-            public void onSuccess(String timeline) {
+            public void onSuccess(List<CatalogMessage> timeline) {
 
             }
-        }, new GetThread.FailCallback() {
+        }, new GetCatalog.FailCallback() {
             @Override
             public void onFail() {
 
