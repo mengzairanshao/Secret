@@ -5,29 +5,31 @@
     android:padding="5dp">
 
     <TextView
-        android:id="@+id/threadtitle"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:id="@+id/thread_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"/>
     <TextView
-        android:id="@+id/detail"
+        android:id="@+id/thread_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/thread_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/threadtitle">
+        android:layout_below="@id/thread_title">
         <TextView
-            android:id="@+id/state"
+            android:id="@+id/thread_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
-            android:id="@+id/author"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:id="@+id/thread_author"
             android:padding="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -35,21 +37,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:textAppearance="?android:textAppearanceSmall"
             android:padding="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/views"/>
+            android:id="@+id/thread_views"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:textAppearance="?android:textAppearanceSmall"
             android:padding="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/replies"/>
+            android:id="@+id/thread_replies"/>
         <TextView
+            android:textAppearance="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/posttime"/>
+            android:id="@+id/thread_posttime"/>
     </LinearLayout>
 </RelativeLayout>

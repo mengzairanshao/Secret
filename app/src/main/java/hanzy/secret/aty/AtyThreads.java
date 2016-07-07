@@ -26,12 +26,12 @@ public class AtyThreads extends Activity{
         new GetThread(AtyThreads.this, new GetThread.SuccessCallback() {
             @Override
             public void onSuccess(List<ThreadsMessage> threadsMessages) {
-                SimpleAdapter adapter=new SimpleAdapter(AtyThreads.this,
-                        new ThreadAdapter().getData(threadsMessages),
+                ThreadAdapter threadAdapter=new ThreadAdapter(AtyThreads.this,
+                        ThreadAdapter.getData(threadsMessages),
                         R.layout.thread_list_cell,
-                        new String[]{"author","dblastpost","subject","views","replies"},
-                        new int[]{R.id.author,R.id.posttime,R.id.threadtitle,R.id.views,R.id.replies});
-                lv.setAdapter(adapter);
+                        ThreadAdapter.from,
+                        ThreadAdapter.to);
+                lv.setAdapter(threadAdapter);
             }
         }, new GetThread.FailCallback() {
             @Override

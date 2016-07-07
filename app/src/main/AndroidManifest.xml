@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="hanzy.secret">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,11 +17,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".aty.AtyLogin"></activity>
-        <activity android:name=".aty.AtyCatalog"></activity>
-        <activity android:name=".aty.AtyMessage"></activity>
-        <activity android:name=".aty.AtyPubMessage"></activity>
-        <activity android:name=".aty.AtyThreads"></activity>
+        <activity android:name=".aty.AtyLogin" />
+        <activity android:name=".aty.AtyCatalog" />
+        <activity android:name=".aty.AtyMessage" />
+        <activity android:name=".aty.AtyPubMessage" />
+        <activity android:name=".aty.AtyThreads" />
+        <activity android:name=".aty.AtyDetail"></activity>
     </application>
 
 </manifest>

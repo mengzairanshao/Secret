@@ -37,7 +37,7 @@ public class GetThread {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             jsonObject1 = jsonArray.getJSONObject(i);
                             Log.e(TAG,"ThreadMessage"+jsonObject1.getString("author")+jsonObject1.getString("dblastpost")+jsonObject1.getString("subject")+jsonObject1.getString("views")+jsonObject1.getString("replies"));
-                            megs.add(new ThreadsMessage(jsonObject1.getString("author"),jsonObject1.getString("dblastpost"),jsonObject1.getString("subject"),jsonObject1.getString("views"),jsonObject1.getString("replies")));
+                            megs.add(new ThreadsMessage(jsonObject1.getString("author"),jsonObject1.getString("dblastpost"),jsonObject1.getString("subject"),jsonObject1.getString("views"),jsonObject1.getString("replies"),jsonObject1.getString("tid")));
                         }
 
                         if (successCallback != null) successCallback.onSuccess(megs);

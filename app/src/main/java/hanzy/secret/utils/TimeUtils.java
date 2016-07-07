@@ -15,7 +15,7 @@ import java.util.Locale;
 public class TimeUtils {
 
     /**
-     * 此方法输入所要转换的时间输入例如（"2014年06月14日16时09分00秒"）返回时间戳
+     * 掉此方法输入所要转换的时间输入例如（"2014年06月14日16时09分00秒"）返回时间戳
      *
      * @param time
      * @return
@@ -113,6 +113,7 @@ public class TimeUtils {
         return sdr.format(new Date(timeStamp)).replaceAll("#",
                 getWeek(timeStamp));
 
+
     }
 
     private static String getWeek(long timeStamp) {
@@ -178,8 +179,7 @@ public class TimeUtils {
      *
      * @param str
      * @param type
-     *
-     * 例如：yy-MM-dd
+     *            例如：yy-MM-dd
      * @return
      */
     public static String getDateTimeByMillisecond(String str, String type) {
