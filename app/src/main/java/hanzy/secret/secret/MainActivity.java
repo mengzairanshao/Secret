@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         String cookies = CookiesSet.getCookieText(MainActivity.this);
         if(!cookies.equals("")){
-            startActivity(new Intent(this,AtyDetail.class));
+            startActivity(new Intent(this,AtyThreads.class));
         }
         else{
             startActivity(new Intent(this,AtyLogin.class));

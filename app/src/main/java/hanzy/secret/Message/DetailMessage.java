@@ -12,20 +12,18 @@ import java.util.Map;
 public class DetailMessage{
 
     private String pid=null;
-    private String fid=null;
     private String tid=null;
     private String author=null;
-    private String dblastpost=null;
+    private String dbdateline=null;
     private String subject=null;
     private String message=null;
 
-    public DetailMessage(String author,String dblastpost,String subject,String message,String tid,String fid,String pid){
+    public DetailMessage(String author,String dbdateline,String message,String tid,String pid){
         this.author=author;
-        this.dblastpost=dblastpost;
-        this.subject=subject;
+        this.dbdateline=dbdateline;
+        //this.subject=subject;
         this.message=message;
         this.tid=tid;
-        this.fid=fid;
         this.pid=pid;
     }
 
@@ -33,8 +31,8 @@ public class DetailMessage{
         return author;
     }
 
-    public String getDblastpost() {
-        return dblastpost;
+    public String getDateline() {
+        return dbdateline;
     }
 
     public String getSubject() {
@@ -49,9 +47,6 @@ public class DetailMessage{
         return tid;
     }
 
-    public String getFid() {
-        return fid;
-    }
 
     public String getPid() {
         return pid;

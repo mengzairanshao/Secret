@@ -21,7 +21,7 @@ public class GetDetail {
 
     public String TAG = "GetDetail";
 
-    public GetDetail(final Context context, final SuccessCallback successCallback, final FailCallback failCallback) {
+    public GetDetail(final Context context, final SuccessCallback successCallback, final FailCallback failCallback,final String tid) {
 
         new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
@@ -30,15 +30,15 @@ public class GetDetail {
                     JSONObject jsonObject = new JSONObject(result);
                     if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
                         Log.e(TAG, "Get Json Data:" + jsonObject.toString());
-//                        JSONArray jsonArray = new JSONArray();
-//                        jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("forum_threadlist");
-//                        JSONObject jsonObject1 = new JSONObject();
-                       List<DetailMessage> megs = new ArrayList<>();
-//                        for (int i = 0; i < jsonArray.length(); i++) {
-//                            jsonObject1 = jsonArray.getJSONObject(i);
-//                            Log.e(TAG,"ThreadMessage"+jsonObject1.getString("author")+jsonObject1.getString("dblastpost")+jsonObject1.getString("subject")+jsonObject1.getString("views")+jsonObject1.getString("replies"));
-//                            megs.add(new ThreadsMessage(jsonObject1.getString("author"),jsonObject1.getString("dblastpost"),jsonObject1.getString("subject"),jsonObject1.getString("views"),jsonObject1.getString("replies"),jsonObject1.getString("tid")));
-//                        }
+                        JSONArray jsonArray = new JSONArray();
+                        jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("postlist");
+                        JSONObject jsonObject1 = new JSONObject();
+                        List<DetailMessage> megs = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            jsonObject1 = jsonArray.getJSONObject(i);
+                            //Log.e(TAG,"ThreadMessage"+jsonObject1.getString("author")+jsonObject1.getString("dblastpost")+jsonObject1.getString("subject")+jsonObject1.getString("views")+jsonObject1.getString("replies"));
+                            megs.add(new DetailMessage(jsonObject1.getString("author"),jsonObject1.getString("dbdateline"),jsonObject1.getString("message"),jsonObject1.getString("tid"),jsonObject1.getString("pid")));
+                        }
 
                         if (successCallback != null) successCallback.onSuccess(megs);
                     } else {
@@ -56,7 +56,7 @@ public class GetDetail {
             public void onFail() {
                 if (failCallback != null) failCallback.onFail();
             }
-        }, "version","4","module","viewthread","tid","7");
+        }, "version","4","module","viewthread","tid",tid);
 
     }
 

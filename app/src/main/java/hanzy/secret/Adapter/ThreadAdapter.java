@@ -41,6 +41,7 @@ public class ThreadAdapter extends SimpleAdapter{
         super(context, data, resource, from, to);
     }
 
+
     public static List<Map<String, Object>> getData(List<ThreadsMessage> threadsMessages){
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
