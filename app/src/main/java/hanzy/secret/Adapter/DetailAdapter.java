@@ -3,14 +3,23 @@ package hanzy.secret.Adapter;
 import android.content.Context;
 import android.widget.SimpleAdapter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import hanzy.secret.Message.DetailMessage;
+import hanzy.secret.Message.ThreadsMessage;
+import hanzy.secret.R;
+import hanzy.secret.utils.TimeUtils;
 
 /**
  * Created by h on 2016/7/7.
  */
 public class DetailAdapter extends SimpleAdapter{
-
+    public String TAG="SimpleAdapter";
+    public static int[] to={R.id.detail_author,R.id.detail_posttime,R.id.detail_message};
+    public static String[] from={"author","dbdateline","message"};
     /**
      * Constructor
      *
@@ -29,5 +38,18 @@ public class DetailAdapter extends SimpleAdapter{
         super(context, data, resource, from, to);
     }
 
+    public static List<Map<String, Object>> getData(List<DetailMessage> detailMessages){
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        for (int i=0;i<detailMessages.size();i++){
 
+            map = new HashMap<String, Object>();
+            map.put("author", detailMessages.get(i).getAuthor());
+            map.put("dbdateline", TimeUtils.times((long)Integer.parseInt(detailMessages.get(i).getDateline())*1000L));
+           // map.put("subject",  detailMessages.get(i).getSubject());
+            map.put("message",  detailMessages.get(i).getMessage());
+            list.add(map);
+        }
+        return list;
+    }
 }
