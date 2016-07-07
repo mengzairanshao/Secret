@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import hanzy.secret.aty.AtyDetail;
 import hanzy.secret.aty.AtyLogin;
 import hanzy.secret.aty.AtyCatalog;
 import hanzy.secret.aty.AtyThreads;
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         String cookies = CookiesSet.getCookieText(MainActivity.this);
         if(!cookies.equals("")){
-            startActivity(new Intent(this,AtyThreads.class));
+            startActivity(new Intent(this,AtyDetail.class));
         }
         else{
             startActivity(new Intent(this,AtyLogin.class));
