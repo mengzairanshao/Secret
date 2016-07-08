@@ -22,12 +22,13 @@ public class AtyDetail extends AppCompatActivity {
         lv= (ListView) findViewById(R.id.detailList);
 
         Intent intent=getIntent();
+        this.setTitle(intent.getStringExtra("subject"));
         new GetDetail(AtyDetail.this, new GetDetail.SuccessCallback() {
             @Override
             public void onSuccess(List<DetailMessage> detailMessages) {
                 DetailAdapter detailAdapter=new DetailAdapter(AtyDetail.this,
                         DetailAdapter.getData(detailMessages),
-                        R.layout.detail_list,
+                        R.layout.aty_detail_list,
                         DetailAdapter.from,
                         DetailAdapter.to);
                 lv.setAdapter(detailAdapter);

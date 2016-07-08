@@ -8,6 +8,7 @@ import hanzy.secret.aty.AtyDetail;
 import hanzy.secret.aty.AtyLogin;
 import hanzy.secret.aty.AtyCatalog;
 import hanzy.secret.aty.AtyThreads;
+import hanzy.secret.aty.AtyTopic;
 import hanzy.secret.net.CookiesSet;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         String cookies = CookiesSet.getCookieText(MainActivity.this);
         if(!cookies.equals("")){
-            startActivity(new Intent(this,AtyThreads.class));
+            startActivity(new Intent(this,AtyTopic.class));
         }
         else{
             startActivity(new Intent(this,AtyLogin.class));

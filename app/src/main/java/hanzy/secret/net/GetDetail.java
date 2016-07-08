@@ -1,6 +1,7 @@
 package hanzy.secret.net;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -13,6 +14,7 @@ import java.util.List;
 import hanzy.secret.Message.DetailMessage;
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.secret.Config;
+import hanzy.secret.utils.TimeUtils;
 
 /**
  * Created by h on 2016/7/7.
@@ -36,7 +38,7 @@ public class GetDetail {
                         List<DetailMessage> megs = new ArrayList<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             jsonObject1 = jsonArray.getJSONObject(i);
-                            //Log.e(TAG,"ThreadMessage"+jsonObject1.getString("author")+jsonObject1.getString("dblastpost")+jsonObject1.getString("subject")+jsonObject1.getString("views")+jsonObject1.getString("replies"));
+                            Log.e(TAG,"messages:"+jsonObject1.getString("message"));
                             megs.add(new DetailMessage(jsonObject1.getString("author"),jsonObject1.getString("dbdateline"),jsonObject1.getString("message"),jsonObject1.getString("tid"),jsonObject1.getString("pid")));
                         }
 

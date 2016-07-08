@@ -21,7 +21,6 @@ public class DetailMessage{
     public DetailMessage(String author,String dbdateline,String message,String tid,String pid){
         this.author=author;
         this.dbdateline=dbdateline;
-        //this.subject=subject;
         this.message=message;
         this.tid=tid;
         this.pid=pid;

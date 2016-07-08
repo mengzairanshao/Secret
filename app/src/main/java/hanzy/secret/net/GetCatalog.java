@@ -60,7 +60,7 @@ public class GetCatalog {
     }
 
     public static interface SuccessCallback {
-        void onSuccess(List<CatalogMessage> timeline);
+        void onSuccess(List<CatalogMessage> catalogMessages);
     }
 
     public static interface FailCallback {
