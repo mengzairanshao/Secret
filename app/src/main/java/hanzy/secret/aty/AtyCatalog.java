@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,6 +17,7 @@ import hanzy.secret.Adapter.CatalogAdapter;
 import hanzy.secret.Message.CatalogMessage;
 import hanzy.secret.R;
 import hanzy.secret.net.GetCatalog;
+import hanzy.secret.net.NetConnection;
 
 /**
  * Created by h on 2016/6/28.
@@ -47,7 +49,12 @@ public class AtyCatalog extends AppCompatActivity {
         }, new GetCatalog.FailCallback() {
             @Override
             public void onFail() {
-
+                if (NetConnection.isMobileNetworkAvailable(AtyCatalog.this).equals("none")){
+                    Toast.makeText(AtyCatalog.this,R.string.NetworkFailure,Toast.LENGTH_LONG).show();
+                }
+                if (NetConnection.isMobileNetworkAvailable(AtyCatalog.this).equals("mobile")){
+                    Toast.makeText(AtyCatalog.this,R.string.MobileNetwork,Toast.LENGTH_LONG).show();
+                }
             }
         });
         lv.setOnItemClickListener(new OnItemClickListenerImp());

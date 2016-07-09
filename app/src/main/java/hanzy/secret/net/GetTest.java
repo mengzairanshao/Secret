@@ -22,7 +22,6 @@ public class GetTest {
                 if (result!=null) {
                     try {
                         JSONObject obj = new JSONObject(result);
-                        Log.e(TAG,"josn长度"+obj.getJSONObject("Variables").getJSONArray("data").length());
                         Log.e(TAG,"获取JSON数据:"+obj);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -34,7 +33,7 @@ public class GetTest {
             public void onFail() {
                 Log.e(TAG,"获取JSON数据失败");
             }
-        },"version","4","module","hotthread");
+        },"version","4","module","checkpost");
     }
     public static interface SuccessCallback{
         void onSuccess(String token);

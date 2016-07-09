@@ -1,6 +1,8 @@
 package hanzy.secret.net;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 
@@ -78,6 +80,23 @@ public class NetConnection {
         public static interface FailCallback {
             void onFail();
         }
+
+    private static ConnectivityManager connectivityManager;
+
+    public static String isMobileNetworkAvailable(Context context){
+        if (null==connectivityManager){
+            connectivityManager= (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        }
+        NetworkInfo wifiInfo=connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobileInfo=connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (wifiInfo.isConnected()){
+            return "wifi";
+        }else if (mobileInfo.isConnected()){
+            return "mobile";
+        }else{
+            return "none";
+        }
+    }
 
 }
 

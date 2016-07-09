@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import hanzy.secret.Adapter.DetailAdapter;
 import hanzy.secret.Message.DetailMessage;
 import hanzy.secret.R;
 import hanzy.secret.net.GetDetail;
+import hanzy.secret.net.NetConnection;
 
 public class AtyDetail extends AppCompatActivity {
 
@@ -36,7 +38,12 @@ public class AtyDetail extends AppCompatActivity {
         }, new GetDetail.FailCallback() {
             @Override
             public void onFail() {
-
+                if (NetConnection.isMobileNetworkAvailable(AtyDetail.this).equals("none")){
+                    Toast.makeText(AtyDetail.this,R.string.NetworkFailure,Toast.LENGTH_LONG).show();
+                }
+                if (NetConnection.isMobileNetworkAvailable(AtyDetail.this).equals("mobile")){
+                    Toast.makeText(AtyDetail.this,R.string.MobileNetwork,Toast.LENGTH_LONG).show();
+                }
             }
         },intent.getStringExtra("tid"));
     }

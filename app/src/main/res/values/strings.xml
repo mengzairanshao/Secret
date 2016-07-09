@@ -7,4 +7,6 @@
     <string name="publish_message">Publish Message</string>
     <string name="username_or_password_can_not_be_empty">username or password can not be empty</string>
     <string name="fail">username or password can not be empty</string>
+    <string name="NetworkFailure">网络错误</string>
+    <string name="MobileNetwork">注意!您正在使用计费网络</string>
 </resources>

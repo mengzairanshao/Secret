@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import hanzy.secret.Adapter.ThreadAdapter;
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.R;
 import hanzy.secret.net.GetThread;
+import hanzy.secret.net.NetConnection;
 
 /**
  * Created by h on 2016/7/6.
@@ -42,7 +44,12 @@ public class AtyThreads extends AppCompatActivity {
         }, new GetThread.FailCallback() {
             @Override
             public void onFail() {
-
+                if (NetConnection.isMobileNetworkAvailable(AtyThreads.this).equals("none")){
+                    Toast.makeText(AtyThreads.this,R.string.NetworkFailure,Toast.LENGTH_LONG).show();
+                }
+                if (NetConnection.isMobileNetworkAvailable(AtyThreads.this).equals("mobile")){
+                    Toast.makeText(AtyThreads.this,R.string.MobileNetwork,Toast.LENGTH_LONG).show();
+                }
             }
         },i.getStringExtra("fid"));
         lv.setOnItemClickListener(new OnItemClickListenerImp());
