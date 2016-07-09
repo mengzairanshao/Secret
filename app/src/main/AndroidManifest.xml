@@ -23,7 +23,9 @@
         <activity android:name=".aty.AtyPubMessage" />
         <activity android:name=".aty.AtyThreads" />
         <activity android:name=".aty.AtyDetail" />
-        <activity android:name=".aty.AtyTopic"></activity>
+        <activity android:name=".aty.Aty_Test" />
+        <activity android:name=".aty.AtyForums" />
+        <activity android:name=".aty.AtyHotThread"></activity>
     </application>
 
 </manifest>

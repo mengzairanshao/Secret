@@ -4,7 +4,10 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import hanzy.secret.Message.CatalogMessage;
@@ -24,19 +27,32 @@ public class GetCatalog {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
                     if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
+
                         Log.e(TAG, "Get Json Data:" + result);
-                        JSONArray jsonArray = new JSONArray();
-                        jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("catlist");
-                        JSONObject jsonObject1 = new JSONObject();
+                        JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("catlist");
                         List<CatalogMessage> megs = new ArrayList<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            jsonObject1 = jsonArray.getJSONObject(i);
-                            String[] formList = new String[jsonObject1.getJSONArray("forums").length()];
-                            for (int j = 0; j < jsonObject1.getJSONArray("forums").length(); j++) {
-                                formList[j] = jsonObject1.getJSONArray("forums").getString(j);
+                            jsonObject = jsonArray.getJSONObject(i);
+                            String[] formList = new String[jsonObject.getJSONArray("forums").length()];
+                            for (int j = 0; j < jsonObject.getJSONArray("forums").length(); j++) {
+                                formList[j] = jsonObject.getJSONArray("forums").getString(j);
                             }
-                            megs.add(new CatalogMessage(jsonObject1.getString("fid"), jsonObject1.getString("name"), formList));
+                            HashMap<String,String> hashMap=new HashMap<String, String>();
+                            jsonObject=new JSONObject(result);
+                            jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("forumlist");
+                            for (int j=0;j<jsonArray.length();j++){
+                                for (String aFormList : formList) {
+                                    if (jsonArray.getJSONObject(j).getString("fid").equals(aFormList)) {
+                                        hashMap.put(jsonArray.getJSONObject(j).getString("fid"), jsonArray.getJSONObject(j).getString("name"));
+                                    }
+                                }
+                            }
+                            jsonObject=new JSONObject(result);
+                            jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("catlist");
+                            jsonObject = jsonArray.getJSONObject(i);
+                            megs.add(new CatalogMessage(jsonObject.getString("fid"), jsonObject.getString("name"), formList,hashMap));
                         }
+
                         if (successCallback != null) successCallback.onSuccess(megs);
                     } else {
                         Log.e(TAG,"Failed Get Json Data(auth==null)");

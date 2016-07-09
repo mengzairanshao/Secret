@@ -7,9 +7,11 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/Cataloglist"
+        android:id="@+id/Catalog_list"
         android:divider="#b5b5b5"
-        android:dividerHeight="1dp"></ListView>
+        android:dividerHeight="1dp">
+
+    </ListView>
 
 
 </LinearLayout>

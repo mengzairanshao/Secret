@@ -57,6 +57,4 @@ public class ThreadAdapter extends SimpleAdapter{
         }
         return list;
     }
-
-
 }

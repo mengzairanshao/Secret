@@ -21,7 +21,7 @@ import hanzy.secret.secret.Config;
 public class GetThread {
     public String TAG = "GetThread";
 
-    public GetThread(final Context context, final SuccessCallback successCallback, final FailCallback failCallback) {
+    public GetThread(final Context context, final SuccessCallback successCallback, final FailCallback failCallback,String fid) {
 
         new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
@@ -56,7 +56,7 @@ public class GetThread {
             public void onFail() {
                 if (failCallback != null) failCallback.onFail();
             }
-        }, "version","4","module","forumdisplay","fid","2","page","1");
+        }, "version","4","module","forumdisplay","fid",fid,"page","1");
 
     }
 

@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:textColor="#00f"
             android:textAppearance="?android:textAppearanceSmall"
             android:id="@+id/thread_author"
             android:padding="5dp"

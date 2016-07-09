@@ -27,6 +27,7 @@ public class AtyThreads extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_thread);
         lv= (ListView) findViewById(R.id.threadlist);
+        Intent i=getIntent();
         new GetThread(AtyThreads.this, new GetThread.SuccessCallback() {
             @Override
             public void onSuccess(List<ThreadsMessage> threadsMessages) {
@@ -43,7 +44,7 @@ public class AtyThreads extends AppCompatActivity {
             public void onFail() {
 
             }
-        });
+        },i.getStringExtra("fid"));
         lv.setOnItemClickListener(new OnItemClickListenerImp());
     }
 

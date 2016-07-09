@@ -38,7 +38,6 @@ public class GetDetail {
                         List<DetailMessage> megs = new ArrayList<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             jsonObject1 = jsonArray.getJSONObject(i);
-                            Log.e(TAG,"messages:"+jsonObject1.getString("message"));
                             megs.add(new DetailMessage(jsonObject1.getString("author"),jsonObject1.getString("dbdateline"),jsonObject1.getString("message"),jsonObject1.getString("tid"),jsonObject1.getString("pid")));
                         }
 

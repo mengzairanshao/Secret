@@ -55,6 +55,8 @@ public class NetConnection {
             client.get(url, params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                    Log.e(TAG,"GET连接成功"+responseBody.length);
                     String json=new String(responseBody);
                     Log.e(TAG,"GET连接成功"+json);
                     if (successCallback!=null)successCallback.onSuccess(json);
@@ -67,68 +69,6 @@ public class NetConnection {
                 }
             });
         }
-
-//        new AsyncTask<Void,Void,String>(){
-//            @Override
-//            protected String doInBackground(Void... params) {
-//
-//                StringBuffer paramStr=new StringBuffer();
-//                for (int i=0;i<kvs.length;i+=2){
-//                    paramStr.append(kvs[i]).append("=").append(kvs[i+1]).append("&");
-//                }
-//                try {
-//                    URLConnection uc;
-//
-//                    switch (httpMethod){
-//                        case POST:
-//
-//                            uc=new URL(url).openConnection();
-//                            uc.setDoOutput(true);
-//                            Log.e(TAG,uc.getOutputStream().toString());
-//                            BufferedWriter bufferedWriter=new BufferedWriter(new OutputStreamWriter(uc.getOutputStream(), Config.CHARSET));
-//                            bufferedWriter.write(paramStr.toString());
-//                            bufferedWriter.flush();
-//
-//                            break;
-//                        default:
-//                            uc=new URL(url+"?"+paramStr.toString()).openConnection();
-//                            break;
-//                    }
-//
-//                    System.out.println("Request url:"+uc.getURL());
-//                    System.out.println("Request data:"+paramStr);
-//                    BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(uc.getInputStream(),Config.CHARSET));
-//                    Log.e(TAG,uc.getInputStream().toString());
-//
-//                    String line=null;
-//                    StringBuffer result=new StringBuffer();
-//                    while ((line=bufferedReader.readLine())!=null){
-//                        result.append(line);
-//                    }
-//
-//                    System.out.println("Result :"+result);
-//                    return  result.toString();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(String s) {
-//                if (s!=null){
-//                    if (successCallback!=null){
-//                        successCallback.onSuccess(s);
-//                    }
-//                }else{
-//                    if (failCallback!=null){
-//                        failCallback.onFail();
-//                    }
-//                }
-//                super.onPostExecute(s);
-//
-//            }
-//        }.execute();
     }
 
         public static interface SuccessCallback {

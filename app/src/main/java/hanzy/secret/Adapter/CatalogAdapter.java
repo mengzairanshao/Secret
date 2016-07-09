@@ -23,10 +23,10 @@ import hanzy.secret.utils.TimeUtils;
 public class CatalogAdapter extends SimpleAdapter{
 
     public String TAG="CatalogAdapter";
-    public static int[] to={R.id.thread_author,R.id.thread_posttime,R.id.thread_title,R.id.thread_views,R.id.thread_replies};
-    public static String[] from={"author","dblastpost","subject","views","replies"};
+    public static int[] to={R.id.catalog_list};
+    public static String[] from={"name"};
     /**
-     * Constructor
+     *
      *
      * @param context  The context where the View associated with this SimpleAdapter is running
      * @param data     A List of Maps. Each entry in the List corresponds to one row in the list. The
@@ -44,18 +44,24 @@ public class CatalogAdapter extends SimpleAdapter{
     }
 
     public static List<Map<String, Object>> getData(List<CatalogMessage> catalogMessages){
+        String key=null;
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         for (int i=0;i<catalogMessages.size();i++){
-
-//            map = new HashMap<String, Object>();
-//            map.put("author", catalogMessages.get(i).getAuthor());
-//            map.put("dblastpost", TimeUtils.times((long)Integer.parseInt(catalogMessages.get(i).getDblastpost())*1000L));
-//            map.put("subject",  catalogMessages.get(i).getSubject());
-//            map.put("views",  catalogMessages.get(i).getViews());
-//            map.put("replies",  catalogMessages.get(i).getReplies());
-//            list.add(map);
+            map = new HashMap<String, Object>();
+            map.put("name", catalogMessages.get(i).getName());
+            list.add(map);
         }
         return list;
+    }
+
+    private  List<CatalogMessage> catalogMessages = new ArrayList<CatalogMessage>();
+    public void set(List<CatalogMessage> catalogMessages){
+        this.catalogMessages=catalogMessages;
+        notifyDataSetChanged();
+    }
+
+    public List<CatalogMessage> getCatalogMessages() {
+        return catalogMessages;
     }
 }
