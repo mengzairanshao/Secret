@@ -1,10 +1,6 @@
 package hanzy.secret.Adapter;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
@@ -15,7 +11,6 @@ import java.util.Map;
 
 import hanzy.secret.R;
 import hanzy.secret.Message.CatalogMessage;
-import hanzy.secret.utils.TimeUtils;
 
 /**
  * Created by h on 2016/7/3.

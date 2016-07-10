@@ -1,11 +1,8 @@
 package hanzy.secret.aty;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import hanzy.secret.R;
 import hanzy.secret.net.GetTest;
-
 public class Aty_Test extends AppCompatActivity {
 
     @Override

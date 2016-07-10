@@ -33,6 +33,9 @@ public class AtyThreads extends AppCompatActivity {
         new GetThread(AtyThreads.this, new GetThread.SuccessCallback() {
             @Override
             public void onSuccess(List<ThreadsMessage> threadsMessages) {
+                if (NetConnection.isMobileNetworkAvailable(AtyThreads.this).equals("mobile")){
+                    Toast.makeText(AtyThreads.this,R.string.MobileNetwork,Toast.LENGTH_LONG).show();
+                }
                 AtyThreads.this.threadsMessages=threadsMessages;
                 ThreadAdapter threadAdapter=new ThreadAdapter(AtyThreads.this,
                         ThreadAdapter.getData(threadsMessages),
@@ -46,10 +49,10 @@ public class AtyThreads extends AppCompatActivity {
             public void onFail() {
                 if (NetConnection.isMobileNetworkAvailable(AtyThreads.this).equals("none")){
                     Toast.makeText(AtyThreads.this,R.string.NetworkFailure,Toast.LENGTH_LONG).show();
+                }else if (NetConnection.isMobileNetworkAvailable(AtyThreads.this).equals("mobile")||NetConnection.isMobileNetworkAvailable(AtyThreads.this).equals("wifi")){
+                    Toast.makeText(AtyThreads.this,R.string.LoadFailure,Toast.LENGTH_LONG).show();
                 }
-                if (NetConnection.isMobileNetworkAvailable(AtyThreads.this).equals("mobile")){
-                    Toast.makeText(AtyThreads.this,R.string.MobileNetwork,Toast.LENGTH_LONG).show();
-                }
+
             }
         },i.getStringExtra("fid"));
         lv.setOnItemClickListener(new OnItemClickListenerImp());

@@ -9,4 +9,5 @@
     <string name="fail">username or password can not be empty</string>
     <string name="NetworkFailure">网络错误</string>
     <string name="MobileNetwork">注意!您正在使用计费网络</string>
+    <string name="LoadFailure">嗯哼!加载失败了.</string>
 </resources>

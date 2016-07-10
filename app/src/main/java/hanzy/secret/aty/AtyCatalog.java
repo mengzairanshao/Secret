@@ -37,6 +37,9 @@ public class AtyCatalog extends AppCompatActivity {
         new GetCatalog(AtyCatalog.this, new GetCatalog.SuccessCallback() {
             @Override
             public void onSuccess(List<CatalogMessage> catalogMessages) {
+                if (NetConnection.isMobileNetworkAvailable(AtyCatalog.this).equals("mobile")){
+                    Toast.makeText(AtyCatalog.this,R.string.MobileNetwork,Toast.LENGTH_LONG).show();
+                }
                 AtyCatalog.this.catalogMessages=catalogMessages;
                 CatalogAdapter catalogAdapter=new CatalogAdapter(AtyCatalog.this,
                         CatalogAdapter.getData(catalogMessages),
@@ -51,10 +54,10 @@ public class AtyCatalog extends AppCompatActivity {
             public void onFail() {
                 if (NetConnection.isMobileNetworkAvailable(AtyCatalog.this).equals("none")){
                     Toast.makeText(AtyCatalog.this,R.string.NetworkFailure,Toast.LENGTH_LONG).show();
+                }else if (NetConnection.isMobileNetworkAvailable(AtyCatalog.this).equals("mobile")||NetConnection.isMobileNetworkAvailable(AtyCatalog.this).equals("wifi")){
+                    Toast.makeText(AtyCatalog.this,R.string.LoadFailure,Toast.LENGTH_LONG).show();
                 }
-                if (NetConnection.isMobileNetworkAvailable(AtyCatalog.this).equals("mobile")){
-                    Toast.makeText(AtyCatalog.this,R.string.MobileNetwork,Toast.LENGTH_LONG).show();
-                }
+
             }
         });
         lv.setOnItemClickListener(new OnItemClickListenerImp());

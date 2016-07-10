@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import hanzy.secret.Adapter.CatalogAdapter;
-import hanzy.secret.Message.CatalogMessage;
 import hanzy.secret.R;
 
 public class AtyForums extends AppCompatActivity {
@@ -33,7 +31,7 @@ public class AtyForums extends AppCompatActivity {
         this.values=i.getStringArrayExtra("values");
         SimpleAdapter simpleAdapter=new SimpleAdapter(AtyForums.this,
                 getData(hashMap),
-                R.layout.aty_forums_list,
+                R.layout.aty_forums_list_cell,
                 new String[]{"text"},new int[]{R.id.forums_text});
         lv.setAdapter(simpleAdapter);
         i.getStringExtra("fid");

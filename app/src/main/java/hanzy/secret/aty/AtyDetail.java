@@ -28,9 +28,12 @@ public class AtyDetail extends AppCompatActivity {
         new GetDetail(AtyDetail.this, new GetDetail.SuccessCallback() {
             @Override
             public void onSuccess(List<DetailMessage> detailMessages) {
+                if (NetConnection.isMobileNetworkAvailable(AtyDetail.this).equals("mobile")){
+                    Toast.makeText(AtyDetail.this,R.string.MobileNetwork,Toast.LENGTH_LONG).show();
+                }
                 DetailAdapter detailAdapter=new DetailAdapter(AtyDetail.this,
                         DetailAdapter.getData(detailMessages),
-                        R.layout.aty_detail_list,
+                        R.layout.aty_detail_list_cell,
                         DetailAdapter.from,
                         DetailAdapter.to);
                 lv.setAdapter(detailAdapter);
@@ -40,10 +43,10 @@ public class AtyDetail extends AppCompatActivity {
             public void onFail() {
                 if (NetConnection.isMobileNetworkAvailable(AtyDetail.this).equals("none")){
                     Toast.makeText(AtyDetail.this,R.string.NetworkFailure,Toast.LENGTH_LONG).show();
+                }else if (NetConnection.isMobileNetworkAvailable(AtyDetail.this).equals("mobile")||NetConnection.isMobileNetworkAvailable(AtyDetail.this).equals("wifi")){
+                    Toast.makeText(AtyDetail.this,R.string.LoadFailure,Toast.LENGTH_LONG).show();
                 }
-                if (NetConnection.isMobileNetworkAvailable(AtyDetail.this).equals("mobile")){
-                    Toast.makeText(AtyDetail.this,R.string.MobileNetwork,Toast.LENGTH_LONG).show();
-                }
+
             }
         },intent.getStringExtra("tid"));
     }

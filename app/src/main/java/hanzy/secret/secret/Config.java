@@ -8,8 +8,8 @@ import android.content.SharedPreferences.Editor;
  */
 public class Config {
 
-    public static final String Base_URL="http://172.27.164.1/api/mobile/index.php";
-    public static final String Login_URL="http://172.27.164.1/api/mobile/index.php?version=4&module=login&action=login&loginsubmit=yes&infloat=yes&lssubmit=yes";
+    public static final String Base_URL="http://192.168.23.1/api/mobile/index.php";
+    public static final String Login_URL=Base_URL+"?version=4&module=login&action=login&loginsubmit=yes&infloat=yes&lssubmit=yes";
     public static final String UERNAME="username";
     public static final String PASSWORD="password";
     public static final String ACTION="action";
