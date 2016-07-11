@@ -4,6 +4,9 @@ import android.content.Context;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,8 +21,8 @@ import hanzy.secret.Message.CatalogMessage;
 public class CatalogAdapter extends SimpleAdapter{
 
     public String TAG="CatalogAdapter";
-    public static int[] to={R.id.catalog_list};
-    public static String[] from={"name"};
+    public static int[] to={R.id.catalog_list,R.id.forums_num,R.id.news_num};
+    public static String[] from={"name","forums_num","news_num"};
     /**
      *
      *
@@ -39,11 +42,23 @@ public class CatalogAdapter extends SimpleAdapter{
     }
 
     public static List<Map<String, Object>> getData(List<CatalogMessage> catalogMessages){
-        String key=null;
+        int threads=0,todaypost=0;
+        JSONObject jsonObject;
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         for (int i=0;i<catalogMessages.size();i++){
+            try {
+            for (int j=0;j<catalogMessages.get(i).getForumlist().length;j++) {
+                    jsonObject=new JSONObject(catalogMessages.get(i).getFormlistItem().get(catalogMessages.get(i).getForumlist()[j]));
+                    threads+=Integer.parseInt(jsonObject.getString("threads"));
+                    todaypost+=Integer.parseInt(jsonObject.getString("todayposts"));
+                }
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
             map = new HashMap<String, Object>();
+            map.put("forums_num",catalogMessages.get(i).getForumlist().length);
+            map.put("news_num",todaypost);
             map.put("name", catalogMessages.get(i).getName());
             list.add(map);
         }

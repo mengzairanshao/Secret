@@ -56,9 +56,13 @@ public class StartingActivity extends Activity {
                 @Override
                 public void onFail() {
                     if (NetConnection.isMobileNetworkAvailable(StartingActivity.this).equals("none")){
+                        startActivity(new Intent(StartingActivity.this,MainActivity.class));
                         Toast.makeText(StartingActivity.this,R.string.NetworkFailure,Toast.LENGTH_LONG).show();
+                        finish();
                     }else if (NetConnection.isMobileNetworkAvailable(StartingActivity.this).equals("mobile")||NetConnection.isMobileNetworkAvailable(StartingActivity.this).equals("wifi")){
+                        startActivity(new Intent(StartingActivity.this,MainActivity.class));
                         Toast.makeText(StartingActivity.this,R.string.LoadFailure,Toast.LENGTH_LONG).show();
+                        finish();
                     }
                 }
             },"version","4","module","checkpost");
