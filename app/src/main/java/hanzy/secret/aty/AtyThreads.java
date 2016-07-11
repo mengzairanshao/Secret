@@ -30,6 +30,7 @@ public class AtyThreads extends AppCompatActivity {
         setContentView(R.layout.aty_thread);
         lv= (ListView) findViewById(R.id.threadlist);
         Intent i=getIntent();
+        setTitle(i.getStringExtra("name"));
         new GetThread(AtyThreads.this, new GetThread.SuccessCallback() {
             @Override
             public void onSuccess(List<ThreadsMessage> threadsMessages) {

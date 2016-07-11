@@ -3,7 +3,6 @@ package hanzy.secret.aty;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -22,8 +21,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import hanzy.secret.Fragment.CatalogFragment;
-import hanzy.secret.Fragment.ForumFragment;
-import hanzy.secret.Fragment.ForumsFragment;
 import hanzy.secret.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -117,11 +114,6 @@ public class MainActivity extends AppCompatActivity {
          * number.
          */
         public static PlaceholderFragment newInstance(int sectionNumber) {
-            switch (sectionNumber){
-                case 0:
-
-                    break;
-            }
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -163,10 +155,6 @@ public class MainActivity extends AppCompatActivity {
                     return new CatalogFragment();
                 case 2:
                     return PlaceholderFragment.newInstance(position + 1);
-                case 3:
-                    return PlaceholderFragment.newInstance(position + 1);
-                case 4:
-                    return PlaceholderFragment.newInstance(position + 1);
             }
             return null;
         }
@@ -174,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 4;
+            return 3;
         }
 
         @Override
@@ -187,8 +175,6 @@ public class MainActivity extends AppCompatActivity {
                     return "论坛";
                 case 2:
                     return "个人中心";
-                case 3:
-                    return "SECTION 4";
             }
             return null;
         }

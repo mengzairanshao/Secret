@@ -24,9 +24,6 @@ public class StartingActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
-        ImageView imageView= (ImageView) findViewById(R.id.ima);
-        imageView.setImageResource(R.drawable.black);
         String cookies = CookiesSet.getCookieText(StartingActivity.this);
         Log.e(TAG,"auth:"+cookies);
         if(!cookies.equals("")){

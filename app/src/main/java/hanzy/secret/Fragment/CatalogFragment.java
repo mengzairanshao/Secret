@@ -1,10 +1,8 @@
 package hanzy.secret.Fragment;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +10,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.List;
 
 import hanzy.secret.Adapter.CatalogAdapter;
 import hanzy.secret.Message.CatalogMessage;
 import hanzy.secret.R;
+import hanzy.secret.aty.AtyForums;
 import hanzy.secret.net.GetCatalog;
 import hanzy.secret.net.NetConnection;
 
@@ -67,21 +67,13 @@ public class CatalogFragment extends Fragment{
 
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-            ForumFragment fragment = new ForumFragment();
-            Bundle bundle = new Bundle();
+            Intent intent=new Intent(getActivity(),AtyForums.class);
+            Bundle bundle=new Bundle();
             bundle.putSerializable("Item",catalogMessages.get(position).getFormlistItem());
-            bundle.putStringArray("values", catalogMessages.get(position).getForumlist());
-            Log.e(TAG,"fid"+catalogMessages.get(position).getFid());
-            bundle.putString("fid",catalogMessages.get(position).getFid());
-            fragment.setArguments(bundle);
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            //开始Fragment事务
-            FragmentTransaction fTransaction = fragmentManager.beginTransaction();
-            //将Fragment添加到事务中，并指定一个TAG
-            fTransaction.add(fragment, "CatalogFragment");
-            //提交Fragment事务
-            fTransaction.replace(R.id.container,fragment).commit();
-
+            intent.putExtras(bundle);
+            intent.putExtra("name",catalogMessages.get(position).getName());
+            intent.putExtra("values",(Serializable) catalogMessages.get(position).getForumlist());
+            startActivity(intent);
         }
     }
 }

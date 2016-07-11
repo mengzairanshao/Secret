@@ -16,28 +16,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import hanzy.secret.Message.CatalogMessage;
 import hanzy.secret.R;
 
 public class AtyForums extends AppCompatActivity {
 
+    HashMap<String,String>hashMap;
     private ListView lv=null;
     private String[] values;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_forums);
-
         lv= (ListView) findViewById(R.id.forums);
         Intent i=getIntent();
         Bundle bundle=i.getExtras();
-        HashMap<String,String>hashMap= (HashMap<String, String>) bundle.getSerializable("Item");
-        this.values=i.getStringArrayExtra("values");
+        hashMap= (HashMap<String, String>) bundle.getSerializable("Item");
+        values=i.getStringArrayExtra("values");
+        setTitle(i.getStringExtra("name"));
         SimpleAdapter simpleAdapter=new SimpleAdapter(AtyForums.this,
                 getData(hashMap),
                 R.layout.aty_forums_list_cell,
-                new String[]{"text"},new int[]{R.id.forums_list});
+                new String[]{"text","topic","news_num"},new int[]{R.id.forums_list,R.id.topic,R.id.news_num});
         lv.setAdapter(simpleAdapter);
-        i.getStringExtra("fid");
         lv.setOnItemClickListener(new OnItemClickListenerImp());
     }
 
@@ -45,16 +46,17 @@ public class AtyForums extends AppCompatActivity {
         JSONObject jsonObject;
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
-        for (int i=0;i<values.length;i++){
+        for (String value : values) {
             try {
-                jsonObject=new JSONObject(hashMap.get(values[i]));
+                jsonObject = new JSONObject(hashMap.get(value));
                 map = new HashMap<String, Object>();
                 map.put("text", jsonObject.getString("name"));
+                map.put("topic", jsonObject.getString("threads"));
+                map.put("news_num", jsonObject.getString("todayposts"));
                 list.add(map);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         }
         return list;
     }
@@ -63,9 +65,15 @@ public class AtyForums extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
             Intent intent=new Intent(AtyForums.this,AtyThreads.class);
-            intent.putExtra("fid",values[position]);
-            startActivity(intent);
+            try {
+                JSONObject jsonObject=new JSONObject(hashMap.get(values[position]));
+                intent.putExtra("name",jsonObject.getString("name"));
+                intent.putExtra("fid",values[position]);
+                startActivity(intent);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }
-
