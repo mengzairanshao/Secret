@@ -1,71 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/text_padding">
+    android:layout_height="match_parent">
 
     <TextView
         android:textAppearance="?android:textAppearanceLarge"
-        android:id="@+id/thread_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"/>
-    <TextView
-        android:id="@+id/thread_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <ImageView
-        android:id="@+id/thread_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:id="@+id/hot_thread_subject"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/thread_title">
+        android:layout_below="@id/hot_thread_subject">
         <ImageView
             android:layout_gravity="center"
             android:layout_width="@dimen/pic_size"
             android:layout_height="@dimen/pic_size"
             android:src="@drawable/user"/>
         <TextView
-            android:textColor="#00f"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:id="@+id/thread_author"
             android:padding="@dimen/text_padding"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:id="@+id/hot_thread_author"/>
         <ImageView
             android:layout_gravity="center"
             android:layout_width="@dimen/pic_size"
             android:layout_height="@dimen/pic_size"
             android:src="@drawable/view"/>
         <TextView
-            android:textAppearance="?android:textAppearanceSmall"
             android:padding="@dimen/text_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/thread_views"/>
+            android:id="@+id/hot_thread_views"/>
         <ImageView
             android:layout_gravity="center"
             android:layout_width="@dimen/pic_size"
             android:layout_height="@dimen/pic_size"
             android:src="@drawable/replies"/>
         <TextView
-            android:textAppearance="?android:textAppearanceSmall"
             android:padding="@dimen/text_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/thread_replies"/>
+            android:id="@+id/hot_thread_replies"/>
         <ImageView
             android:layout_gravity="center"
             android:layout_width="@dimen/pic_size"
             android:layout_height="@dimen/pic_size"
             android:src="@drawable/date"/>
         <TextView
-            android:textAppearance="?android:textAppearanceSmall"
+            android:padding="@dimen/text_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/thread_posttime"/>
+            android:id="@+id/hot_thread_dblastpost"/>
     </LinearLayout>
 </RelativeLayout>

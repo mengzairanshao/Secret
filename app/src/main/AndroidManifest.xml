@@ -20,13 +20,10 @@
         </activity>
         <activity android:name=".aty.AtyLogin" />
         <activity android:name=".aty.AtyCatalog" />
-        <activity android:name=".aty.AtyMessage" />
-        <activity android:name=".aty.AtyPubMessage" />
         <activity android:name=".aty.AtyThreads" />
         <activity android:name=".aty.AtyDetail" />
         <activity android:name=".aty.Aty_Test" />
         <activity android:name=".aty.AtyForums" />
-        <activity android:name=".aty.AtyHotThread" />
         <activity
             android:name=".aty.MainActivity"
             android:label="@string/title_activity_main"

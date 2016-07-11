@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import hanzy.secret.Fragment.CatalogFragment;
+import hanzy.secret.Fragment.HotThreadsFragment;
 import hanzy.secret.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -150,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             //return PlaceholderFragment.newInstance(position + 1);
             switch (position) {
                 case 0:
-                    return PlaceholderFragment.newInstance(position + 1);
+                    return new HotThreadsFragment();
                 case 1:
                     return new CatalogFragment();
                 case 2:

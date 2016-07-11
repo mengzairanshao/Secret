@@ -33,7 +33,7 @@ public class GetTest {
             public void onFail() {
                 Log.e(TAG,"获取JSON数据失败");
             }
-        },"version","4","module","checkpost");
+        },"version","4","module","hotthread");
     }
     public static interface SuccessCallback{
         void onSuccess(String token);

@@ -18,22 +18,22 @@
         android:orientation="horizontal"
         android:layout_below="@id/catalog_list">
         <TextView
-            android:layout_marginLeft="@dimen/CatalogDes_padding"
+            android:layout_marginLeft="@dimen/text_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ForumsList"/>
         <TextView
-            android:layout_marginLeft="@dimen/CatalogDes_padding"
+            android:layout_marginLeft="@dimen/text_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/forums_num"/>
         <TextView
-            android:layout_marginLeft="@dimen/CatalogDes_padding"
+            android:layout_marginLeft="@dimen/text_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/news"/>
         <TextView
-            android:layout_marginLeft="@dimen/CatalogDes_padding"
+            android:layout_marginLeft="@dimen/text_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/news_num"/>
