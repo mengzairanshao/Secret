@@ -43,7 +43,9 @@ public class GetCatalog {
                             for (int j=0;j<jsonArray.length();j++){
                                 for (String aFormList : formList) {
                                     if (jsonArray.getJSONObject(j).getString("fid").equals(aFormList)) {
-                                        hashMap.put(jsonArray.getJSONObject(j).getString("fid"), jsonArray.getJSONObject(j).getString("name"));
+                                        Log.e(TAG, jsonArray.getJSONObject(j).toString());
+                                        hashMap.put(jsonArray.getJSONObject(j).getString("fid"),
+                                                jsonArray.getJSONObject(j).toString());
                                     }
                                 }
                             }

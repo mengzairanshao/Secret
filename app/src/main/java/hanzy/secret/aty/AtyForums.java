@@ -8,6 +8,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,14 +42,20 @@ public class AtyForums extends AppCompatActivity {
     }
 
     public List<Map<String, Object>> getData(HashMap<String,String> hashMap) {
+        JSONObject jsonObject;
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         for (int i=0;i<values.length;i++){
-            map = new HashMap<String, Object>();
-            map.put("text", hashMap.get(values[i]));
-            list.add(map);
-        }
+            try {
+                jsonObject=new JSONObject(hashMap.get(values[i]));
+                map = new HashMap<String, Object>();
+                map.put("text", jsonObject.getString("name"));
+                list.add(map);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
+        }
         return list;
     }
     public class OnItemClickListenerImp implements AdapterView.OnItemClickListener {

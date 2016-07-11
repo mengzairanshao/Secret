@@ -11,14 +11,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import hanzy.secret.R;
-import hanzy.secret.aty.AtyCatalog;
 import hanzy.secret.aty.AtyLogin;
+import hanzy.secret.aty.Aty_Test;
+import hanzy.secret.aty.MainActivity;
 import hanzy.secret.net.CookiesSet;
 import hanzy.secret.net.HttpMethod;
 import hanzy.secret.net.NetConnection;
 
-public class MainActivity extends Activity {
-    private String TAG="MainActivity";
+public class StartingActivity extends Activity {
+    private String TAG="StartingActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,24 +27,24 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main_activity);
         ImageView imageView= (ImageView) findViewById(R.id.ima);
         imageView.setImageResource(R.drawable.black);
-        String cookies = CookiesSet.getCookieText(MainActivity.this);
+        String cookies = CookiesSet.getCookieText(StartingActivity.this);
         Log.e(TAG,"auth:"+cookies);
         if(!cookies.equals("")){
-            new NetConnection(MainActivity.this, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
+            new NetConnection(StartingActivity.this, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
                 @Override
                 public void onSuccess(String result) {
                     try {
-                        if (NetConnection.isMobileNetworkAvailable(MainActivity.this).equals("mobile")){
-                            Toast.makeText(MainActivity.this, R.string.MobileNetwork,Toast.LENGTH_LONG).show();
+                        if (NetConnection.isMobileNetworkAvailable(StartingActivity.this).equals("mobile")){
+                            Toast.makeText(StartingActivity.this, R.string.MobileNetwork,Toast.LENGTH_LONG).show();
                         }
                         JSONObject jsonObject=new JSONObject(result);
                         Log.e(TAG,"Net:");
                         if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")){
-                            startActivity(new Intent(MainActivity.this,AtyCatalog.class));
+                            startActivity(new Intent(StartingActivity.this,MainActivity.class));
                             finish();
                         }
                         else{
-                            startActivity(new Intent(MainActivity.this,AtyLogin.class));
+                            startActivity(new Intent(StartingActivity.this,AtyLogin.class));
                             finish();
                         }
                     } catch (JSONException e) {
@@ -54,10 +55,10 @@ public class MainActivity extends Activity {
             }, new NetConnection.FailCallback() {
                 @Override
                 public void onFail() {
-                    if (NetConnection.isMobileNetworkAvailable(MainActivity.this).equals("none")){
-                        Toast.makeText(MainActivity.this,R.string.NetworkFailure,Toast.LENGTH_LONG).show();
-                    }else if (NetConnection.isMobileNetworkAvailable(MainActivity.this).equals("mobile")||NetConnection.isMobileNetworkAvailable(MainActivity.this).equals("wifi")){
-                        Toast.makeText(MainActivity.this,R.string.LoadFailure,Toast.LENGTH_LONG).show();
+                    if (NetConnection.isMobileNetworkAvailable(StartingActivity.this).equals("none")){
+                        Toast.makeText(StartingActivity.this,R.string.NetworkFailure,Toast.LENGTH_LONG).show();
+                    }else if (NetConnection.isMobileNetworkAvailable(StartingActivity.this).equals("mobile")||NetConnection.isMobileNetworkAvailable(StartingActivity.this).equals("wifi")){
+                        Toast.makeText(StartingActivity.this,R.string.LoadFailure,Toast.LENGTH_LONG).show();
                     }
                 }
             },"version","4","module","checkpost");
