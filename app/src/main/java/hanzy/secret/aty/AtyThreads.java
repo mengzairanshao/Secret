@@ -1,11 +1,14 @@
 package hanzy.secret.aty;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import java.util.List;
@@ -43,6 +46,18 @@ public class AtyThreads extends AppCompatActivity {
                         R.layout.aty_thread_list_cell,
                         ThreadAdapter.from,
                         ThreadAdapter.to);
+                threadAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
+                    @Override
+                    public boolean setViewValue(View view, Object data, String textRepresentation) {
+                        if ((view instanceof ImageView) && (data instanceof Bitmap)){
+                            ImageView iv = (ImageView) view;
+                            iv.setImageBitmap((Bitmap) data);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                threadAdapter.notifyDataSetChanged();
                 lv.setAdapter(threadAdapter);
             }
         }, new GetThread.FailCallback() {

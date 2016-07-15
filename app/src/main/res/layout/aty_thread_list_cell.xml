@@ -4,30 +4,15 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/text_padding">
 
-    <TextView
-        android:textAppearance="?android:textAppearanceLarge"
-        android:id="@+id/thread_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"/>
-    <TextView
-        android:id="@+id/thread_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <ImageView
-        android:id="@+id/thread_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/thread_title">
+        android:id="@+id/user">
         <ImageView
             android:layout_gravity="center"
-            android:layout_width="@dimen/pic_size"
-            android:layout_height="@dimen/pic_size"
-            android:src="@drawable/user"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_img"/>
         <TextView
             android:textColor="#00f"
             android:textAppearance="?android:textAppearanceSmall"
@@ -35,6 +20,36 @@
             android:padding="@dimen/text_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user"
+        android:id="@+id/content">
+        <TextView
+            android:textAppearance="?android:textAppearanceLarge"
+            android:id="@+id/thread_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"/>
+        <TextView
+            android:id="@+id/thread_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/thread_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/content">
+
+
         <ImageView
             android:layout_gravity="center"
             android:layout_width="@dimen/pic_size"

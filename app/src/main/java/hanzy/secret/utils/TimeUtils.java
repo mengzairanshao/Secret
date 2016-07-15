@@ -109,10 +109,8 @@ public class TimeUtils {
 
     // 调用此方法输入所要转换的时间戳例如（1402733340）输出（"2014年06月14日16时09分00秒"）
     public static String times(long timeStamp) {
-        SimpleDateFormat sdr = new SimpleDateFormat("MM月dd日  #  HH:mm");
-        return sdr.format(new Date(timeStamp)).replaceAll("#",
-                getWeek(timeStamp));
-
+        SimpleDateFormat sdr = new SimpleDateFormat("MM.dd HH:mm");
+        return sdr.format(new Date(timeStamp));
 
     }
 

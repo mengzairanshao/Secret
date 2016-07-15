@@ -1,10 +1,16 @@
 package hanzy.secret.Message;
 
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.util.Log;
+
 /**
  * Created by h on 2016/7/9.
  */
 public class HotThreadMessage {
 
+    private String TAG="HotThreadMessage";
+    private Bitmap image;
     private String tid;
     private String fid;
     private String author;
@@ -55,5 +61,17 @@ public class HotThreadMessage {
 
     public String getViews() {
         return views;
+    }
+
+    public Bitmap getImage() {
+        if (image==null)
+            Log.e(TAG,"image==null");
+        else
+            Log.e(TAG,"image!=null"+image+"tid=="+tid);
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 }

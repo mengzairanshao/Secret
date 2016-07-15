@@ -1,6 +1,7 @@
 package hanzy.secret.Adapter;
 
 import android.content.Context;
+import android.text.Html;
 import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Map;
 
 import hanzy.secret.Message.HotThreadMessage;
 import hanzy.secret.R;
+import hanzy.secret.utils.TimeUtils;
 
 /**
  * Created by h on 2016/7/11.
@@ -17,8 +19,8 @@ import hanzy.secret.R;
 public class HotThreadAdapter extends SimpleAdapter{
 
     public String TAG="HotThreadAdapter";
-    public static int[] to={R.id.hot_thread_author,R.id.hot_thread_subject,R.id.hot_thread_views,R.id.hot_thread_replies,R.id.hot_thread_dblastpost};
-    public static String[] from={"author","subject","views","replies","dblastpost"};
+    public static int[] to={R.id.hot_thread_author,R.id.hot_thread_subject,R.id.hot_thread_views,R.id.hot_thread_replies,R.id.hot_thread_dblastpost,R.id.user_img};
+    public static String[] from={"author","subject","views","replies","dblastpost","user_img"};
     /**
      *
      *
@@ -37,8 +39,13 @@ public class HotThreadAdapter extends SimpleAdapter{
         super(context, data, resource, from, to);
     }
 
-    public static List<Map<String, Object>> getData(List<HotThreadMessage> hotThreadMessages){
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+
+    public static List<Map<String, Object>> GetData(){
+        return list;
+    }
+
+    public static List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+    public List<Map<String, Object>> setData(){
         Map<String, Object> map = new HashMap<String, Object>();
         for (int i=0;i<hotThreadMessages.size();i++){
             map = new HashMap<String, Object>();
@@ -46,16 +53,19 @@ public class HotThreadAdapter extends SimpleAdapter{
             map.put("subject",hotThreadMessages.get(i).getSubject());
             map.put("views", hotThreadMessages.get(i).getViews());
             map.put("replies", hotThreadMessages.get(i).getReplies());
-            map.put("dblastpost", hotThreadMessages.get(i).getDblastpost());
+            map.put("dblastpost", TimeUtils.times(Integer.parseInt(hotThreadMessages.get(i).getDblastpost())*1000L));
+            map.put("user_img",hotThreadMessages.get(i).getImage());
             list.add(map);
+            notifyDataSetChanged();
         }
         return list;
     }
 
     private  List<HotThreadMessage> hotThreadMessages = new ArrayList<HotThreadMessage>();
-    public void set(List<HotThreadMessage> hotThreadMessages){
+    public int set(List<HotThreadMessage> hotThreadMessages){
         this.hotThreadMessages=hotThreadMessages;
-        notifyDataSetChanged();
+        setData();
+        return 1;
     }
 
     public List<HotThreadMessage> getHotThreadMessages() {

@@ -21,8 +21,8 @@ import hanzy.secret.utils.TimeUtils;
  */
 public class ThreadAdapter extends SimpleAdapter{
     public String TAG="ThreadAdapter";
-    public static int[] to={R.id.thread_author,R.id.thread_posttime,R.id.thread_title,R.id.thread_views,R.id.thread_replies};
-    public static String[] from={"author","dblastpost","subject","views","replies"};
+    public static int[] to={R.id.thread_author,R.id.thread_posttime,R.id.thread_title,R.id.thread_views,R.id.thread_replies,R.id.user_img};
+    public static String[] from={"author","dblastpost","subject","views","replies","user_img"};
     /**
      * Constructor
      *
@@ -48,11 +48,13 @@ public class ThreadAdapter extends SimpleAdapter{
         for (int i=0;i<threadsMessages.size();i++){
 
             map = new HashMap<String, Object>();
+
             map.put("author", threadsMessages.get(i).getAuthor());
             map.put("dblastpost", TimeUtils.times((long)Integer.parseInt(threadsMessages.get(i).getDblastpost())*1000L));
             map.put("subject",  threadsMessages.get(i).getSubject());
             map.put("views",  threadsMessages.get(i).getViews());
             map.put("replies",  threadsMessages.get(i).getReplies());
+            map.put("user_img",threadsMessages.get(i).getBitmap());
             list.add(map);
         }
         return list;

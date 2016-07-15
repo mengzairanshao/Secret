@@ -1,13 +1,16 @@
 package hanzy.secret.Fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import java.util.List;
@@ -16,7 +19,6 @@ import hanzy.secret.Adapter.HotThreadAdapter;
 import hanzy.secret.Message.HotThreadMessage;
 import hanzy.secret.R;
 import hanzy.secret.aty.AtyDetail;
-import hanzy.secret.aty.AtyForums;
 import hanzy.secret.net.GetHotThread;
 import hanzy.secret.net.NetConnection;
 
@@ -41,11 +43,24 @@ public class HotThreadsFragment extends Fragment{
                 }
                 HotThreadsFragment.this.hotThreadMessages=hotThreadMessages;
                 HotThreadAdapter hotThreadAdapter=new HotThreadAdapter(getActivity(),
-                        HotThreadAdapter.getData(hotThreadMessages),
+                        HotThreadAdapter.GetData(),
                         R.layout.aty_hot_thread_list_cell,
                         HotThreadAdapter.from,
                         HotThreadAdapter.to);
                 hotThreadAdapter.set(hotThreadMessages);
+                hotThreadAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
+                    @Override
+                    public boolean setViewValue(View view, Object data, String textRepresentation) {
+                        if(view instanceof ImageView && data instanceof Bitmap){
+                            ImageView i = (ImageView)view;
+                            i.setImageBitmap((Bitmap) data);
+                            return true;
+                        }
+                        return false;
+                    }
+
+                });
+                hotThreadAdapter.notifyDataSetChanged();
                 lv.setAdapter(hotThreadAdapter);
             }
         }, new GetHotThread.FailCallback() {

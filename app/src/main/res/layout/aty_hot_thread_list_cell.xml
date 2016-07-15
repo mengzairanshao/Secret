@@ -3,26 +3,32 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <TextView
-        android:textAppearance="?android:textAppearanceLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/hot_thread_subject"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/hot_thread_subject">
+        android:orientation="horizontal"
+        android:id="@+id/user">
         <ImageView
             android:layout_gravity="center"
-            android:layout_width="@dimen/pic_size"
-            android:layout_height="@dimen/pic_size"
-            android:src="@drawable/user"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_img"/>
         <TextView
             android:padding="@dimen/text_padding"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/hot_thread_author"/>
+    </LinearLayout>
+    <TextView
+        android:textAppearance="?android:textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user"
+        android:id="@+id/hot_thread_subject"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/hot_thread_subject">
         <ImageView
             android:layout_gravity="center"
             android:layout_width="@dimen/pic_size"
