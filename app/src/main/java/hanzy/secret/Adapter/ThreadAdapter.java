@@ -1,15 +1,12 @@
 package hanzy.secret.Adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.R;
@@ -21,8 +18,8 @@ import hanzy.secret.utils.TimeUtils;
  */
 public class ThreadAdapter extends SimpleAdapter{
     public String TAG="ThreadAdapter";
-    public static int[] to={R.id.thread_author,R.id.thread_posttime,R.id.thread_title,R.id.thread_views,R.id.thread_replies,R.id.user_img};
-    public static String[] from={"author","dblastpost","subject","views","replies","user_img"};
+    public static int[] to={R.id.thread_author,R.id.thread_posttime,R.id.thread_title,R.id.thread_views,R.id.thread_replies,R.id.hot_thread_user_img};
+    public static String[] from={"author","dblastpost","subject","views","replies","hot_thread_user_img"};
     /**
      * Constructor
      *
@@ -54,7 +51,7 @@ public class ThreadAdapter extends SimpleAdapter{
             map.put("subject",  threadsMessages.get(i).getSubject());
             map.put("views",  threadsMessages.get(i).getViews());
             map.put("replies",  threadsMessages.get(i).getReplies());
-            map.put("user_img",threadsMessages.get(i).getBitmap());
+            map.put("hot_thread_user_img",threadsMessages.get(i).getBitmap());
             list.add(map);
         }
         return list;

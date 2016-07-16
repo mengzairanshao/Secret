@@ -2,14 +2,8 @@ package hanzy.secret.net;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.util.Log;
-
-import java.io.UnsupportedEncodingException;
-
 import hanzy.secret.secret.Config;
-import hanzy.secret.utils.FileUtils;
 import hanzy.secret.utils.PicUtils;
 
 /**
@@ -46,5 +40,9 @@ public class GetPic {
 
     public static interface FailCallback {
         void onFail();
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 }

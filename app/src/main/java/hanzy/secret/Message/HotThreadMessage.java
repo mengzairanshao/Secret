@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.media.Image;
 import android.util.Log;
 
+import java.util.HashMap;
+
 /**
  * Created by h on 2016/7/9.
  */
@@ -21,15 +23,16 @@ public class HotThreadMessage {
     private String dblastpost;
 
 
-    public HotThreadMessage(String author, String dbdataline, String dblastpost, String fid, String replies, String subject, String tid, String views) {
-        this.author = author;
-        this.dbdateline = dbdataline;
-        this.dblastpost = dblastpost;
-        this.fid = fid;
-        this.replies = replies;
-        this.subject = subject;
-        this.tid = tid;
-        this.views = views;
+    public HotThreadMessage(HashMap<String,String> hashMap,Bitmap bitmap) {
+        this.author = hashMap.get("author");
+        this.dbdateline = hashMap.get("dbdateline");
+        this.dblastpost = hashMap.get("dblastpost");
+        this.fid = hashMap.get("fid");
+        this.replies = hashMap.get("replies");
+        this.subject = hashMap.get("subject");
+        this.tid = hashMap.get("tid");
+        this.views = hashMap.get("views");
+        this.image=bitmap;
     }
     public String getAuthor() {
         return author;

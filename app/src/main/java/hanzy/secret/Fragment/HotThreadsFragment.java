@@ -1,16 +1,13 @@
 package hanzy.secret.Fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import java.util.List;
@@ -42,25 +39,8 @@ public class HotThreadsFragment extends Fragment{
                     Toast.makeText(getActivity(),R.string.MobileNetwork,Toast.LENGTH_LONG).show();
                 }
                 HotThreadsFragment.this.hotThreadMessages=hotThreadMessages;
-                HotThreadAdapter hotThreadAdapter=new HotThreadAdapter(getActivity(),
-                        HotThreadAdapter.GetData(),
-                        R.layout.aty_hot_thread_list_cell,
-                        HotThreadAdapter.from,
-                        HotThreadAdapter.to);
-                hotThreadAdapter.set(hotThreadMessages);
-                hotThreadAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
-                    @Override
-                    public boolean setViewValue(View view, Object data, String textRepresentation) {
-                        if(view instanceof ImageView && data instanceof Bitmap){
-                            ImageView i = (ImageView)view;
-                            i.setImageBitmap((Bitmap) data);
-                            return true;
-                        }
-                        return false;
-                    }
-
-                });
-                hotThreadAdapter.notifyDataSetChanged();
+                HotThreadAdapter hotThreadAdapter=new HotThreadAdapter(getActivity());
+                hotThreadAdapter.addAll(hotThreadMessages);
                 lv.setAdapter(hotThreadAdapter);
             }
         }, new GetHotThread.FailCallback() {
