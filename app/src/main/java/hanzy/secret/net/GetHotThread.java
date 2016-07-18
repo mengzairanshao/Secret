@@ -49,7 +49,17 @@ public class GetHotThread {
                                 @Override
                                 public void onSuccess(String result) {
                                     data.put("bitmap", result);
-                                    megs.add(new HotThreadMessage(data));
+                                    if (megs.size()==0){
+                                        megs.add(0,new HotThreadMessage(data));
+                                    }else {
+                                        int location=0;
+                                        for (int j=0;j<megs.size();j++){
+                                            if (Integer.parseInt(megs.get(j).getDblastpost())>=Integer.parseInt(data.get("dblastpost"))){
+                                                location=j+1;
+                                            }
+                                        }
+                                        megs.add(location,new HotThreadMessage(data));
+                                    }
                                     if (successCallback != null)
                                         successCallback.onSuccess(megs);
                                 }
