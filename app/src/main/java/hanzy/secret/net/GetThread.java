@@ -2,6 +2,9 @@ package hanzy.secret.net;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,6 +12,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import hanzy.secret.Message.HotThreadMessage;
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.secret.Config;
 import hanzy.secret.utils.PicUtils;
@@ -20,8 +25,12 @@ import hanzy.secret.utils.TimeUtils;
 public class GetThread {
     public String TAG = "GetThread";
     private Bitmap bitmap=null;
+    private String url=null;
+    private HashMap<String,String> hashMap=new HashMap<>();
     private List<ThreadsMessage> megs = new ArrayList<>();
-    public GetThread(final Context context, final SuccessCallback successCallback, final FailCallback failCallback,String fid) {
+    private List<ThreadsMessage> megs_another = new ArrayList<>();
+    private Thread thread;
+    public GetThread(final Context context, final SuccessCallback successCallback, final FailCallback failCallback, String fid, final Handler handler) {
 
         new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
@@ -37,33 +46,33 @@ public class GetThread {
                             final String[][] bitmap=new String[1][3];
                             bitmap[0][0]=jsonObject1.getString("authorid");
                             bitmap[0][1]=Config.PIC_URL+"?uid="+jsonObject1.getString("authorid")+"&size=small";
-                            new GetPic(context, jsonObject1.getString("authorid"), "small", new GetPic.SuccessCallback() {
+                            new GetPic(context, bitmap[0][1], new GetPic.SuccessCallback() {
                                 @Override
                                 public void onSuccess(String result) {
                                     bitmap[0][2]=result;
-                                    data.put("bitmap",bitmap);
-                                    int location=0;
-                                    if(megs.size()==0){
+                                    data.put("bitmap", bitmap);
+                                    if (megs.size()==0){
                                         megs.add(0,new ThreadsMessage(data));
                                     }else {
-                                        Log.e(TAG,""+Integer.parseInt(megs.get(0).getDblastpost()));
-                                        for (int i=0;i<megs.size();i++){
-                                            if (Integer.parseInt(megs.get(i).getDblastpost())
-                                                    >=Integer.parseInt(data.get("dblastpost").toString())){
-                                                location=i+1;
+                                        int location=0;
+                                        for (int j=0;j<megs.size();j++){
+                                            if (Integer.parseInt(megs.get(j).getDblastpost())>=Integer.parseInt(data.get("dblastpost").toString())){
+                                                location=j+1;
                                             }
                                         }
                                         megs.add(location,new ThreadsMessage(data));
                                     }
-                                    if (successCallback != null) successCallback.onSuccess(megs);
+                                    if (successCallback != null)
+                                        successCallback.onSuccess(megs);
                                 }
                             }, new GetPic.FailCallback() {
                                 @Override
                                 public void onFail() {
+
                                 }
                             });
                         }
-
+                        if (successCallback != null) successCallback.onSuccess(megs);
                     } else {
                         Log.e(TAG,"Failed Get Json Data(auth==null)");
                         if (failCallback != null) failCallback.onFail();
@@ -79,7 +88,9 @@ public class GetThread {
             public void onFail() {
                 if (failCallback != null) failCallback.onFail();
             }
-        }, "version","4","module","forumdisplay","fid",fid,"page","1");
+        }, "version","4","module","forumdisplay","fid",fid,"page","1") ;
+
+
 
     }
 
@@ -90,6 +101,8 @@ public class GetThread {
     public static interface FailCallback {
         void onFail();
     }
+
+
 
     private HashMap<String, Object> setData(JSONObject jsonObject, String... strings) {
         final HashMap<String, Object> data = new HashMap<>();

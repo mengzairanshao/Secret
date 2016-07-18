@@ -3,6 +3,8 @@ package hanzy.secret.aty;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -13,20 +15,20 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import java.util.List;
-import java.util.SortedSet;
 
 import hanzy.secret.Adapter.ThreadAdapter;
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.R;
 import hanzy.secret.net.GetThread;
 import hanzy.secret.net.NetConnection;
-import hanzy.secret.utils.TimeUtils;
+import hanzy.secret.utils.PicUtils;
 
 /**
  * Created by h on 2016/7/6.
  */
 public class AtyThreads extends AppCompatActivity {
 
+    Handler handler;
     private String TAG="AtyThreads";
     private ListView lv;
     private List<ThreadsMessage> threadsMessages=null;
@@ -37,6 +39,7 @@ public class AtyThreads extends AppCompatActivity {
         lv= (ListView) findViewById(R.id.threadlist);
         Intent i=getIntent();
         setTitle(i.getStringExtra("name"));
+
         new GetThread(AtyThreads.this, new GetThread.SuccessCallback() {
             @Override
             public void onSuccess(List<ThreadsMessage> threadsMessages) {
@@ -73,10 +76,11 @@ public class AtyThreads extends AppCompatActivity {
                 }
 
             }
-        },i.getStringExtra("fid"));
-        lv.setOnItemClickListener(new OnItemClickListenerImp());
-    }
+        },i.getStringExtra("fid"),handler);
 
+        lv.setOnItemClickListener(new OnItemClickListenerImp());
+
+    }
     public class OnItemClickListenerImp implements AdapterView.OnItemClickListener {
 
         public void onItemClick(AdapterView<?> parent, View view, int position,
