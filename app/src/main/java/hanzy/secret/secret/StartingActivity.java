@@ -45,6 +45,7 @@ public class StartingActivity extends Activity {
                             finish();
                         }
                     } catch (JSONException e) {
+                        startActivity(new Intent(StartingActivity.this,AtyLogin.class));
                         e.printStackTrace();
                     }
 

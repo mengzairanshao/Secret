@@ -2,26 +2,18 @@ package hanzy.secret.net;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import hanzy.secret.Message.HotThreadMessage;
 import hanzy.secret.secret.Config;
-import hanzy.secret.utils.PicUtils;
 
 /**
  * Created by h on 2016/7/9.

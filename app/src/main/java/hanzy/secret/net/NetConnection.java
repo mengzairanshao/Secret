@@ -58,21 +58,26 @@ public class NetConnection {
             client.get(url, params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    String json=new String(responseBody);
-                    for(int i=0;i<headers.length;i++) {
+                    if (statusCode==200){
+                        String json=new String(responseBody);
+                        for(int i=0;i<headers.length;i++) {
 //                       Log.e(TAG,""+headers[i].getName()+"=="+headers[i].getValue());
-                        if (headers[i].getName().equals("Content-Type")&&headers[i].getValue().contains("image")) {
+                            if (headers[i].getName().equals("Content-Type")&&headers[i].getValue().contains("image")) {
 //                            new FileUtils().writeTxtToFile(new String(responseBody), FileUtils.filePath, FileUtils.fileName);
-                            bitmap=BitmapFactory.decodeByteArray(responseBody,0,responseBody.length);
-                            json= PicUtils.convertIconToString(bitmap);
+                                bitmap=BitmapFactory.decodeByteArray(responseBody,0,responseBody.length);
+                                json= PicUtils.convertIconToString(bitmap);
+                            }
                         }
+                        Log.e(TAG,"GET连接成功");
+                        if (successCallback!=null)successCallback.onSuccess(json);
+                    }else {
+                        Log.e(TAG,"statusCode=="+statusCode);
                     }
-                    Log.e(TAG,"GET连接成功");
-                    if (successCallback!=null)successCallback.onSuccess(json);
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    Log.e(TAG,"statusCode=="+statusCode);
                     Log.e(TAG,"GET连接失败");
                     if (failCallback!=null)failCallback.onFail();
                 }

@@ -24,12 +24,7 @@ import hanzy.secret.utils.TimeUtils;
  */
 public class GetThread {
     public String TAG = "GetThread";
-    private Bitmap bitmap=null;
-    private String url=null;
-    private HashMap<String,String> hashMap=new HashMap<>();
     private List<ThreadsMessage> megs = new ArrayList<>();
-    private List<ThreadsMessage> megs_another = new ArrayList<>();
-    private Thread thread;
     public GetThread(final Context context, final SuccessCallback successCallback, final FailCallback failCallback, String fid, final Handler handler) {
 
         new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
@@ -51,17 +46,7 @@ public class GetThread {
                                 public void onSuccess(String result) {
                                     bitmap[0][2]=result;
                                     data.put("bitmap", bitmap);
-                                    if (megs.size()==0){
-                                        megs.add(0,new ThreadsMessage(data));
-                                    }else {
-                                        int location=0;
-                                        for (int j=0;j<megs.size();j++){
-                                            if (Integer.parseInt(megs.get(j).getDblastpost())>=Integer.parseInt(data.get("dblastpost").toString())){
-                                                location=j+1;
-                                            }
-                                        }
-                                        megs.add(location,new ThreadsMessage(data));
-                                    }
+                                    sortList(megs,data);
                                     if (successCallback != null)
                                         successCallback.onSuccess(megs);
                                 }
@@ -114,5 +99,19 @@ public class GetThread {
             }
         }
         return data;
+    }
+
+    private void sortList(List<ThreadsMessage> megs,HashMap<String, Object> data){
+        if (megs.size()==0){
+            megs.add(0,new ThreadsMessage(data));
+        }else {
+            int location=0;
+            for (int j=0;j<megs.size();j++){
+                if (Integer.parseInt(megs.get(j).getDblastpost())>=Integer.parseInt(data.get("dblastpost").toString())){
+                    location=j+1;
+                }
+            }
+            megs.add(location,new ThreadsMessage(data));
+        }
     }
 }
