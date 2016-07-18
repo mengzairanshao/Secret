@@ -7,10 +7,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.secret.Config;
 import hanzy.secret.utils.PicUtils;
+import hanzy.secret.utils.TimeUtils;
 
 /**
  * Created by h on 2016/6/30.
@@ -18,6 +20,7 @@ import hanzy.secret.utils.PicUtils;
 public class GetThread {
     public String TAG = "GetThread";
     private Bitmap bitmap=null;
+    private List<ThreadsMessage> megs = new ArrayList<>();
     public GetThread(final Context context, final SuccessCallback successCallback, final FailCallback failCallback,String fid) {
 
         new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
@@ -27,36 +30,40 @@ public class GetThread {
                     JSONObject jsonObject = new JSONObject(result);
                     if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
                         Log.e(TAG, "Get Json Data:" + jsonObject.toString());
-                        JSONArray jsonArray;
-                        jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("forum_threadlist");
-                        JSONObject jsonObject1;
-                        List<ThreadsMessage> megs = new ArrayList<>();
+                        JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("forum_threadlist");
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            jsonObject1 = jsonArray.getJSONObject(i);
-
-                            GetPic getPic=new GetPic(context, jsonObject1.getString("authorid"), "small", new GetPic.SuccessCallback() {
+                            JSONObject jsonObject1= jsonArray.getJSONObject(i);
+                            final HashMap<String, Object> data=setData(jsonObject1,"author","dblastpost","subject","views","replies","tid","authorid");
+                            final String[][] bitmap=new String[1][3];
+                            bitmap[0][0]=jsonObject1.getString("authorid");
+                            bitmap[0][1]=Config.PIC_URL+"?uid="+jsonObject1.getString("authorid")+"&size=small";
+                            new GetPic(context, jsonObject1.getString("authorid"), "small", new GetPic.SuccessCallback() {
                                 @Override
                                 public void onSuccess(String result) {
-                                    bitmap= PicUtils.convertStringToIcon(result);
+                                    bitmap[0][2]=result;
+                                    data.put("bitmap",bitmap);
+                                    int location=0;
+                                    if(megs.size()==0){
+                                        megs.add(0,new ThreadsMessage(data));
+                                    }else {
+                                        Log.e(TAG,""+Integer.parseInt(megs.get(0).getDblastpost()));
+                                        for (int i=0;i<megs.size();i++){
+                                            if (Integer.parseInt(megs.get(i).getDblastpost())
+                                                    >=Integer.parseInt(data.get("dblastpost").toString())){
+                                                location=i+1;
+                                            }
+                                        }
+                                        megs.add(location,new ThreadsMessage(data));
+                                    }
+                                    if (successCallback != null) successCallback.onSuccess(megs);
                                 }
                             }, new GetPic.FailCallback() {
                                 @Override
                                 public void onFail() {
-
                                 }
                             });
-                            Log.e(TAG,"ThreadMessage"+jsonObject1.getString("author")+jsonObject1.getString("dblastpost")+jsonObject1.getString("subject")+jsonObject1.getString("views")+jsonObject1.getString("replies"));
-                            megs.add(new ThreadsMessage(jsonObject1.getString("author"),
-                                    jsonObject1.getString("dblastpost"),
-                                    jsonObject1.getString("subject"),
-                                    jsonObject1.getString("views"),
-                                    jsonObject1.getString("replies"),
-                                    jsonObject1.getString("tid"),
-                                    jsonObject1.getString("authorid"),
-                                    bitmap));
                         }
 
-                        if (successCallback != null) successCallback.onSuccess(megs);
                     } else {
                         Log.e(TAG,"Failed Get Json Data(auth==null)");
                         if (failCallback != null) failCallback.onFail();
@@ -82,5 +89,17 @@ public class GetThread {
 
     public static interface FailCallback {
         void onFail();
+    }
+
+    private HashMap<String, Object> setData(JSONObject jsonObject, String... strings) {
+        final HashMap<String, Object> data = new HashMap<>();
+        for (String string : strings) {
+            try {
+                data.put(string, jsonObject.getString(string));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return data;
     }
 }

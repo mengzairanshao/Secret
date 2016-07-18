@@ -32,6 +32,7 @@ public class GetHotThread {
     private String TAG = "GetHotThread";
     private Bitmap bitmap;
     private List<HotThreadMessage> megs = new ArrayList<>();
+
     public GetHotThread(final Context context, final SuccessCallback successCallback, final FailCallback failCallback) {
         new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
@@ -41,28 +42,23 @@ public class GetHotThread {
                     if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
                         Log.e(TAG, "Get Json Data:" + result);
                         JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("data");
-                        try {
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                jsonObject1=jsonArray.getJSONObject(i);
-                                final HashMap<String,String> data=setData(jsonObject1,"author","dbdateline","dblastpost","fid","replies","subject","tid","views");
-                                new GetPic(context, jsonObject1.getString("authorid"), "small", new GetPic.SuccessCallback() {
-                                        @Override
-                                        public void onSuccess (String result){
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            jsonObject1 = jsonArray.getJSONObject(i);
+                            final HashMap<String, String> data = setData(jsonObject1, "author", "dbdateline", "dblastpost", "fid", "replies", "subject", "tid", "views");
+                            new GetPic(context, jsonObject1.getString("authorid"), "small", new GetPic.SuccessCallback() {
+                                @Override
+                                public void onSuccess(String result) {
+                                    data.put("bitmap", result);
+                                    megs.add(new HotThreadMessage(data));
+                                    if (successCallback != null)
+                                        successCallback.onSuccess(megs);
+                                }
+                            }, new GetPic.FailCallback() {
+                                @Override
+                                public void onFail() {
 
-                                            bitmap=PicUtils.convertStringToIcon(result);
-                                                megs.add(new HotThreadMessage(data,
-                                                        bitmap));
-                                                if (successCallback != null) successCallback.onSuccess(megs);
-                                        }
-                                }, new GetPic.FailCallback() {
-                                    @Override
-                                    public void onFail() {
-
-                                    }
-                                });
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                                }
+                            });
                         }
                     } else {
                         Log.e(TAG, "Failed Get Json Data(auth==null)");
@@ -81,16 +77,8 @@ public class GetHotThread {
         }, "version", "4", "module", "hotthread");
     }
 
-    public static interface SuccessCallback {
-        void onSuccess(List<HotThreadMessage> hotThreadMessages);
-    }
-
-    public static interface FailCallback {
-        void onFail();
-    }
-
-    private HashMap<String,String> setData(JSONObject jsonObject,String...strings){
-        final HashMap<String,String> data=new HashMap<>();
+    private HashMap<String, String> setData(JSONObject jsonObject, String... strings) {
+        final HashMap<String, String> data = new HashMap<>();
         for (String string : strings) {
             try {
                 data.put(string, jsonObject.getString(string));
@@ -99,5 +87,13 @@ public class GetHotThread {
             }
         }
         return data;
+    }
+
+    public static interface SuccessCallback {
+        void onSuccess(List<HotThreadMessage> hotThreadMessages);
+    }
+
+    public static interface FailCallback {
+        void onFail();
     }
 }

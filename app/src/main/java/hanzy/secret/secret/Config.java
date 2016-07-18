@@ -8,7 +8,7 @@ import android.content.SharedPreferences.Editor;
  */
 public class Config {
 
-
+    public static final String Net_URL="http://192.168.23.1/";
     public static final String Base_URL="http://192.168.23.1/api/mobile/index.php";
     public static final String PIC_URL="http://192.168.23.1/uc_server/avatar.php";
     public static final String Login_URL=Base_URL+"?version=4&module=login&action=login&loginsubmit=yes&infloat=yes&lssubmit=yes";

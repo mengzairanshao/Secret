@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -12,21 +13,23 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.SortedSet;
 
 import hanzy.secret.Adapter.ThreadAdapter;
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.R;
 import hanzy.secret.net.GetThread;
 import hanzy.secret.net.NetConnection;
+import hanzy.secret.utils.TimeUtils;
 
 /**
  * Created by h on 2016/7/6.
  */
 public class AtyThreads extends AppCompatActivity {
 
+    private String TAG="AtyThreads";
     private ListView lv;
     private List<ThreadsMessage> threadsMessages=null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +82,8 @@ public class AtyThreads extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
             Intent intent=new Intent(AtyThreads.this,AtyDetail.class);
+            Log.e(TAG,"position="+position+"   tid="+threadsMessages.get(position).getTid());
+            Log.e(TAG,"position="+position+"   subject="+threadsMessages.get(position).getSubject());
             intent.putExtra("tid",threadsMessages.get(position).getTid());
             intent.putExtra("subject",threadsMessages.get(position).getSubject());
             startActivity(intent);

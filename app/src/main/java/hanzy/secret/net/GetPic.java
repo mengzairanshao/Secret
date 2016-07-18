@@ -34,15 +34,28 @@ public class GetPic {
         },"uid",uid,"size",size);
     }
 
+    public GetPic(Context context,String url, final SuccessCallback successCallback, FailCallback failCallback) {
+        new NetConnection(context, url, HttpMethod.GET, new NetConnection.SuccessCallback() {
+            @Override
+            public void onSuccess(String result) {
+                if (successCallback!=null){
+                    successCallback.onSuccess(result);
+                }
+            }
+        }, new NetConnection.FailCallback() {
+            @Override
+            public void onFail() {
+
+            }
+        });
+    }
+
+
     public static interface SuccessCallback {
         void onSuccess(String result);
     }
 
     public static interface FailCallback {
         void onFail();
-    }
-
-    public Bitmap getBitmap() {
-        return bitmap;
     }
 }

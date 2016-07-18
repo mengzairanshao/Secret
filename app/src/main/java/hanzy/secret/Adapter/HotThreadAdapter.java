@@ -13,6 +13,7 @@ import java.util.List;
 
 import hanzy.secret.Message.HotThreadMessage;
 import hanzy.secret.R;
+import hanzy.secret.utils.PicUtils;
 import hanzy.secret.utils.TimeUtils;
 
 /**
@@ -63,7 +64,7 @@ public class HotThreadAdapter extends BaseAdapter{
         viewHolder.replies.setText(hotThreadMessage.getReplies());
         viewHolder.subject1.setText(hotThreadMessage.getSubject());
         viewHolder.views.setText(hotThreadMessage.getViews());
-        viewHolder.user_img.setImageBitmap(hotThreadMessage.getImage());
+        viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(hotThreadMessage.getBitmap()));
         return convertView;
     }
 

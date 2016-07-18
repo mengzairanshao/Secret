@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class HotThreadMessage {
 
     private String TAG="HotThreadMessage";
-    private Bitmap image;
+    private String bitmap;
     private String tid;
     private String fid;
     private String author;
@@ -23,7 +23,7 @@ public class HotThreadMessage {
     private String dblastpost;
 
 
-    public HotThreadMessage(HashMap<String,String> hashMap,Bitmap bitmap) {
+    public HotThreadMessage(HashMap<String,String> hashMap) {
         this.author = hashMap.get("author");
         this.dbdateline = hashMap.get("dbdateline");
         this.dblastpost = hashMap.get("dblastpost");
@@ -32,7 +32,7 @@ public class HotThreadMessage {
         this.subject = hashMap.get("subject");
         this.tid = hashMap.get("tid");
         this.views = hashMap.get("views");
-        this.image=bitmap;
+        this.bitmap=hashMap.get("bitmap");
     }
     public String getAuthor() {
         return author;
@@ -66,15 +66,7 @@ public class HotThreadMessage {
         return views;
     }
 
-    public Bitmap getImage() {
-        if (image==null)
-            Log.e(TAG,"image==null");
-        else
-            Log.e(TAG,"image!=null"+image+"tid=="+tid);
-        return image;
-    }
-
-    public void setImage(Bitmap image) {
-        this.image = image;
+    public String getBitmap() {
+        return bitmap;
     }
 }

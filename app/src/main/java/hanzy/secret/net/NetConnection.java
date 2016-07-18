@@ -60,15 +60,10 @@ public class NetConnection {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     String json=new String(responseBody);
                     for(int i=0;i<headers.length;i++) {
-//                        Log.e(TAG,""+headers[i].getName()+"=="+headers[i].getValue());
-                        if (headers[i].getValue().contains("image")) {
+//                       Log.e(TAG,""+headers[i].getName()+"=="+headers[i].getValue());
+                        if (headers[i].getName().equals("Content-Type")&&headers[i].getValue().contains("image")) {
 //                            new FileUtils().writeTxtToFile(new String(responseBody), FileUtils.filePath, FileUtils.fileName);
                             bitmap=BitmapFactory.decodeByteArray(responseBody,0,responseBody.length);
-//                            if (bitmap==null){
-//                                Log.e(TAG,"bitmap==null");
-//                            }else {
-//                                Log.e(TAG,"bitmap!=null");
-//                            }
                             json= PicUtils.convertIconToString(bitmap);
                         }
                     }
@@ -110,8 +105,4 @@ public class NetConnection {
         }
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
-    }
 }
-

@@ -19,8 +19,17 @@ public class Aty_Test extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty__test);
-        //GetPic getPic=new GetPic(this,"5","small");
-        //ImageView imageView= (ImageView) findViewById(R.id.img);
-        //imageView.setImageBitmap(getPic.getBitmap());
+        final ImageView imageView= (ImageView) findViewById(R.id.img);
+        new GetPic(Aty_Test.this, "http://192.168.23.1/data/attachment/forum/201607/07/004316rrxril619r6ir9br.jpg", new GetPic.SuccessCallback() {
+            @Override
+            public void onSuccess(String result) {
+                imageView.setImageBitmap(PicUtils.convertStringToIcon(result));
+            }
+        }, new GetPic.FailCallback() {
+            @Override
+            public void onFail() {
+
+            }
+        });
     }
 }

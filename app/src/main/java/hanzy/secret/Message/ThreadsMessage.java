@@ -3,11 +3,13 @@ package hanzy.secret.Message;
 
 import android.graphics.Bitmap;
 
+import java.util.HashMap;
+
 /**
  * Created by h on 2016/7/6.
  */
 public class ThreadsMessage {
-    private Bitmap bitmap;
+    private String[][] bitmap;
     private String tid=null;
     private String author=null;
     private String dblastpost=null;
@@ -16,15 +18,15 @@ public class ThreadsMessage {
     private String replies=null;
     private String authorid=null;
 
-    public ThreadsMessage(String author,String dblastpost,String subject,String views,String replies,String tid,String authorid,Bitmap bitmap){
-        this.author=author;
-        this.dblastpost=dblastpost;
-        this.subject=subject;
-        this.views=views;
-        this.replies=replies;
-        this.tid=tid;
-        this.bitmap=bitmap;
-        this.authorid=authorid;
+    public ThreadsMessage(HashMap<String,Object> hashMap){
+        this.author=hashMap.get("author").toString();
+        this.dblastpost=hashMap.get("dblastpost").toString();
+        this.subject=hashMap.get("subject").toString();
+        this.views=hashMap.get("views").toString();
+        this.replies=hashMap.get("replies").toString();
+        this.tid=hashMap.get("tid").toString();
+        this.bitmap=(String[][]) hashMap.get("bitmap");
+        this.authorid=hashMap.get("authorid").toString();
     }
 
     public String getAuthor() {
@@ -51,7 +53,7 @@ public class ThreadsMessage {
         return tid;
     }
 
-    public Bitmap getBitmap() {
+    public String[][] getBitmap() {
         return bitmap;
     }
 

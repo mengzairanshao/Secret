@@ -1,9 +1,13 @@
 package hanzy.secret.aty;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import java.util.List;
@@ -36,6 +40,17 @@ public class AtyDetail extends AppCompatActivity {
                         R.layout.aty_detail_list_cell,
                         DetailAdapter.from,
                         DetailAdapter.to);
+                detailAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
+                    @Override
+                    public boolean setViewValue(View view, Object data, String textRepresentation) {
+                        if (view instanceof ImageView&&data instanceof Bitmap){
+                            ImageView iv = (ImageView) view;
+                            iv.setImageBitmap((Bitmap) data);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
                 lv.setAdapter(detailAdapter);
             }
         }, new GetDetail.FailCallback() {

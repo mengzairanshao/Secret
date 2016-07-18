@@ -3,6 +3,7 @@ package hanzy.secret.Message;
 import android.content.Context;
 import android.widget.SimpleAdapter;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import java.util.Map;
  */
 public class DetailMessage{
 
+    private String[][] bitmap=null;
     private String pid=null;
     private String tid=null;
     private String author=null;
@@ -18,13 +20,15 @@ public class DetailMessage{
     private String subject=null;
     private String message=null;
 
-    public DetailMessage(String author,String dbdateline,String message,String tid,String pid){
-        this.author=author;
-        this.dbdateline=dbdateline;
-        this.message=message;
-        this.tid=tid;
-        this.pid=pid;
+    public DetailMessage(HashMap<String,Object> data){
+        this.author=data.get("author").toString();
+        this.dbdateline=data.get("dbdateline").toString();
+        this.message=data.get("message").toString();
+        this.tid=data.get("tid").toString();
+        this.pid=data.get("pid").toString();
+        if (data.containsKey("bitmap")) this.bitmap=(String[][]) data.get("bitmap");
     }
+
 
     public String getAuthor() {
         return author;
@@ -46,8 +50,11 @@ public class DetailMessage{
         return tid;
     }
 
-
     public String getPid() {
         return pid;
+    }
+
+    public String[][] getBitmap() {
+        return bitmap;
     }
 }
