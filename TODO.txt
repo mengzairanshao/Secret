@@ -26,3 +26,6 @@ private Thread mThreadLoadApps = new Thread(){
             progressDialog.dismiss();   // 关闭进度条对话框
         }
  };
+
+
+//参考http://blog.csdn.net/by317966834/article/details/8109329
