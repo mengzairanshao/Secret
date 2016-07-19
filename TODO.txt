@@ -1,0 +1,31 @@
+//首先在MainActivity中申明一个Handler对象，接受消息并作处理，如：
+
+private Handler hander = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch(msg.what){
+            case 0:
+                smAdapter.notifyDataSetChanged(); //发送消息通知ListView更新
+                list.setAdapter(smAdapter); // 重新设置ListView的数据适配器
+                break;
+            default:
+                //do something
+                break;
+            }
+        }
+    };
+    
+    
+//然后，就是在多线程中调用handler对象，发送消息，修改以上代码，如下所示：
+
+private Thread mThreadLoadApps = new Thread(){ 
+        @Override 
+        public void run() {              
+            DownloadData();    // 下载数据（耗时的操作）
+            hander.sendEmptyMessage(0); // 下载完成后发送处理消息
+            progressDialog.dismiss();   // 关闭进度条对话框
+        }
+ };
+
+
+//参考http://blog.csdn.net/by317966834/article/details/8109329
