@@ -1,11 +1,10 @@
 package hanzy.secret.net;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,20 +12,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import hanzy.secret.Message.HotThreadMessage;
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.secret.Config;
-import hanzy.secret.utils.PicUtils;
-import hanzy.secret.utils.TimeUtils;
 
 /**
  * Created by h on 2016/6/30.
  */
 public class GetThread {
+    private Handler handler;
+    private Context context;
     public String TAG = "GetThread";
     private List<ThreadsMessage> megs = new ArrayList<>();
-    public GetThread(final Context context, final SuccessCallback successCallback, final FailCallback failCallback, String fid, final Handler handler) {
-
+    private int i=0;
+    private int length=0;
+    private boolean aBoolean=true;
+    private int[] data;
+    private int j=0;
+    public GetThread(final Context context, final SuccessCallback successCallback, final FailCallback failCallback, String fid,Handler handler) {
+        this.context=context;
+        this.handler=handler;
         new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
             public void onSuccess(String result) {
@@ -35,29 +39,24 @@ public class GetThread {
                     if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
                         Log.e(TAG, "Get Json Data:" + jsonObject.toString());
                         JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("forum_threadlist");
+                        length=jsonArray.length();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject1= jsonArray.getJSONObject(i);
                             final HashMap<String, Object> data=setData(jsonObject1,"author","dblastpost","subject","views","replies","tid","authorid");
                             final String[][] bitmap=new String[1][3];
                             bitmap[0][0]=jsonObject1.getString("authorid");
                             bitmap[0][1]=Config.PIC_URL+"?uid="+jsonObject1.getString("authorid")+"&size=small";
-                            new GetPic(context, bitmap[0][1], new GetPic.SuccessCallback() {
-                                @Override
-                                public void onSuccess(String result) {
-                                    bitmap[0][2]=result;
-                                    data.put("bitmap", bitmap);
-                                    sortList(megs,data);
-                                    if (successCallback != null)
-                                        successCallback.onSuccess(megs);
+                            data.put("bitmap",bitmap);
+                            sortList(megs,data);
+                            if (successCallback != null){
+                                successCallback.onSuccess(megs);
+                                if (megs.size()==length) {
+                                    GetPic(successCallback, failCallback);
+                                    data.put("bit", bitmap);
                                 }
-                            }, new GetPic.FailCallback() {
-                                @Override
-                                public void onFail() {
+                            }
 
-                                }
-                            });
                         }
-                        if (successCallback != null) successCallback.onSuccess(megs);
                     } else {
                         Log.e(TAG,"Failed Get Json Data(auth==null)");
                         if (failCallback != null) failCallback.onFail();
@@ -74,13 +73,45 @@ public class GetThread {
                 if (failCallback != null) failCallback.onFail();
             }
         }, "version","4","module","forumdisplay","fid",fid,"page","1") ;
-
-
-
     }
 
+    private void GetPic(final SuccessCallback successCallback, final FailCallback failCallback){
+        data=new int[megs.size()];
+        for (i=0;i<megs.size();i++){
+            new GetPic(context, megs.get(i).getBitmap()[0][1], new GetPic.SuccessCallback() {
+                Data data1=new Data(i);
+                @Override
+                public void onSuccess(String result) {
+                    megs.get(i-1).setBitmap(0,result);
+                    if (successCallback!=null)successCallback.onSuccess(megs);
+                    while (aBoolean){
+                        Message message=handler.obtainMessage();
+                        message.what=1;
+                        message.obj=data;
+                        handler.sendMessage(message);
+                        aBoolean=false;
+                    }
+                }
+            }, new GetPic.FailCallback() {
+                @Override
+                public void onFail() {
+
+                }
+            });
+        }
+    }
+
+    public class Data{
+        public Data(int i){
+            data[j++]=i;
+        }
+
+        public int[] getData() {
+            return data;
+        }
+    }
     public static interface SuccessCallback {
-        void onSuccess(List<ThreadsMessage> threadsMessages);
+        void onSuccess(List<ThreadsMessage> threadsMessageList);
     }
 
     public static interface FailCallback {

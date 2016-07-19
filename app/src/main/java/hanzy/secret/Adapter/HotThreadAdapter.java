@@ -73,7 +73,7 @@ public class HotThreadAdapter extends BaseAdapter{
     }
 
     public void addAll(List<HotThreadMessage> hotThreadMessages){
-        this.hotThreadMessages.addAll(hotThreadMessages);
+        this.hotThreadMessages=hotThreadMessages;
         notifyDataSetChanged();
     }
 

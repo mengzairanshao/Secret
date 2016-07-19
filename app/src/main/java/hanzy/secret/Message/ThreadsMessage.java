@@ -60,4 +60,8 @@ public class ThreadsMessage {
     public String getAuthorid() {
         return authorid;
     }
+
+    public void setBitmap(int position,String s){
+        bitmap[position][2]=s;
+    }
 }
