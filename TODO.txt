@@ -29,3 +29,15 @@ private Thread mThreadLoadApps = new Thread(){
 
 
 //参考http://blog.csdn.net/by317966834/article/details/8109329
+
+MainFragment需要优化（主要是布局）。
+图片加载类需要优化。
+ListView显示图片方式还需进一步讨论。
+实现下拉刷新。
+回复Activity的实现。
+发帖Activity的实现。
+布局的美化。
+多个图片需要加载时，需要优化图片加载类。
+Detail文字中出现特殊符号，待处理。
+个人档案页需要实现。
+
