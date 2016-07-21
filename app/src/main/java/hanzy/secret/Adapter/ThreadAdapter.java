@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class ThreadAdapter extends BaseAdapter{
 //    private ListView listView;
     private List<ThreadsMessage> threadsMessageList=new ArrayList<>();
     public String TAG="ThreadAdapter";
-    public static int[] to={R.id.thread_author,R.id.thread_posttime,R.id.thread_title,R.id.thread_views,R.id.thread_replies,R.id.thread_user_img};
+    public static int[] to={R.id.thread_author,R.id.thread_dblastpost,R.id.thread_subject,R.id.thread_views,R.id.thread_replies,R.id.thread_user_img};
     public static String[] from={"author","dblastpost","subject","views","replies","thread_user_img"};
 
     public ThreadAdapter(Context context) {
@@ -95,9 +94,9 @@ public class ThreadAdapter extends BaseAdapter{
 
         public ViewHolder(View view) {
             this.author = (TextView) view.findViewById(R.id.thread_author);
-            this.dblastpost = (TextView) view.findViewById(R.id.thread_posttime);
+            this.dblastpost = (TextView) view.findViewById(R.id.thread_dblastpost);
             this.replies = (TextView) view.findViewById(R.id.thread_replies);
-            this.subject1 = (TextView) view.findViewById(R.id.thread_title);
+            this.subject1 = (TextView) view.findViewById(R.id.thread_subject);
             this.user_img = (ImageView) view.findViewById(R.id.thread_user_img);
             this.views = (TextView) view.findViewById(R.id.thread_views);
         }

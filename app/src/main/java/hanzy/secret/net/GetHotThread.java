@@ -39,8 +39,8 @@ public class GetHotThread {
                             final HashMap<String, String> data = setData(jsonObject1, "author", "dbdateline", "dblastpost", "fid", "replies", "subject", "tid", "views");
                             new GetPic(context, jsonObject1.getString("authorid"), "small", new GetPic.SuccessCallback() {
                                 @Override
-                                public void onSuccess(String result) {
-                                    data.put("bitmap", result);
+                                public void onSuccess(Object result) {
+                                    data.put("bitmap", ((String[][]) result)[0][2]);
                                     if (megs.size()==0){
                                         megs.add(0,new HotThreadMessage(data));
                                     }else {

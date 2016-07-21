@@ -29,10 +29,9 @@
         android:id="@+id/content">
         <TextView
             android:textAppearance="?android:textAppearanceLarge"
-            android:id="@+id/thread_title"
+            android:id="@+id/thread_subject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"/>
         <TextView
             android:id="@+id/thread_detail"
@@ -81,6 +80,6 @@
             android:textAppearance="?android:textAppearanceSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/thread_posttime"/>
+            android:id="@+id/thread_dblastpost"/>
     </LinearLayout>
 </RelativeLayout>

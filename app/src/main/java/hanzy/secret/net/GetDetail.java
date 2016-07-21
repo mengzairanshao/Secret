@@ -58,8 +58,8 @@ public class GetDetail {
                                     bitmap[j][1]=url;
                                     new GetPic(context, url, new GetPic.SuccessCallback() {
                                         @Override
-                                        public void onSuccess(String result) {
-                                            bitmap[j-1][2]=result;
+                                        public void onSuccess(Object result) {
+                                            bitmap[j-1][2]=((String[][]) result)[0][2];
                                             data.put("bitmap",bitmap);
                                             megs.add(new DetailMessage(data));
                                             if (successCallback != null)

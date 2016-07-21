@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.secret.Config;
@@ -25,9 +26,6 @@ public class GetThread {
     private List<ThreadsMessage> megs = new ArrayList<>();
     private int i=0;
     private int length=0;
-    private boolean aBoolean=true;
-    private int[] data;
-    private int j=0;
     public GetThread(final Context context, final SuccessCallback successCallback, final FailCallback failCallback, String fid,Handler handler) {
         this.context=context;
         this.handler=handler;
@@ -76,21 +74,14 @@ public class GetThread {
     }
 
     private void GetPic(final SuccessCallback successCallback, final FailCallback failCallback){
-        data=new int[megs.size()];
         for (i=0;i<megs.size();i++){
             new GetPic(context, megs.get(i).getBitmap()[0][1], new GetPic.SuccessCallback() {
-                Data data1=new Data(i);
                 @Override
-                public void onSuccess(String result) {
-                    megs.get(i-1).setBitmap(0,result);
-                    if (successCallback!=null)successCallback.onSuccess(megs);
-                    while (aBoolean){
+                public void onSuccess(Object result) {
                         Message message=handler.obtainMessage();
                         message.what=1;
-                        message.obj=data;
+                        message.obj=result;
                         handler.sendMessage(message);
-                        aBoolean=false;
-                    }
                 }
             }, new GetPic.FailCallback() {
                 @Override
@@ -101,15 +92,6 @@ public class GetThread {
         }
     }
 
-    public class Data{
-        public Data(int i){
-            data[j++]=i;
-        }
-
-        public int[] getData() {
-            return data;
-        }
-    }
     public static interface SuccessCallback {
         void onSuccess(List<ThreadsMessage> threadsMessageList);
     }

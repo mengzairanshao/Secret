@@ -13,18 +13,22 @@ public class GetPic {
 
     private Bitmap bitmap=null;
     private String TAG="GetPic";
-    public GetPic(Context context, String uid, String size, final SuccessCallback successCallback, FailCallback failCallback){
+    String[][] str=new String[1][3];
+    public GetPic(Context context, final String uid, final String size, final SuccessCallback successCallback, FailCallback failCallback){
        new NetConnection(context, Config.PIC_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
             public void onSuccess(String result) {
+                str[0][0]=uid;
+                str[0][1]=Config.PIC_URL+"?uid="+uid+"&size="+size;
+                str[0][2]=result;
                 if (successCallback!=null)
-                    successCallback.onSuccess(result);
-                bitmap=PicUtils.convertStringToIcon(result);
-                if (GetPic.this.bitmap==null){
-                    Log.e(TAG,"Bitmap==null");
-                }else {
-                    Log.e(TAG,"Bitmap!=null");
-                }
+                    successCallback.onSuccess(str);
+//                bitmap=PicUtils.convertStringToIcon(result);
+//                if (GetPic.this.bitmap==null){
+//                    Log.e(TAG,"Bitmap==null");
+//                }else {
+//                    Log.e(TAG,"Bitmap!=null");
+//                }
             }
         }, new NetConnection.FailCallback() {
             @Override
@@ -34,12 +38,15 @@ public class GetPic {
         },"uid",uid,"size",size);
     }
 
-    public GetPic(Context context,String url, final SuccessCallback successCallback, FailCallback failCallback) {
+    public GetPic(Context context, final String url, final SuccessCallback successCallback, FailCallback failCallback) {
         new NetConnection(context, url, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
             public void onSuccess(String result) {
+                str[0][0]="1";
+                str[0][1]=url;
+                str[0][2]=result;
                 if (successCallback!=null){
-                    successCallback.onSuccess(result);
+                    successCallback.onSuccess(str);
                 }
             }
         }, new NetConnection.FailCallback() {
@@ -52,7 +59,7 @@ public class GetPic {
 
 
     public static interface SuccessCallback {
-        void onSuccess(String result);
+        void onSuccess(Object result);
     }
 
     public static interface FailCallback {

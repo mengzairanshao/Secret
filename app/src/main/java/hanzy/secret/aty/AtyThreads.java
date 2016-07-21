@@ -1,7 +1,6 @@
 package hanzy.secret.aty;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,13 +10,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
 import hanzy.secret.Adapter.ThreadAdapter;
+import hanzy.secret.Handler.ThreadsHandler;
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.R;
 import hanzy.secret.net.GetThread;
@@ -30,6 +29,7 @@ import hanzy.secret.utils.TimeUtils;
  */
 public class AtyThreads extends AppCompatActivity {
 
+    private ThreadAdapter threadAdapter;
     private Handler handler;
     private String TAG="AtyThreads";
     private ListView listView;
@@ -42,25 +42,29 @@ public class AtyThreads extends AppCompatActivity {
 
         Intent i=getIntent();
         setTitle(i.getStringExtra("name"));
-
         handler=new Handler(){
-
             @Override
             public void handleMessage(Message msg) {
-                    if(msg.what==1)
-                    {
-                        int[] url=(int[]) msg.obj;
+                if(msg.what==1)
+                {
+                    ThreadsHandler.set(handler,threadsMessageList,listView);
+                    String[][] bitmap=(String[][]) msg.obj;
+                    for (int j=0;j<bitmap.length;j++){
                         for(int i=0;i<threadsMessageList.size();i++)
                         {
-                            ThreadsMessage threadsMessage=threadsMessageList.get(url[i]);
-                                threadsMessageList.set(url[i], threadsMessage);
-                                updateView(url[i]);
-                                break;
+                            ThreadsMessage threadsMessage=threadsMessageList.get(i);
+                            if (threadsMessage.getBitmap()[0][1].equals(bitmap[j][1])){
+                                threadsMessageList.get(i).setBitmap(0,bitmap[0][2]);
+                                ThreadsHandler.updateView(i);
+                            }
+
                         }
                     }
+
+                }
+
             }
         };
-
 
         new GetThread(AtyThreads.this, new GetThread.SuccessCallback() {
             @Override
@@ -69,8 +73,9 @@ public class AtyThreads extends AppCompatActivity {
                     Toast.makeText(AtyThreads.this,R.string.MobileNetwork,Toast.LENGTH_LONG).show();
                 }
                 AtyThreads.this.threadsMessageList=threadsMessageList;
-                ThreadAdapter threadAdapter=new ThreadAdapter(AtyThreads.this);
+                threadAdapter=new ThreadAdapter(AtyThreads.this);
                 threadAdapter.addAll(threadsMessageList);
+                threadAdapter.notifyDataSetChanged();
                 listView.setAdapter(threadAdapter);
             }
         }, new GetThread.FailCallback() {
@@ -130,53 +135,6 @@ public class AtyThreads extends AppCompatActivity {
             intent.putExtra("tid",threadsMessageList.get(position).getTid());
             intent.putExtra("subject",threadsMessageList.get(position).getSubject());
             startActivity(intent);
-        }
-    }
-
-
-    /**
-     * 用于更新我们想要更新的item
-     * @param itemIndex 想更新item的下标
-     * **/
-    private void updateView(int itemIndex)
-    {
-//得到第1个可显示控件的位置,记住是第1个可显示控件噢。而不是第1个控件
-        int visiblePosition = listView.getFirstVisiblePosition();
-//得到你需要更新item的View
-        int count=listView.getChildCount();
-        int count1=listView.getCount();
-//        View view = listView.getChildAt(0);
-        View view = listView.getChildAt(itemIndex - visiblePosition-1);
-        ThreadsMessage threadsMessage=threadsMessageList.get(itemIndex);
-        final String bitmap=threadsMessage.getBitmap()[0][2];
-        if(bitmap!=null)
-        {
-            ViewHolder viewHolder=new ViewHolder(view);
-            viewHolder.author.setText(threadsMessage.getAuthor());
-            viewHolder.dblastpost.setText(TimeUtils.times(Integer.parseInt(threadsMessage.getDblastpost())*1000L));
-            viewHolder.replies.setText(threadsMessage.getReplies());
-            viewHolder.subject1.setText(threadsMessage.getSubject());
-            viewHolder.views.setText(threadsMessage.getViews());
-            viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(threadsMessage.getBitmap()[0][2]));
-        }
-    }
-
-    static class ViewHolder {
-
-        public TextView author;
-        public TextView subject1;
-        public TextView views;
-        public TextView replies;
-        public TextView dblastpost;
-        public ImageView user_img;
-
-        public ViewHolder(View view) {
-            this.author = (TextView) view.findViewById(R.id.thread_author);
-            this.dblastpost = (TextView) view.findViewById(R.id.thread_posttime);
-            this.replies = (TextView) view.findViewById(R.id.thread_replies);
-            this.subject1 = (TextView) view.findViewById(R.id.thread_title);
-            this.user_img = (ImageView) view.findViewById(R.id.thread_user_img);
-            this.views = (TextView) view.findViewById(R.id.thread_views);
         }
     }
 }
