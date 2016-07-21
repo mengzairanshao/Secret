@@ -29,3 +29,5 @@ private Thread mThreadLoadApps = new Thread(){
 
 
 //参考http://blog.csdn.net/by317966834/article/details/8109329
+
+MainFragment需要优化，图片加载类需要优化，ListView显示图片方式还需进一步讨论
