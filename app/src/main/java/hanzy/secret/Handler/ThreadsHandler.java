@@ -1,5 +1,6 @@
 package hanzy.secret.Handler;
 
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -46,46 +47,14 @@ public class ThreadsHandler {
             this.views = (TextView) view.findViewById(R.id.thread_views);
         }
     }
-
-//    public static void getHandler() {
-//        handler=new Handler(){
-//
-//            @Override
-//            public void handleMessage(Message msg) {
-//                if(msg.what==1)
-//                {
-//                    String[][] bitmap=(String[][]) msg.obj;
-//                    for (int j=0;j<bitmap.length;j++){
-//                        for(int i=0;i<threadsMessageList.size();i++)
-//                        {
-//                            ThreadsMessage threadsMessage=threadsMessageList.get(i);
-//                            if (threadsMessage.getBitmap()[0][1].equals(bitmap[j][1])){
-//                                threadsMessageList.get(i).setBitmap(0,bitmap[0][2]);
-//                                updateView(i);
-//                            }
-//
-//                        }
-//                    }
-//
-//                }
-//
-//            }
-//        };
-//    }
-
-    /**
-     * 用于更新我们想要更新的item
-     * @param itemIndex 想更新item的下标
-     * **/
     public static void updateView(int itemIndex)
     {
         View view;
-//得到第1个可显示控件的位置,记住是第1个可显示控件噢。而不是第1个控件
         if (itemIndex>=listView.getFirstVisiblePosition()&&itemIndex<(listView.getChildCount()+listView.getFirstVisiblePosition())) {
-            view = listView.getChildAt(itemIndex);
             ThreadsMessage threadsMessage = threadsMessageList.get(itemIndex);
             final String bitmap = threadsMessage.getBitmap()[0][2];
             if (bitmap != null) {
+                view = listView.getChildAt(itemIndex);
                 ViewHolder viewHolder = new ViewHolder(view);
                 viewHolder.author.setText(threadsMessage.getAuthor());
                 viewHolder.dblastpost.setText(TimeUtils.times(Integer.parseInt(threadsMessage.getDblastpost()) * 1000L));

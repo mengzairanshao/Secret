@@ -39,33 +39,9 @@ public class AtyThreads extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_thread);
         listView= (ListView) findViewById(R.id.threadlist);
-
         Intent i=getIntent();
         setTitle(i.getStringExtra("name"));
-        handler=new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                if(msg.what==1)
-                {
-                    ThreadsHandler.set(handler,threadsMessageList,listView);
-                    String[][] bitmap=(String[][]) msg.obj;
-                    for (int j=0;j<bitmap.length;j++){
-                        for(int i=0;i<threadsMessageList.size();i++)
-                        {
-                            ThreadsMessage threadsMessage=threadsMessageList.get(i);
-                            if (threadsMessage.getBitmap()[0][1].equals(bitmap[j][1])){
-                                threadsMessageList.get(i).setBitmap(0,bitmap[0][2]);
-                                ThreadsHandler.updateView(i);
-                            }
-
-                        }
-                    }
-
-                }
-
-            }
-        };
-
+        setHandler();
         new GetThread(AtyThreads.this, new GetThread.SuccessCallback() {
             @Override
             public void onSuccess(List<ThreadsMessage> threadsMessageList) {
@@ -84,43 +60,6 @@ public class AtyThreads extends AppCompatActivity {
 
             }
         },i.getStringExtra("fid"),handler);
-//        new GetThread(AtyThreads.this, new GetThread.SuccessCallback() {
-//            @Override
-//            public void onSuccess(List<ThreadsMessage> threadsMessageList) {
-//                if (NetConnection.isMobileNetworkAvailable(AtyThreads.this).equals("mobile")){
-//                    Toast.makeText(AtyThreads.this,R.string.MobileNetwork,Toast.LENGTH_LONG).show();
-//                }
-//                AtyThreads.this.threadsMessageList=threadsMessageList;
-//                ThreadAdapter threadAdapter=new ThreadAdapter(threadsMessageList,lv,AtyThreads.this,
-//                        ThreadAdapter.getData(threadsMessageList),
-//                        R.layout.aty_thread_list_cell,
-//                        ThreadAdapter.from,
-//                        ThreadAdapter.to);
-//                threadAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
-//                    @Override
-//                    public boolean setViewValue(View view, Object data, String textRepresentation) {
-//                        if ((view instanceof ImageView) && (data instanceof Bitmap)){
-//                            ImageView iv = (ImageView) view;
-//                            iv.setImageBitmap((Bitmap) data);
-//                            return true;
-//                        }
-//                        return false;
-//                    }
-//                });
-//                threadAdapter.notifyDataSetChanged();
-//                listView.setAdapter(threadAdapter);
-//            }
-//        }, new GetThread.FailCallback() {
-//            @Override
-//            public void onFail() {
-//                if (NetConnection.isMobileNetworkAvailable(AtyThreads.this).equals("none")){
-//                    Toast.makeText(AtyThreads.this,R.string.NetworkFailure,Toast.LENGTH_LONG).show();
-//                }else if (NetConnection.isMobileNetworkAvailable(AtyThreads.this).equals("mobile")||NetConnection.isMobileNetworkAvailable(AtyThreads.this).equals("wifi")){
-//                    Toast.makeText(AtyThreads.this,R.string.LoadFailure,Toast.LENGTH_LONG).show();
-//                }
-//
-//            }
-//        },i.getStringExtra("fid"),handler);
 
         listView.setOnItemClickListener(new OnItemClickListenerImp());
 
@@ -136,5 +75,27 @@ public class AtyThreads extends AppCompatActivity {
             intent.putExtra("subject",threadsMessageList.get(position).getSubject());
             startActivity(intent);
         }
+    }
+
+    public void setHandler(){
+        handler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                if(msg.what==1)
+                {
+                    ThreadAdapter.set(handler,threadsMessageList,listView);
+                    String[][] bitmap=(String[][]) msg.obj;
+                    for (String[] aBitmap : bitmap) {
+                        for (int i = 0; i < threadsMessageList.size(); i++) {
+                            ThreadsMessage threadsMessage = threadsMessageList.get(i);
+                            if (threadsMessage.getBitmap()[0][1].equals(aBitmap[1])) {
+                                threadsMessageList.get(i).setBitmap(0, bitmap[0][2]);
+                                ThreadAdapter.updateView(i);
+                            }
+                        }
+                    }
+                }
+            }
+        };
     }
 }

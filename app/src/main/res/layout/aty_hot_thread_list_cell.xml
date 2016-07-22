@@ -9,8 +9,8 @@
         android:id="@+id/user">
         <ImageView
             android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/user_header_size"
+            android:layout_height="@dimen/user_header_size"
             android:id="@+id/hot_thread_user_img"/>
         <TextView
             android:padding="@dimen/text_padding"

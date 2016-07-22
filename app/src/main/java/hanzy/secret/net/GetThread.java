@@ -50,7 +50,6 @@ public class GetThread {
                                 successCallback.onSuccess(megs);
                                 if (megs.size()==length) {
                                     GetPic(successCallback, failCallback);
-                                    data.put("bit", bitmap);
                                 }
                             }
 
@@ -78,10 +77,10 @@ public class GetThread {
             new GetPic(context, megs.get(i).getBitmap()[0][1], new GetPic.SuccessCallback() {
                 @Override
                 public void onSuccess(Object result) {
-                        Message message=handler.obtainMessage();
-                        message.what=1;
-                        message.obj=result;
-                        handler.sendMessage(message);
+                    Message message=handler.obtainMessage();
+                    message.what=1;
+                    message.obj=result;
+                    handler.sendMessage(message);
                 }
             }, new GetPic.FailCallback() {
                 @Override

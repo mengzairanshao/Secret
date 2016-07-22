@@ -57,4 +57,8 @@ public class DetailMessage{
     public String[][] getBitmap() {
         return bitmap;
     }
+
+    public void setBitmap(int position ,String bitmap) {
+        this.bitmap[position][2] = bitmap;
+    }
 }

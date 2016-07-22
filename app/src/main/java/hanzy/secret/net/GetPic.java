@@ -23,12 +23,6 @@ public class GetPic {
                 str[0][2]=result;
                 if (successCallback!=null)
                     successCallback.onSuccess(str);
-//                bitmap=PicUtils.convertStringToIcon(result);
-//                if (GetPic.this.bitmap==null){
-//                    Log.e(TAG,"Bitmap==null");
-//                }else {
-//                    Log.e(TAG,"Bitmap!=null");
-//                }
             }
         }, new NetConnection.FailCallback() {
             @Override
