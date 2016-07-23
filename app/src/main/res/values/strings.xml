@@ -5,7 +5,7 @@
     <string name="code">Code</string>
     <string name="login">Login</string>
     <string name="publish_message">Publish Message</string>
-    <string name="username_or_password_can_not_be_empty">username or password can not be empty</string>
+    <string name="username_or_password_can_not_be_empty">用户名或者密码不能为空</string>
     <string name="fail">username or password can not be empty</string>
     <string name="NetworkFailure">网络错误</string>
     <string name="MobileNetwork">注意!您正在使用计费网络</string>
@@ -16,4 +16,8 @@
     <string name="news">最近更新</string>
     <string name="ForumsList">版块列表</string>
     <string name="topic">主题:</string>
+    <string name="comment">评论</string>
+    <string name="succeed_login">登录成功</string>
+    <string name="failed_login">登录失败</string>
+
 </resources>

@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.secret.Config;
@@ -29,7 +28,7 @@ public class GetThread {
     public GetThread(final Context context, final SuccessCallback successCallback, final FailCallback failCallback, String fid,Handler handler) {
         this.context=context;
         this.handler=handler;
-        new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
+        new NetConnection(context, Config.BASE_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
             public void onSuccess(String result) {
                 try {

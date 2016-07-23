@@ -26,7 +26,7 @@ public class GetHotThread {
     private List<HotThreadMessage> megs = new ArrayList<>();
 
     public GetHotThread(final Context context, final SuccessCallback successCallback, final FailCallback failCallback) {
-        new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
+        new NetConnection(context, Config.BASE_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
             public void onSuccess(String result) {
                 try {

@@ -1,11 +1,17 @@
 package hanzy.secret.aty;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import hanzy.secret.R;
 import hanzy.secret.net.Login;
 import hanzy.secret.secret.Config;
@@ -28,24 +34,22 @@ public class AtyLogin extends Activity {
         findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(editText_uerName.getText())||TextUtils.isEmpty(editText_password.getText())) {
+                if (TextUtils.isEmpty(editText_uerName.getText()) || TextUtils.isEmpty(editText_password.getText())) {
                     Toast.makeText(AtyLogin.this, R.string.username_or_password_can_not_be_empty, Toast.LENGTH_LONG).show();
                     return;
                 }
                 new Login(AtyLogin.this, editText_uerName.getText().toString(), editText_password.getText().toString(), new Login.SuccessCallback() {
                     @Override
-                    public void onSuccess(String token) {
-                        if (token.equals(Config.SUCCEED_LOGIN)) {
-                            Toast.makeText(AtyLogin.this, Config.SUCCEED_LOGIN, Toast.LENGTH_LONG).show();
-                            Intent i = new Intent(AtyLogin.this, AtyCatalog.class);
-                            startActivity(i);
-                            finish();
-                        }
+                    public void onSuccess(String result) {
+                        Toast.makeText(AtyLogin.this, R.string.succeed_login, Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(AtyLogin.this, MainActivity.class);
+                        startActivity(i);
+                        finish();
                     }
                 }, new Login.FailCallback() {
                     @Override
                     public void onFail() {
-                        Toast.makeText(AtyLogin.this, Config.FAILED_LOGIN, Toast.LENGTH_LONG).show();
+                        Toast.makeText(AtyLogin.this, R.string.failed_login, Toast.LENGTH_LONG).show();
                     }
                 });
             }

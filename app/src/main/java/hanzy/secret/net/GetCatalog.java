@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +20,7 @@ public class GetCatalog {
 
     public GetCatalog(final Context context, final SuccessCallback successCallback, final FailCallback failCallback) {
 
-        new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
+        new NetConnection(context, Config.BASE_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
             public void onSuccess(String result) {
                 try {
@@ -71,9 +70,9 @@ public class GetCatalog {
             public void onFail() {
                 if (failCallback != null) failCallback.onFail();
             }
-        }, Config.MOBILE, Config.MOBILE_IS,
-                Config.MODULE, Config.MODULE_FORUMINDEX,
-                Config.VERSION, Config.VERSION_NUM);
+        }, Config.KEY_MOBILE, Config.VALUE_MOBILE_IS,
+                Config.KEY_MODULE, Config.KEY_MODULE_FORUMINDEX,
+                Config.KEY_VERSION, Config.VALUE_VERSION_NUM);
 
     }
 

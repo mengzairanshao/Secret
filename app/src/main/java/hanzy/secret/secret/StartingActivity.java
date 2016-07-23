@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -12,7 +11,6 @@ import org.json.JSONObject;
 
 import hanzy.secret.R;
 import hanzy.secret.aty.AtyLogin;
-import hanzy.secret.aty.Aty_Test;
 import hanzy.secret.aty.MainActivity;
 import hanzy.secret.net.CookiesSet;
 import hanzy.secret.net.HttpMethod;
@@ -24,10 +22,10 @@ public class StartingActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String cookies = CookiesSet.getCookieText(StartingActivity.this);
+        final String cookies = CookiesSet.getCookieText(StartingActivity.this);
         Log.e(TAG,"auth:"+cookies);
         if(!cookies.equals("")){
-            new NetConnection(StartingActivity.this, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
+            new NetConnection(StartingActivity.this, Config.BASE_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
                 @Override
                 public void onSuccess(String result) {
                     try {
@@ -35,8 +33,9 @@ public class StartingActivity extends Activity {
                             Toast.makeText(StartingActivity.this, R.string.MobileNetwork,Toast.LENGTH_LONG).show();
                         }
                         JSONObject jsonObject=new JSONObject(result);
-                        Log.e(TAG,"Net:");
+                        Log.e(TAG,"FormHash:"+jsonObject);
                         if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")){
+                            Config.cacheFormHash(StartingActivity.this,jsonObject.getJSONObject("Variables").getString("formhash"));
                             startActivity(new Intent(StartingActivity.this,MainActivity.class));
                             finish();
                         }

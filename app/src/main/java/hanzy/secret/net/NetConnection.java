@@ -1,5 +1,6 @@
 package hanzy.secret.net;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +11,9 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import org.apache.http.Header;
+import org.json.JSONObject;
+
+import hanzy.secret.aty.AtyLogin;
 import hanzy.secret.utils.PicUtils;
 
 
@@ -18,26 +22,29 @@ import hanzy.secret.utils.PicUtils;
  */
 public class NetConnection {
     private final String TAG = "NetConnection";
-    private static byte[] bytes;
     private static Bitmap bitmap=null;
     public NetConnection(final Context context, final String url, final HttpMethod httpMethod, final SuccessCallback successCallback, final FailCallback failCallback, final String... kvs) {
 
         if (httpMethod.equals(HttpMethod.POST)){
-            final AsyncHttpClient client = new AsyncHttpClient();
+            AsyncHttpClient client;
             RequestParams params=new RequestParams();
             //保存cookie，自动保存到了shareprefercece
-            CookiesSet.Utils.clearCookies(context);
-            CookiesSet.Utils.saveCookies(client,context);
+            Activity activity=(Activity)context;
+            if (activity instanceof AtyLogin){
+                client = new AsyncHttpClient();
+                CookiesSet.Utils.clearCookies(context);
+                CookiesSet.Utils.saveCookies(client,context);
+            }else {
+                FinalAsyncHttpClient finalAsyncHttpClient=new FinalAsyncHttpClient();
+                client=finalAsyncHttpClient.getAsyncHttpClient();
+            }
             for (int i=0;i<kvs.length;i+=2){
                 params.put(kvs[i],kvs[i+1]);
             }
-            //Log.e(TAG,params.toString());
             client.post(url,params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    bytes=responseBody;
                     String json=new String(responseBody);
-                    Log.e(TAG,"POST成功"+json);
                     if (successCallback!=null)successCallback.onSuccess(json);
                 }
 
@@ -55,15 +62,14 @@ public class NetConnection {
             for (int i=0;i<kvs.length;i+=2){
                     params.put(kvs[i],kvs[i+1]);
                 }
+
             client.get(url, params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     if (statusCode==200){
                         String json=new String(responseBody);
                         for(int i=0;i<headers.length;i++) {
-//                       Log.e(TAG,""+headers[i].getName()+"=="+headers[i].getValue());
                             if (headers[i].getName().equals("Content-Type")&&headers[i].getValue().contains("image")) {
-//                            new FileUtils().writeTxtToFile(new String(responseBody), FileUtils.filePath, FileUtils.fileName);
                                 bitmap=BitmapFactory.decodeByteArray(responseBody,0,responseBody.length);
                                 json= PicUtils.convertIconToString(bitmap);
                             }

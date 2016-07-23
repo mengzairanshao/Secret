@@ -14,7 +14,7 @@ import hanzy.secret.secret.Config;
 public class GetProfile {
     public String TAG="GetProfile";
     public GetProfile(Context context){
-        new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
+        new NetConnection(context, Config.BASE_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
             public void onSuccess(String result) {
                 if (result!=null) {

@@ -1,4 +1,4 @@
-package hanzy.secret.Fragment;
+package hanzy.secret.secret;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import hanzy.secret.Fragment.ForumsFragment.OnListFragmentInteractionListener;
-import hanzy.secret.Fragment.dummy.DummyContent.DummyItem;
-import hanzy.secret.R;
-
 import java.util.List;
+
+import hanzy.secret.secret.ForumsFragment.OnListFragmentInteractionListener;
+import hanzy.secret.secret.DummyContent.DummyItem;
+import hanzy.secret.R;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the

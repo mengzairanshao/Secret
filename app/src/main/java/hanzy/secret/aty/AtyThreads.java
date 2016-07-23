@@ -8,21 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
 import hanzy.secret.Adapter.ThreadAdapter;
-import hanzy.secret.Handler.ThreadsHandler;
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.R;
 import hanzy.secret.net.GetThread;
 import hanzy.secret.net.NetConnection;
-import hanzy.secret.utils.PicUtils;
-import hanzy.secret.utils.TimeUtils;
 
 /**
  * Created by h on 2016/7/6.

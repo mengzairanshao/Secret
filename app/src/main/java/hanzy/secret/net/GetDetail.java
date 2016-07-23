@@ -1,12 +1,9 @@
 package hanzy.secret.net;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.nfc.Tag;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.util.LongSparseArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,10 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import hanzy.secret.Message.DetailMessage;
-import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.secret.Config;
-import hanzy.secret.utils.PicUtils;
-import hanzy.secret.utils.TimeUtils;
 
 /**
  * Created by h on 2016/7/7.
@@ -40,7 +34,7 @@ public class GetDetail {
 
         this.context = context;
         this.handler = handler;
-        new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
+        new NetConnection(context, Config.BASE_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
             public void onSuccess(final String result) {
                 try {
@@ -49,6 +43,7 @@ public class GetDetail {
                         Log.e(TAG, "Get Json Data:" + jsonObject.toString());
                         JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("postlist");
                         length = jsonArray.length();
+                        Log.e(TAG,"length=="+length);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             jsonObject1 = jsonArray.getJSONObject(i);
                             HashMap<String, Object> data = setData(jsonObject1, "author", "dbdateline", "message", "tid", "pid");
@@ -57,7 +52,7 @@ public class GetDetail {
                                 bitmap[0][0] = jsonObject1.getString("authorid");
                                 bitmap[0][1] = Config.PIC_URL + "?uid=" + jsonObject1.getString("authorid") + "&size=small";
                                 for (j = 0; j < jsonObject1.getJSONArray("imagelist").length(); j++) {
-                                    url = Config.Net_URL
+                                    url = Config.NET_URL
                                             + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("url")
                                             + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("attachment");
                                     bitmap[j + 1][0] = jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("description");
@@ -123,7 +118,16 @@ public class GetDetail {
         final HashMap<String, Object> data = new HashMap<>();
         for (String string : strings) {
             try {
-                data.put(string, jsonObject.getString(string).replace("<br />","\r"));
+                if(string.equals("message")){
+                    Log.e(TAG,""+jsonObject.getString(string));
+                    if (jsonObject.getString(string).contains("<br />\n<br />\n<br />\n")){
+                        data.put(string, jsonObject.getString(string).replace("<br />\n<br />\n<br />\n","\r\n").replace("&quot;","\"").replace("&nbsp;"," "));
+                    }else{
+                        data.put(string, jsonObject.getString(string).replace("<br />","").replace("&quot;","\"").replace("&nbsp;"," "));
+                    }
+                }else {
+                    data.put(string, jsonObject.getString(string));
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -12,26 +12,21 @@ public class Login {
     public String TAG="Login";
     public Login(final Context context, final String userName, String password, final SuccessCallback successCallback, final FailCallback failCallback){
 
-        new NetConnection(context,Config.Login_URL, HttpMethod.POST, new NetConnection.SuccessCallback() {
+        new NetConnection(context,Config.LOGIN_URL, HttpMethod.POST, new NetConnection.SuccessCallback() {
 
             @Override
             public void onSuccess(String result) {
                 try {
                     Log.e(TAG,"Result"+result);
                     JSONObject jsonObject=new JSONObject(result);
-
-                    Log.e(TAG,"返回值"+ result);
-                    if (result!=null) {
-                        if (result.contains("login_succeed")){
+                        if (jsonObject.getJSONObject("Message").getString("messageval").equals("login_succeed")){
                             Log.e(TAG,"Login Success:"+userName);
-                            if (successCallback!=null)successCallback.onSuccess(Config.SUCCEED_LOGIN);
+                            if (successCallback!=null)successCallback.onSuccess(result);
                         }
                         else if(failCallback!=null){
                             Log.e(TAG,"Login Failed:"+userName);
                             failCallback.onFail();
                         }
-
-                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -43,12 +38,12 @@ public class Login {
                 Log.e(TAG,"Login Failed(onFail):"+userName);
                 if (failCallback!=null) failCallback.onFail();
             }
-        },Config.UERNAME,userName,Config.PASSWORD,password);
+        },Config.KEY_UERNAME,userName,Config.KEY_PASSWORD,password);
 
     }
 
     public static interface SuccessCallback{
-        void onSuccess(String token);
+        void onSuccess(String result);
     }
 
     public static interface FailCallback{

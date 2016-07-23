@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import hanzy.secret.secret.Config;
-import hanzy.secret.utils.TimeUtils;
 
 /**
  * Created by h on 2016/7/8.
@@ -16,7 +15,7 @@ public class GetTest {
 
     public String TAG="GetTest";
     public GetTest(Context context){
-        new NetConnection(context, Config.Base_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
+        new NetConnection(context, Config.BASE_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
             @Override
             public void onSuccess(String result) {
                 if (result!=null) {

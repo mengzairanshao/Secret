@@ -1,4 +1,4 @@
-package hanzy.secret.Fragment;
+package hanzy.secret.secret;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,11 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import hanzy.secret.secret.MyForumsRecyclerViewAdapter;
+import hanzy.secret.secret.DummyContent;
+import hanzy.secret.secret.DummyContent.DummyItem;
 import hanzy.secret.R;
-import hanzy.secret.Fragment.dummy.DummyContent;
-import hanzy.secret.Fragment.dummy.DummyContent.DummyItem;
-
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.

@@ -1,4 +1,4 @@
-package hanzy.secret.Fragment.dummy;
+package hanzy.secret.secret;
 
 import java.util.ArrayList;
 import java.util.HashMap;
