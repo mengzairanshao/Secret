@@ -35,9 +35,10 @@ public class CatalogFragment extends Fragment{
                              Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.aty_catalog, container, false);
+        lv= (ListView) view.findViewById(R.id.Catalog_list);
         if (rootView==null){
             Log.e(TAG,"onCreateView1");
-            rootView=inflater.inflate(R.layout.aty_catalog, container, false);
+            rootView=view;
         }else {
             ViewGroup parent = (ViewGroup) rootView.getParent();
             if (parent!=null){
@@ -45,8 +46,6 @@ public class CatalogFragment extends Fragment{
             }
             return rootView;
         }
-        lv= (ListView) view.findViewById(R.id.Catalog_list);
-        Log.e(TAG,"onCreateView0");
         new GetCatalog(getActivity(), new GetCatalog.SuccessCallback() {
             @Override
             public void onSuccess(List<CatalogMessage> catalogMessages) {

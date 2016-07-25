@@ -35,7 +35,7 @@ public class DetailAdapter extends BaseAdapter {
     private static Handler handler;
     private static List<DetailMessage> detailMessageList_copy;
     private static ListView listView;
-    private String TAG = "DetailAdapter";
+    private static String TAG = "DetailAdapter";
     private Context context;
     private LayoutInflater inflater;
     private List<DetailMessage> detailMessageList = new ArrayList<>();
@@ -67,21 +67,15 @@ public class DetailAdapter extends BaseAdapter {
         View view;
         if (itemIndex >= listView.getFirstVisiblePosition() && itemIndex < (listView.getChildCount() + listView.getFirstVisiblePosition())) {
             DetailMessage detailMessage = detailMessageList_copy.get(itemIndex);
-            final String bitmap = detailMessage.getBitmap()[0][2];
-            if (bitmap != null) {
-                view = listView.getChildAt(itemIndex);
-                ViewHolder viewHolder = new ViewHolder(view);
-                viewHolder.author.setText(detailMessage.getAuthor());
-                viewHolder.posttime.setText(TimeUtils.times(Integer.parseInt(detailMessage.getDateline()) * 1000L));
-                viewHolder.message.setText((Spanned)detailMessage.getMessage());
-                viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[0][2]));
-
-                for (int i = 1; i < detailMessage.getBitmap().length; i++) {
-                    if ((detailMessage.getBitmap()[i][2] != null)) {
-                        for (int j = 0; j < viewHolder.linearLayout.getChildCount(); j++) {
-                            if (viewHolder.linearLayout.getChildAt(j).getTag().equals(detailMessage.getBitmap()[i][1])) {
-                                ((ImageView) viewHolder.linearLayout.getChildAt(j)).setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[i][2]));
-                            }
+            view = listView.getChildAt(itemIndex);
+            ViewHolder viewHolder = new ViewHolder(view);
+            viewHolder.message.setText((Spanned) detailMessage.getMessage());
+            viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[0][2]));
+            for (int i = 1; i < detailMessage.getBitmap().length; i++) {
+                if ((detailMessage.getBitmap()[i][2] != null)) {
+                    for (int j = 0; j < viewHolder.linearLayout.getChildCount(); j++) {
+                        if (viewHolder.linearLayout.getChildAt(j).getTag().equals(detailMessage.getBitmap()[i][1])) {
+                            ((ImageView) viewHolder.linearLayout.getChildAt(j)).setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[i][2]));
                         }
                     }
                 }
@@ -89,7 +83,7 @@ public class DetailAdapter extends BaseAdapter {
         }
     }
 
-    public static void handlerSet(Context context, Message msg,List<DetailMessage> detailMessageList,ListView listView,Handler handler){
+    public static void handlerSet(Context context, Message msg, List<DetailMessage> detailMessageList, ListView listView, Handler handler, DetailAdapter detailAdapter) {
         if (msg.what == Config.USER_LOAD_IMAGE) {
             DetailAdapter.set(handler, detailMessageList, listView);
             String[][] bitmap = (String[][]) msg.obj;
@@ -100,24 +94,25 @@ public class DetailAdapter extends BaseAdapter {
                     for (int j = 0; j < detailMessage.getBitmap().length; j++) {
                         if (detailMessage.getBitmap()[j][1].equals(bitmap[k][1])) {
                             detailMessageList.get(i).setBitmap(j, bitmap[k][2]);
-                            updateView(context,i);
+                            updateView(context, i);
                         }
                     }
                 }
             }
         }
-        if (msg.what== Config.SPANNED_MESSAGE){
+        if (msg.what == Config.SPANNED_MESSAGE) {
             DetailAdapter.set(handler, detailMessageList, listView);
-            HashMap<String,Object> hashMap= (HashMap<String, Object>) msg.obj;
+            HashMap<String, Object> hashMap = (HashMap<String, Object>) msg.obj;
             DetailMessage detailMessage;
-            for (int i=0;i<detailMessageList.size();i++){
-                detailMessage=detailMessageList.get(i);
-                if (detailMessage.getPid()==hashMap.get("pid")){
+            for (int i = 0; i < detailMessageList.size(); i++) {
+                detailMessage = detailMessageList.get(i);
+                if (detailMessage.getPid() == hashMap.get("pid")) {
                     detailMessageList.get(i).setMessage(hashMap.get("message"));
-                    updateView(context,i);
+                    updateView(context, i);
                 }
             }
         }
+
     }
 
     public Context getContext() {
@@ -126,6 +121,7 @@ public class DetailAdapter extends BaseAdapter {
 
     public void addAll(List<DetailMessage> detailMessageList) {
         this.detailMessageList = detailMessageList;
+//        notifyDataSetChanged();
     }
 
     public void clear() {
@@ -160,35 +156,34 @@ public class DetailAdapter extends BaseAdapter {
         DetailMessage detailMessage = getItem(position);
         viewHolder.author.setText(detailMessage.getAuthor());
         viewHolder.posttime.setText(TimeUtils.times(Integer.parseInt(detailMessage.getDateline()) * 1000L));
-        if (detailMessage.getMessage()!=null)
-        viewHolder.message.setText((Spanned)detailMessage.getMessage());
+        if (detailMessage.getMessage() != null)
+            viewHolder.message.setText((Spanned) detailMessage.getMessage());
         viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[0][2]));
-        setImageView(detailMessage, viewHolder);
         return convertView;
     }
 
-    public void setImageView(DetailMessage detailMessage, ViewHolder viewHolder) {
-        for (int i = 1; i < detailMessage.getBitmap().length; i++) {
-            if (viewHolder.linearLayout.getChildCount() != 0) {
-                for (int j = 0; j < viewHolder.linearLayout.getChildCount(); j++) {
-                    aBoolean = aBoolean || viewHolder.linearLayout.getChildAt(j).getTag().equals(detailMessage.getBitmap()[i][1]);
-                }
-                if (!aBoolean) {
-                    imageView = new ImageView(context);
-                    imageView.setTag(detailMessage.getBitmap()[i][1]);
-                    imageView.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[i][2]));
-                    imageView.setPadding(5,0,5,0);
-                    viewHolder.linearLayout.addView(imageView);
-                }
-            } else {
-                imageView = new ImageView(context);
-                imageView.setTag(detailMessage.getBitmap()[i][1]);
-                imageView.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[i][2]));
-                imageView.setPadding(5,0,5,0);
-                viewHolder.linearLayout.addView(imageView);
-            }
-        }
-    }
+//    public void setImageView(DetailMessage detailMessage, ViewHolder viewHolder) {
+//        for (int i = 1; i < detailMessage.getBitmap().length; i++) {
+//            if (viewHolder.linearLayout.getChildCount() != 0) {
+//                for (int j = 0; j < viewHolder.linearLayout.getChildCount(); j++) {
+//                    aBoolean = aBoolean || viewHolder.linearLayout.getChildAt(j).getTag().equals(detailMessage.getBitmap()[i][1]);
+//                }
+//                if (!aBoolean) {
+//                    ImageView imageView = new ImageView(context);
+//                    imageView.setTag(detailMessage.getBitmap()[i][1]);
+//                    imageView.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[i][2]));
+//                    imageView.setPadding(5, 0, 5, 0);
+//                    viewHolder.linearLayout.addView(imageView);
+//                }
+//            } else {
+//                ImageView imageView = new ImageView(context);
+//                imageView.setTag(detailMessage.getBitmap()[i][1]);
+//                imageView.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[i][2]));
+//                imageView.setPadding(5, 0, 5, 0);
+//                viewHolder.linearLayout.addView(imageView);
+//            }
+//        }
+//    }
 
     public static class ViewHolder {
         public TextView author;
@@ -198,11 +193,11 @@ public class DetailAdapter extends BaseAdapter {
         public LinearLayout linearLayout;
 
         public ViewHolder(View view) {
-            this.author = (TextView) view.findViewById(R.id.detail_author);
-            this.posttime = (TextView) view.findViewById(R.id.detail_posttime);
-            this.message = (TextView) view.findViewById(R.id.detail_message);
-            this.user_img = (ImageView) view.findViewById(R.id.detail_user_img);
-            this.linearLayout = (LinearLayout) view.findViewById(R.id.detail_image);
+                this.author = (TextView) view.findViewById(R.id.detail_author);
+                this.posttime = (TextView) view.findViewById(R.id.detail_posttime);
+                this.message = (TextView) view.findViewById(R.id.detail_message);
+                this.user_img = (ImageView) view.findViewById(R.id.detail_user_img);
+                this.linearLayout = (LinearLayout) view.findViewById(R.id.detail_image);
         }
     }
 }

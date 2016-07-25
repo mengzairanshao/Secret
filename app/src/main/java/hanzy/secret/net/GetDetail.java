@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceScreen;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
+import android.view.WindowManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import hanzy.secret.Message.DetailMessage;
+import hanzy.secret.R;
 import hanzy.secret.secret.Config;
 
 /**
@@ -29,8 +32,6 @@ public class GetDetail {
     private Handler handler;
     private Context context;
     private String[][] bitmap;
-    private String url;
-    private int j;
     private List<DetailMessage> megs = new ArrayList<>();
     private JSONObject jsonObject1 = new JSONObject();
     private int length = 0;
@@ -53,30 +54,30 @@ public class GetDetail {
                             jsonObject1 = jsonArray.getJSONObject(i);
                             HashMap<String, Object> data = new HashMap<>();
                             setData(data, jsonObject1, "author", "dbdateline", "message", "tid", "pid");
-                            if (jsonObject1.has("imagelist")) {
-                                bitmap = new String[jsonObject1.getJSONArray("imagelist").length() + 1][3];
-                                bitmap[0][0] = jsonObject1.getString("authorid");
-                                bitmap[0][1] = Config.PIC_URL + "?uid=" + jsonObject1.getString("authorid") + "&size=small";
-                                for (j = 0; j < jsonObject1.getJSONArray("imagelist").length(); j++) {
-                                    url = Config.NET_URL
-                                            + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("url")
-                                            + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("attachment");
-                                    bitmap[j + 1][0] = jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("description");
-                                    bitmap[j + 1][1] = url;
-                                }
+//                            if (jsonObject1.has("imagelist")) {
+//                                bitmap = new String[jsonObject1.getJSONArray("imagelist").length() + 1][3];
+//                                bitmap[0][0] = jsonObject1.getString("authorid");
+//                                bitmap[0][1] = Config.PIC_URL + "?uid=" + jsonObject1.getString("authorid") + "&size=small";
+//                                for (j = 0; j < jsonObject1.getJSONArray("imagelist").length(); j++) {
+//                                    url = Config.NET_URL
+//                                            + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("url")
+//                                            + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("attachment");
+//                                    bitmap[j + 1][0] = jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("description");
+//                                    bitmap[j + 1][1] = url;
+//                                }
 
-                            } else {
+//                            } else {
                                 bitmap = new String[1][3];
                                 bitmap[0][0] = jsonObject1.getString("authorid");
                                 bitmap[0][1] = Config.PIC_URL + "?uid=" + jsonObject1.getString("authorid") + "&size=small";
-                            }
+//                            }
                             data.put("bitmap", bitmap);
                             sortList(megs, data);
                             if (successCallback != null) {
                                 successCallback.onSuccess(megs);
-                                if (megs.size() == length) {
-                                    GetPic();
-                                }
+                            }
+                            if (megs.size() == length) {
+                                GetPic();
                             }
                         }
 
@@ -124,8 +125,17 @@ public class GetDetail {
         for (final String string : strings) {
             try {
                 if (string.equals("message")) {
+                    String str=jsonObject.getString(string);
+                    if (jsonObject.has("imagelist")){
+                        for (int j = 0; j < jsonObject1.getJSONArray("imagelist").length(); j++) {
+                            str += "<img src="+Config.NET_URL
+                                    + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("url")
+                                    + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("attachment")+"></img>";
+                        }
+                    }
                     Spanned spanned = Html.fromHtml(jsonObject.getString(string));
                     data.put(string, spanned);
+                    final String finalStr = str;
                     Thread t = new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -142,29 +152,33 @@ public class GetDetail {
                                     source=Html.fromHtml(source).toString();
                                     URL url;
                                     Drawable drawable = null;
+                                    WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                                    int width,height;
                                     try {
                                         url = new URL(source);
                                         drawable = Drawable.createFromStream(
                                                 url.openStream(), null);
+                                        width=drawable.getIntrinsicWidth()*2;
+                                        height=drawable.getIntrinsicHeight()*2;
+                                        if (drawable.getIntrinsicWidth()*2> (wm.getDefaultDisplay().getWidth()*0.85)){
+                                            width=(int)(wm.getDefaultDisplay().getWidth()*0.85);
+                                            height=height*(int)(wm.getDefaultDisplay().getWidth()*0.85)/(2*drawable.getIntrinsicWidth());
+                                        }
                                         drawable.setBounds(10, 10,
-                                                drawable.getIntrinsicWidth()*2+10,
-                                                drawable.getIntrinsicHeight()*2+10);
+                                                width+10,
+                                                height+10);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
                                     return drawable;
                                 }
                             };
-                            try {
-                                Spanned spanned = Html.fromHtml(jsonObject.getString(string), imageGetter, null);
-                                data.put(string, spanned);
-                                Message message = handler.obtainMessage();
-                                message.what = Config.SPANNED_MESSAGE;
-                                message.obj = data;
-                                handler.sendMessage(message);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            Spanned spanned = Html.fromHtml(finalStr, imageGetter, null);
+                            data.put(string, spanned);
+                            Message message = handler.obtainMessage();
+                            message.what = Config.SPANNED_MESSAGE;
+                            message.obj = data;
+                            handler.sendMessage(message);
                         }
                     });
                     t.start();
