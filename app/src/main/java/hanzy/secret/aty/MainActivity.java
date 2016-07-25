@@ -1,7 +1,6 @@
 package hanzy.secret.aty;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,7 +13,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 
 import hanzy.secret.Fragment.CatalogFragment;
@@ -24,6 +22,10 @@ import hanzy.secret.R;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static String TAG="MainActivity";
+    public static HotThreadsFragment hotThreadsFragment;
+    public static CatalogFragment catalogFragment;
+    public static ProfileFragment profileFragment;
     private TabLayout tabLayout;
 
     /**
@@ -95,11 +97,57 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static class PlaceholderFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public PlaceholderFragment() {
+        }
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        @Nullable
+        public static Fragment newInstance(int sectionNumber) {
+
+            switch (sectionNumber){
+
+                case 1:
+                    if (hotThreadsFragment!=null){
+                        Log.e(TAG,"!null");
+                        return hotThreadsFragment;
+                    }else {
+                        Log.e(TAG,"null");
+                        return hotThreadsFragment=new HotThreadsFragment();
+                    }
+                case 2:
+                    if (catalogFragment!=null){
+                        return catalogFragment;
+                    }else {
+                        return catalogFragment=new CatalogFragment();
+                    }
+                case 3:
+                    if (profileFragment!=null){
+                        return profileFragment;
+                    }else {
+                        return profileFragment=new ProfileFragment();
+                    }
+            }
+            return null;
+        }
+
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -110,20 +158,20 @@ public class MainActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             //return PlaceholderFragment.newInstance(position + 1);
+
             switch (position) {
                 case 0:
-                    return new HotThreadsFragment();
+                    return PlaceholderFragment.newInstance(position + 1);
                 case 1:
-                    return new CatalogFragment();
+                    return PlaceholderFragment.newInstance(position + 1);
                 case 2:
-                    return new ProfileFragment();
+                    return PlaceholderFragment.newInstance(position + 1);
             }
             return null;
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 3;
         }
 

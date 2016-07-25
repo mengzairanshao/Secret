@@ -3,6 +3,7 @@ package hanzy.secret.Fragment;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import hanzy.secret.net.NetConnection;
  */
 public class CatalogFragment extends Fragment{
 
+    private View rootView;
     private String TAG="CatalogFragment";
     private List<CatalogMessage> catalogMessages=null;
     private ListView lv;
@@ -33,7 +35,18 @@ public class CatalogFragment extends Fragment{
                              Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.aty_catalog, container, false);
+        if (rootView==null){
+            Log.e(TAG,"onCreateView1");
+            rootView=inflater.inflate(R.layout.aty_catalog, container, false);
+        }else {
+            ViewGroup parent = (ViewGroup) rootView.getParent();
+            if (parent!=null){
+                parent.removeView(rootView);
+            }
+            return rootView;
+        }
         lv= (ListView) view.findViewById(R.id.Catalog_list);
+        Log.e(TAG,"onCreateView0");
         new GetCatalog(getActivity(), new GetCatalog.SuccessCallback() {
             @Override
             public void onSuccess(List<CatalogMessage> catalogMessages) {

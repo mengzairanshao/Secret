@@ -1,14 +1,19 @@
 package hanzy.secret.net;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,10 +48,11 @@ public class GetDetail {
                         Log.e(TAG, "Get Json Data:" + jsonObject.toString());
                         JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("postlist");
                         length = jsonArray.length();
-                        Log.e(TAG,"length=="+length);
+                        Log.e(TAG, "length==" + length);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             jsonObject1 = jsonArray.getJSONObject(i);
-                            HashMap<String, Object> data = setData(jsonObject1, "author", "dbdateline", "message", "tid", "pid");
+                            HashMap<String, Object> data = new HashMap<>();
+                            setData(data, jsonObject1, "author", "dbdateline", "message", "tid", "pid");
                             if (jsonObject1.has("imagelist")) {
                                 bitmap = new String[jsonObject1.getJSONArray("imagelist").length() + 1][3];
                                 bitmap[0][0] = jsonObject1.getString("authorid");
@@ -100,7 +106,7 @@ public class GetDetail {
                     @Override
                     public void onSuccess(Object result) {
                         Message message = handler.obtainMessage();
-                        message.what = 1;
+                        message.what = Config.USER_LOAD_IMAGE;
                         message.obj = result;
                         handler.sendMessage(message);
                     }
@@ -114,25 +120,61 @@ public class GetDetail {
         }
     }
 
-    private HashMap<String, Object> setData(JSONObject jsonObject, String... strings) {
-        final HashMap<String, Object> data = new HashMap<>();
-        for (String string : strings) {
+    private void setData(final HashMap<String, Object> data, final JSONObject jsonObject, String... strings) {
+        for (final String string : strings) {
             try {
-                if(string.equals("message")){
-                    Log.e(TAG,""+jsonObject.getString(string));
-                    if (jsonObject.getString(string).contains("<br />\n<br />\n<br />\n")){
-                        data.put(string, jsonObject.getString(string).replace("<br />\n<br />\n<br />\n","\r\n").replace("&quot;","\"").replace("&nbsp;"," "));
-                    }else{
-                        data.put(string, jsonObject.getString(string).replace("<br />","").replace("&quot;","\"").replace("&nbsp;"," "));
-                    }
-                }else {
+                if (string.equals("message")) {
+                    Spanned spanned = Html.fromHtml(jsonObject.getString(string));
+                    data.put(string, spanned);
+                    Thread t = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            /**
+                             * 要实现图片的显示需要使用Html.fromHtml的一个重构方法：public static Spanned
+                             * fromHtml (String source, Html.ImageGetterimageGetter,
+                             * Html.TagHandler
+                             * tagHandler)其中Html.ImageGetter是一个接口，我们要实现此接口，在它的getDrawable
+                             * (String source)方法中返回图片的Drawable对象才可以。
+                             */
+                            Html.ImageGetter imageGetter = new Html.ImageGetter() {
+                                @Override
+                                public Drawable getDrawable(String source) {
+                                    source=Html.fromHtml(source).toString();
+                                    URL url;
+                                    Drawable drawable = null;
+                                    try {
+                                        url = new URL(source);
+                                        drawable = Drawable.createFromStream(
+                                                url.openStream(), null);
+                                        drawable.setBounds(10, 10,
+                                                drawable.getIntrinsicWidth()*2+10,
+                                                drawable.getIntrinsicHeight()*2+10);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    return drawable;
+                                }
+                            };
+                            try {
+                                Spanned spanned = Html.fromHtml(jsonObject.getString(string), imageGetter, null);
+                                data.put(string, spanned);
+                                Message message = handler.obtainMessage();
+                                message.what = Config.SPANNED_MESSAGE;
+                                message.obj = data;
+                                handler.sendMessage(message);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    t.start();
+                } else {
                     data.put(string, jsonObject.getString(string));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        return data;
     }
 
     private void sortList(List<DetailMessage> megs, HashMap<String, Object> data) {

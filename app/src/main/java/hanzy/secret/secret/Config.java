@@ -28,7 +28,8 @@ public class Config {
 
     public static final String FORM_HASH = "";
 
-
+    public static final int SPANNED_MESSAGE=2;
+    public static final int USER_LOAD_IMAGE=1;
     public static String getCachedFormHash(Context context){
         return context.getSharedPreferences(APP_ID, Context.MODE_PRIVATE).getString(FORM_HASH, null);
     }

@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -33,9 +36,13 @@ public class AtyThreads extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_thread);
-        listView= (ListView) findViewById(R.id.threadlist);
         Intent i=getIntent();
-        setTitle(i.getStringExtra("name"));
+        listView= (ListView) findViewById(R.id.threadlist);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(i.getStringExtra("name"));
+//        toolbar.inflateMenu(R.menu.menu_aty_thread);
+        toolbar.setNavigationIcon(R.drawable.left);
+        setSupportActionBar(toolbar);
         setHandler();
         new GetThread(AtyThreads.this, new GetThread.SuccessCallback() {
             @Override
@@ -59,6 +66,18 @@ public class AtyThreads extends AppCompatActivity {
         listView.setOnItemClickListener(new OnItemClickListenerImp());
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_aty_thread, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
     public class OnItemClickListenerImp implements AdapterView.OnItemClickListener {
 
         public void onItemClick(AdapterView<?> parent, View view, int position,

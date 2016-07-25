@@ -2,19 +2,15 @@ package hanzy.secret.aty;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import java.util.List;
@@ -54,7 +50,6 @@ public class AtyDetail extends AppCompatActivity {
                     public void onSuccess(String result) {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0) ;
-                        detailAdapter.notifyDataSetChanged();
                         editText.setText("");
                         editText.clearFocus();
                     }
@@ -95,22 +90,7 @@ public class AtyDetail extends AppCompatActivity {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if (msg.what == 1) {
-                    DetailAdapter.set(handler, detailMessageList, listView);
-                    String[][] bitmap = (String[][]) msg.obj;
-                    DetailMessage detailMessage;
-                    for (int i = 0; i < detailMessageList.size(); i++) {
-                        detailMessage = detailMessageList.get(i);
-                        for (int k = 0; k < bitmap.length; k++) {
-                            for (int j = 0; j < detailMessage.getBitmap().length; j++) {
-                                if (detailMessage.getBitmap()[j][1].equals(bitmap[k][1])) {
-                                    detailMessageList.get(i).setBitmap(j, bitmap[k][2]);
-                                    DetailAdapter.updateView(AtyDetail.this,i);
-                                }
-                            }
-                        }
-                    }
-                }
+                DetailAdapter.handlerSet(AtyDetail.this,msg,detailMessageList,listView,handler);
             }
         };
     }

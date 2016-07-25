@@ -21,7 +21,8 @@
         </activity>
         <activity android:name=".aty.AtyLogin" />
         <activity android:name=".aty.AtyCatalog" />
-        <activity android:name=".aty.AtyThreads" />
+        <activity android:name=".aty.AtyThreads"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".aty.AtyDetail" />
         <activity android:name=".aty.Aty_Test" />
         <activity android:name=".aty.AtyForums" />

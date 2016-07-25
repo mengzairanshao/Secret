@@ -18,12 +18,13 @@ public class DetailMessage{
     private String author=null;
     private String dbdateline=null;
     private String subject=null;
-    private String message=null;
+    private Object message=null;
 
     public DetailMessage(HashMap<String,Object> data){
         this.author=data.get("author").toString();
         this.dbdateline=data.get("dbdateline").toString();
-        this.message=data.get("message").toString();
+        if (data.get("message")!=null)
+        this.message=data.get("message");
         this.tid=data.get("tid").toString();
         this.pid=data.get("pid").toString();
         if (data.containsKey("bitmap")) this.bitmap=(String[][]) data.get("bitmap");
@@ -42,7 +43,7 @@ public class DetailMessage{
         return subject;
     }
 
-    public String getMessage() {
+    public Object getMessage() {
         return message;
     }
 
@@ -60,5 +61,9 @@ public class DetailMessage{
 
     public void setBitmap(int position ,String bitmap) {
         this.bitmap[position][2] = bitmap;
+    }
+
+    public void setMessage(Object message) {
+        this.message = message;
     }
 }

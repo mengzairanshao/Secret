@@ -19,5 +19,6 @@
     <string name="comment">评论</string>
     <string name="succeed_login">登录成功</string>
     <string name="failed_login">登录失败</string>
+    <string name="action_refresh">Refresh</string>
 
 </resources>

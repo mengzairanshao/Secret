@@ -3,6 +3,7 @@ package hanzy.secret.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,10 @@ import hanzy.secret.net.NetConnection;
  * Created by h on 2016/7/11.
  */
 public class HotThreadsFragment extends Fragment{
-    private String TAG="CatalogFragment";
+
+    private View rootView;
+    private HotThreadsFragment hotThreadsFragment;
+    private String TAG="HotThreadsFragment";
     private List<HotThreadMessage> hotThreadMessages=null;
     private ListView lv;
     @Override
@@ -32,6 +36,17 @@ public class HotThreadsFragment extends Fragment{
     {
         View view = inflater.inflate(R.layout.aty_hot_thread, container, false);
         lv= (ListView) view.findViewById(R.id.hot_thread_list);
+        if (rootView==null){
+            Log.e(TAG,"onCreateView1");
+            rootView=view;
+        }else {
+            ViewGroup parent = (ViewGroup) rootView.getParent();
+            if (parent!=null){
+                parent.removeView(rootView);
+            }
+            return rootView;
+        }
+        Log.e(TAG,"onCreateView0");
         new GetHotThread(getActivity(), new GetHotThread.SuccessCallback() {
             @Override
             public void onSuccess(List<HotThreadMessage> hotThreadMessages) {

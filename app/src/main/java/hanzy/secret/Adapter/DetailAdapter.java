@@ -2,6 +2,8 @@ package hanzy.secret.Adapter;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import java.util.Map;
 import hanzy.secret.Message.DetailMessage;
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.R;
+import hanzy.secret.secret.Config;
 import hanzy.secret.utils.PicUtils;
 import hanzy.secret.utils.TimeUtils;
 
@@ -70,7 +73,7 @@ public class DetailAdapter extends BaseAdapter {
                 ViewHolder viewHolder = new ViewHolder(view);
                 viewHolder.author.setText(detailMessage.getAuthor());
                 viewHolder.posttime.setText(TimeUtils.times(Integer.parseInt(detailMessage.getDateline()) * 1000L));
-                viewHolder.message.setText(detailMessage.getMessage());
+                viewHolder.message.setText((Spanned)detailMessage.getMessage());
                 viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[0][2]));
 
                 for (int i = 1; i < detailMessage.getBitmap().length; i++) {
@@ -81,6 +84,37 @@ public class DetailAdapter extends BaseAdapter {
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    public static void handlerSet(Context context, Message msg,List<DetailMessage> detailMessageList,ListView listView,Handler handler){
+        if (msg.what == Config.USER_LOAD_IMAGE) {
+            DetailAdapter.set(handler, detailMessageList, listView);
+            String[][] bitmap = (String[][]) msg.obj;
+            DetailMessage detailMessage;
+            for (int i = 0; i < detailMessageList.size(); i++) {
+                detailMessage = detailMessageList.get(i);
+                for (int k = 0; k < bitmap.length; k++) {
+                    for (int j = 0; j < detailMessage.getBitmap().length; j++) {
+                        if (detailMessage.getBitmap()[j][1].equals(bitmap[k][1])) {
+                            detailMessageList.get(i).setBitmap(j, bitmap[k][2]);
+                            updateView(context,i);
+                        }
+                    }
+                }
+            }
+        }
+        if (msg.what== Config.SPANNED_MESSAGE){
+            DetailAdapter.set(handler, detailMessageList, listView);
+            HashMap<String,Object> hashMap= (HashMap<String, Object>) msg.obj;
+            DetailMessage detailMessage;
+            for (int i=0;i<detailMessageList.size();i++){
+                detailMessage=detailMessageList.get(i);
+                if (detailMessage.getPid()==hashMap.get("pid")){
+                    detailMessageList.get(i).setMessage(hashMap.get("message"));
+                    updateView(context,i);
                 }
             }
         }
@@ -126,7 +160,8 @@ public class DetailAdapter extends BaseAdapter {
         DetailMessage detailMessage = getItem(position);
         viewHolder.author.setText(detailMessage.getAuthor());
         viewHolder.posttime.setText(TimeUtils.times(Integer.parseInt(detailMessage.getDateline()) * 1000L));
-        viewHolder.message.setText(detailMessage.getMessage());
+        if (detailMessage.getMessage()!=null)
+        viewHolder.message.setText((Spanned)detailMessage.getMessage());
         viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[0][2]));
         setImageView(detailMessage, viewHolder);
         return convertView;
