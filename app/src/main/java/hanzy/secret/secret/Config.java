@@ -27,13 +27,12 @@ public class Config {
     public static final String VALUE_MOBILE_IS ="no";
     public static final String VALUE_VERSION_NUM = "4";
 
-    public static final String FORM_HASH = "";
-
     public static final int SPANNED_MESSAGE=2;
     public static final int USER_LOAD_IMAGE=1;
 
-    public static final String BITMAP=null;
-    public static final String AUTHORID=null;
+    public static final String USER_HEADER_IMAGE=null;
+    public static final String FORM_HASH = "";
+    public static final String AUTHOR_ID =null;
 
     public static String getCachedDATA(Context context,String string){
         return context.getSharedPreferences(APP_ID, Context.MODE_PRIVATE).getString(string, null);

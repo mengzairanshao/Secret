@@ -19,7 +19,6 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +28,7 @@ import hanzy.secret.R;
 import hanzy.secret.net.GetDetail;
 import hanzy.secret.net.NetConnection;
 import hanzy.secret.net.SendComment;
+import hanzy.secret.secret.Config;
 
 public class AtyDetail extends AppCompatActivity {
 
@@ -135,6 +135,7 @@ public class AtyDetail extends AppCompatActivity {
             String[][] bitmap=new String[1][3];
             bitmap[0][0]=jsonObject.getString("member_uid");
             bitmap[0][1]= Html.fromHtml(jsonObject.getString("member_avatar")).toString();
+            bitmap[0][2]= Config.getCachedDATA(AtyDetail.this,Config.USER_HEADER_IMAGE);
             hashMap.put("bitmap",bitmap);
         } catch (JSONException e) {
             e.printStackTrace();

@@ -27,6 +27,18 @@ public class Login {
                             Log.e(TAG,"Login Failed:"+userName);
                             failCallback.onFail();
                         }
+                    Config.cacheDATA(context,jsonObject.getJSONObject("Variables").getString("member_uid"),Config.AUTHOR_ID);
+                    new GetPic(context, jsonObject.getJSONObject("Variables").getString("member_uid"), "small", new GetPic.SuccessCallback() {
+                        @Override
+                        public void onSuccess(Object result) {
+                            Config.cacheDATA(context,((String[][]) result)[0][2],Config.USER_HEADER_IMAGE);
+                        }
+                    }, new GetPic.FailCallback() {
+                        @Override
+                        public void onFail() {
+
+                        }
+                    });
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
