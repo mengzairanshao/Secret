@@ -20,5 +20,6 @@
     <string name="succeed_login">登录成功</string>
     <string name="failed_login">登录失败</string>
     <string name="action_refresh">Refresh</string>
+    <string name="content_cannot_be_less_than_six_words">回复内容不能少于6个字符</string>
 
 </resources>

@@ -17,7 +17,7 @@ public class SendComment {
     private String url;
 
     public SendComment(Context context, Object object, final SuccessCallback successCallback, FailCallback failCallback,String... kvs) {
-        Log.e(TAG,"formhash"+Config.getCachedFormHash(context));
+        Log.e(TAG,"formhash"+Config.getCachedDATA(context,Config.FORM_HASH));
         String params="";
         for (int i=0;i<kvs.length;i+=2){
             params=params+"&"+kvs[i]+"="+kvs[i+1];
@@ -41,7 +41,7 @@ public class SendComment {
             public void onFail() {
 
             }
-        },"formhash",Config.getCachedFormHash(context),"message",object.toString());
+        },"formhash",Config.getCachedDATA(context,Config.FORM_HASH),"message",object.toString());
     }
 
     public static interface SuccessCallback {

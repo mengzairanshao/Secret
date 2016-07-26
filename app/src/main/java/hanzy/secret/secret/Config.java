@@ -2,6 +2,7 @@ package hanzy.secret.secret;
 
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
 
 /**
  * Created by h on 2016/6/28.
@@ -30,13 +31,17 @@ public class Config {
 
     public static final int SPANNED_MESSAGE=2;
     public static final int USER_LOAD_IMAGE=1;
-    public static String getCachedFormHash(Context context){
-        return context.getSharedPreferences(APP_ID, Context.MODE_PRIVATE).getString(FORM_HASH, null);
+
+    public static final String BITMAP=null;
+    public static final String AUTHORID=null;
+
+    public static String getCachedDATA(Context context,String string){
+        return context.getSharedPreferences(APP_ID, Context.MODE_PRIVATE).getString(string, null);
     }
 
-    public static void cacheFormHash(Context context,String formhash){
+    public static void cacheDATA(Context context,String data,String string){
         Editor e = context.getSharedPreferences(APP_ID, Context.MODE_PRIVATE).edit();
-        e.putString(FORM_HASH, formhash);
+        e.putString(string, data);
         e.commit();
     }
 }

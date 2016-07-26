@@ -35,7 +35,7 @@ public class StartingActivity extends Activity {
                         JSONObject jsonObject=new JSONObject(result);
                         Log.e(TAG,"FormHash:"+jsonObject);
                         if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")){
-                            Config.cacheFormHash(StartingActivity.this,jsonObject.getJSONObject("Variables").getString("formhash"));
+                            Config.cacheDATA(StartingActivity.this,jsonObject.getJSONObject("Variables").getString("formhash"),Config.FORM_HASH);
                             startActivity(new Intent(StartingActivity.this,MainActivity.class));
                             finish();
                         }

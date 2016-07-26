@@ -49,28 +49,13 @@ public class GetDetail {
                         Log.e(TAG, "Get Json Data:" + jsonObject.toString());
                         JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("postlist");
                         length = jsonArray.length();
-                        Log.e(TAG, "length==" + length);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             jsonObject1 = jsonArray.getJSONObject(i);
                             HashMap<String, Object> data = new HashMap<>();
                             setData(data, jsonObject1, "author", "dbdateline", "message", "tid", "pid");
-//                            if (jsonObject1.has("imagelist")) {
-//                                bitmap = new String[jsonObject1.getJSONArray("imagelist").length() + 1][3];
-//                                bitmap[0][0] = jsonObject1.getString("authorid");
-//                                bitmap[0][1] = Config.PIC_URL + "?uid=" + jsonObject1.getString("authorid") + "&size=small";
-//                                for (j = 0; j < jsonObject1.getJSONArray("imagelist").length(); j++) {
-//                                    url = Config.NET_URL
-//                                            + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("url")
-//                                            + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("attachment");
-//                                    bitmap[j + 1][0] = jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("description");
-//                                    bitmap[j + 1][1] = url;
-//                                }
-
-//                            } else {
                             bitmap = new String[1][3];
                             bitmap[0][0] = jsonObject1.getString("authorid");
                             bitmap[0][1] = Config.PIC_URL + "?uid=" + jsonObject1.getString("authorid") + "&size=small";
-//                            }
                             data.put("bitmap", bitmap);
                             sortList(megs, data);
                             if (successCallback != null) {

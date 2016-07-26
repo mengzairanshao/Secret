@@ -30,7 +30,6 @@ public class DetailMessage{
         if (data.containsKey("bitmap")) this.bitmap=(String[][]) data.get("bitmap");
     }
 
-
     public String getAuthor() {
         return author;
     }

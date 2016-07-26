@@ -60,7 +60,6 @@ public class DetailAdapter extends BaseAdapter {
         DetailAdapter.listView = listView;
     }
 
-
     /**
      * @param itemIndex itemIndex是想要修改的ListView的编号
      */
@@ -72,15 +71,6 @@ public class DetailAdapter extends BaseAdapter {
             ViewHolder viewHolder = new ViewHolder(view);
             viewHolder.message.setText((Spanned) detailMessage.getMessage());
             viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[0][2]));
-//            for (int i = 1; i < detailMessage.getBitmap().length; i++) {
-//                if ((detailMessage.getBitmap()[i][2] != null)) {
-//                    for (int j = 0; j < viewHolder.linearLayout.getChildCount(); j++) {
-//                        if (viewHolder.linearLayout.getChildAt(j).getTag().equals(detailMessage.getBitmap()[i][1])) {
-//                            ((ImageView) viewHolder.linearLayout.getChildAt(j)).setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[i][2]));
-//                        }
-//                    }
-//                }
-//            }
         }
     }
 
@@ -125,6 +115,11 @@ public class DetailAdapter extends BaseAdapter {
 //        notifyDataSetChanged();
     }
 
+    public void addItem(HashMap<String,Object> hashMap){
+        detailMessageList.add(new DetailMessage(hashMap));
+        notifyDataSetChanged();
+    }
+
     public void clear() {
         detailMessageList.clear();
     }
@@ -164,29 +159,6 @@ public class DetailAdapter extends BaseAdapter {
         viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[0][2]));
         return convertView;
     }
-
-//    public void setImageView(DetailMessage detailMessage, ViewHolder viewHolder) {
-//        for (int i = 1; i < detailMessage.getBitmap().length; i++) {
-//            if (viewHolder.linearLayout.getChildCount() != 0) {
-//                for (int j = 0; j < viewHolder.linearLayout.getChildCount(); j++) {
-//                    aBoolean = aBoolean || viewHolder.linearLayout.getChildAt(j).getTag().equals(detailMessage.getBitmap()[i][1]);
-//                }
-//                if (!aBoolean) {
-//                    ImageView imageView = new ImageView(context);
-//                    imageView.setTag(detailMessage.getBitmap()[i][1]);
-//                    imageView.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[i][2]));
-//                    imageView.setPadding(5, 0, 5, 0);
-//                    viewHolder.linearLayout.addView(imageView);
-//                }
-//            } else {
-//                ImageView imageView = new ImageView(context);
-//                imageView.setTag(detailMessage.getBitmap()[i][1]);
-//                imageView.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[i][2]));
-//                imageView.setPadding(5, 0, 5, 0);
-//                viewHolder.linearLayout.addView(imageView);
-//            }
-//        }
-//    }
 
     public static class ViewHolder {
         public TextView author;
