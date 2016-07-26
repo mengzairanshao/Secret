@@ -33,18 +33,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_below="@id/detail_head"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/detail_image">
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/detail_image">
+        android:layout_below="@id/detail_head">
         <TextView
             android:id="@+id/detail_state"
             android:layout_width="wrap_content"

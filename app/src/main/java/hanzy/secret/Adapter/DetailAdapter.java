@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +64,7 @@ public class DetailAdapter extends BaseAdapter {
     /**
      * @param itemIndex itemIndex是想要修改的ListView的编号
      */
-    public static void updateView(Context context, int itemIndex) {
+    public static void updateView(int itemIndex) {
         View view;
         if (itemIndex >= listView.getFirstVisiblePosition() && itemIndex < (listView.getChildCount() + listView.getFirstVisiblePosition())) {
             DetailMessage detailMessage = detailMessageList_copy.get(itemIndex);
@@ -71,19 +72,19 @@ public class DetailAdapter extends BaseAdapter {
             ViewHolder viewHolder = new ViewHolder(view);
             viewHolder.message.setText((Spanned) detailMessage.getMessage());
             viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[0][2]));
-            for (int i = 1; i < detailMessage.getBitmap().length; i++) {
-                if ((detailMessage.getBitmap()[i][2] != null)) {
-                    for (int j = 0; j < viewHolder.linearLayout.getChildCount(); j++) {
-                        if (viewHolder.linearLayout.getChildAt(j).getTag().equals(detailMessage.getBitmap()[i][1])) {
-                            ((ImageView) viewHolder.linearLayout.getChildAt(j)).setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[i][2]));
-                        }
-                    }
-                }
-            }
+//            for (int i = 1; i < detailMessage.getBitmap().length; i++) {
+//                if ((detailMessage.getBitmap()[i][2] != null)) {
+//                    for (int j = 0; j < viewHolder.linearLayout.getChildCount(); j++) {
+//                        if (viewHolder.linearLayout.getChildAt(j).getTag().equals(detailMessage.getBitmap()[i][1])) {
+//                            ((ImageView) viewHolder.linearLayout.getChildAt(j)).setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[i][2]));
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 
-    public static void handlerSet(Context context, Message msg, List<DetailMessage> detailMessageList, ListView listView, Handler handler, DetailAdapter detailAdapter) {
+    public static void handlerSet(Message msg, List<DetailMessage> detailMessageList, ListView listView, Handler handler, DetailAdapter detailAdapter) {
         if (msg.what == Config.USER_LOAD_IMAGE) {
             DetailAdapter.set(handler, detailMessageList, listView);
             String[][] bitmap = (String[][]) msg.obj;
@@ -94,7 +95,7 @@ public class DetailAdapter extends BaseAdapter {
                     for (int j = 0; j < detailMessage.getBitmap().length; j++) {
                         if (detailMessage.getBitmap()[j][1].equals(bitmap[k][1])) {
                             detailMessageList.get(i).setBitmap(j, bitmap[k][2]);
-                            updateView(context, i);
+                            updateView(i);
                         }
                     }
                 }
@@ -108,7 +109,7 @@ public class DetailAdapter extends BaseAdapter {
                 detailMessage = detailMessageList.get(i);
                 if (detailMessage.getPid() == hashMap.get("pid")) {
                     detailMessageList.get(i).setMessage(hashMap.get("message"));
-                    updateView(context, i);
+                    updateView(i);
                 }
             }
         }
@@ -156,8 +157,10 @@ public class DetailAdapter extends BaseAdapter {
         DetailMessage detailMessage = getItem(position);
         viewHolder.author.setText(detailMessage.getAuthor());
         viewHolder.posttime.setText(TimeUtils.times(Integer.parseInt(detailMessage.getDateline()) * 1000L));
-        if (detailMessage.getMessage() != null)
+        if (detailMessage.getMessage() != null){
             viewHolder.message.setText((Spanned) detailMessage.getMessage());
+            //viewHolder.message.setMovementMethod(LinkMovementMethod.getInstance());
+        }
         viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[0][2]));
         return convertView;
     }
@@ -190,14 +193,12 @@ public class DetailAdapter extends BaseAdapter {
         public TextView message;
         public TextView posttime;
         public ImageView user_img;
-        public LinearLayout linearLayout;
 
         public ViewHolder(View view) {
                 this.author = (TextView) view.findViewById(R.id.detail_author);
                 this.posttime = (TextView) view.findViewById(R.id.detail_posttime);
                 this.message = (TextView) view.findViewById(R.id.detail_message);
                 this.user_img = (ImageView) view.findViewById(R.id.detail_user_img);
-                this.linearLayout = (LinearLayout) view.findViewById(R.id.detail_image);
         }
     }
 }

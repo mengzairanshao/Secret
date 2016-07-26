@@ -90,7 +90,7 @@ public class AtyDetail extends AppCompatActivity {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                DetailAdapter.handlerSet(AtyDetail.this,msg,detailMessageList,listView,handler,detailAdapter);
+                DetailAdapter.handlerSet(msg,detailMessageList,listView,handler,detailAdapter);
             }
         };
     }

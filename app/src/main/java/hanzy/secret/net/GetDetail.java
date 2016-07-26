@@ -67,9 +67,9 @@ public class GetDetail {
 //                                }
 
 //                            } else {
-                                bitmap = new String[1][3];
-                                bitmap[0][0] = jsonObject1.getString("authorid");
-                                bitmap[0][1] = Config.PIC_URL + "?uid=" + jsonObject1.getString("authorid") + "&size=small";
+                            bitmap = new String[1][3];
+                            bitmap[0][0] = jsonObject1.getString("authorid");
+                            bitmap[0][1] = Config.PIC_URL + "?uid=" + jsonObject1.getString("authorid") + "&size=small";
 //                            }
                             data.put("bitmap", bitmap);
                             sortList(megs, data);
@@ -125,12 +125,16 @@ public class GetDetail {
         for (final String string : strings) {
             try {
                 if (string.equals("message")) {
-                    String str=jsonObject.getString(string);
-                    if (jsonObject.has("imagelist")){
+                    String str = jsonObject.getString(string);
+                    if (jsonObject.has("imagelist")) {
                         for (int j = 0; j < jsonObject1.getJSONArray("imagelist").length(); j++) {
-                            str += "<img src="+Config.NET_URL
+                            str += "<img src=\""
+                                    + Config.NET_URL//<p style="text-align: center;">
                                     + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("url")
-                                    + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("attachment")+"></img>";
+                                    + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("attachment")
+                                    + "\"/><p><strong>"
+                                    + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("description")
+                                    + "</strong></p>";
                         }
                     }
                     Spanned spanned = Html.fromHtml(jsonObject.getString(string));
@@ -149,24 +153,24 @@ public class GetDetail {
                             Html.ImageGetter imageGetter = new Html.ImageGetter() {
                                 @Override
                                 public Drawable getDrawable(String source) {
-                                    source=Html.fromHtml(source).toString();
+                                    source = Html.fromHtml(source).toString();
                                     URL url;
                                     Drawable drawable = null;
                                     WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-                                    int width,height;
+                                    int width, height;
                                     try {
                                         url = new URL(source);
                                         drawable = Drawable.createFromStream(
                                                 url.openStream(), null);
-                                        width=drawable.getIntrinsicWidth()*2;
-                                        height=drawable.getIntrinsicHeight()*2;
-                                        if (drawable.getIntrinsicWidth()*2> (wm.getDefaultDisplay().getWidth()*0.85)){
-                                            width=(int)(wm.getDefaultDisplay().getWidth()*0.85);
-                                            height=height*(int)(wm.getDefaultDisplay().getWidth()*0.85)/(2*drawable.getIntrinsicWidth());
+                                        width = drawable.getIntrinsicWidth() * 2;
+                                        height = drawable.getIntrinsicHeight() * 2;
+                                        if (drawable.getIntrinsicWidth() * 2 > (wm.getDefaultDisplay().getWidth() * 0.85)) {
+                                            width = (int) (wm.getDefaultDisplay().getWidth() * 0.85);
+                                            height = height * (int) (wm.getDefaultDisplay().getWidth() * 0.85) / (2 * drawable.getIntrinsicWidth());
                                         }
                                         drawable.setBounds(10, 10,
-                                                width+10,
-                                                height+10);
+                                                width + 10,
+                                                height + 10);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }

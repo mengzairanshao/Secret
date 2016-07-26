@@ -51,7 +51,6 @@ public class GetPic {
         });
     }
 
-
     public static interface SuccessCallback {
         void onSuccess(Object result);
     }
