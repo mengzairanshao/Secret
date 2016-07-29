@@ -31,7 +31,7 @@ public class GetHotThread {
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
+//                    if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
                         Log.e(TAG, "Get Json Data:" + result);
                         JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("data");
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -41,16 +41,16 @@ public class GetHotThread {
                                 @Override
                                 public void onSuccess(Object result) {
                                     data.put("bitmap", ((String[][]) result)[0][2]);
-                                    if (megs.size()==0){
-                                        megs.add(0,new HotThreadMessage(data));
-                                    }else {
-                                        int location=0;
-                                        for (int j=0;j<megs.size();j++){
-                                            if (Integer.parseInt(megs.get(j).getDblastpost())>=Integer.parseInt(data.get("dblastpost"))){
-                                                location=j+1;
+                                    if (megs.size() == 0) {
+                                        megs.add(0, new HotThreadMessage(data));
+                                    } else {
+                                        int location = 0;
+                                        for (int j = 0; j < megs.size(); j++) {
+                                            if (Integer.parseInt(megs.get(j).getDblastpost()) >= Integer.parseInt(data.get("dblastpost"))) {
+                                                location = j + 1;
                                             }
                                         }
-                                        megs.add(location,new HotThreadMessage(data));
+                                        megs.add(location, new HotThreadMessage(data));
                                     }
                                     if (successCallback != null)
                                         successCallback.onSuccess(megs);
@@ -62,10 +62,10 @@ public class GetHotThread {
                                 }
                             });
                         }
-                    } else {
-                        Log.e(TAG, "Failed Get Json Data(auth==null)");
-                        if (failCallback != null) failCallback.onFail();
-                    }
+//                    } else {
+//                        Log.e(TAG, "Failed Get Json Data(auth==null)");
+//                        if (failCallback != null) failCallback.onFail();
+//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if (failCallback != null) failCallback.onFail();

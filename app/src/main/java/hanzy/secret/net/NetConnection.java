@@ -44,7 +44,9 @@ public class NetConnection {
             client.post(url,params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    Log.e(TAG,"POST成功");
                     String json=new String(responseBody);
+                    Log.e(TAG,json);
                     if (successCallback!=null)successCallback.onSuccess(json);
                 }
 

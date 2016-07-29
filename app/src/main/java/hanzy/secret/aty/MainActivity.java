@@ -1,5 +1,6 @@
 package hanzy.secret.aty;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,15 +14,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import hanzy.secret.Fragment.CatalogFragment;
 import hanzy.secret.Fragment.HotThreadsFragment;
 import hanzy.secret.Fragment.ProfileFragment;
 import hanzy.secret.R;
+import hanzy.secret.net.CookiesSet;
+import hanzy.secret.secret.Config;
+import hanzy.secret.utils.PicUtils;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Boolean flag=true;
     private static String TAG="MainActivity";
     public static HotThreadsFragment hotThreadsFragment;
     public static CatalogFragment catalogFragment;
@@ -48,7 +54,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        CookiesSet.getCookieText(MainActivity.this);
+        if (Config.getCachedDATA(MainActivity.this,Config.IS_LOGINED).equals("Logout_succeed")&&flag) {
+            Toast.makeText(MainActivity.this, R.string.not_login_content_can_not_display,Toast.LENGTH_LONG).show();
+            flag=false;
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+        if (Config.getCachedDATA(MainActivity.this,Config.IS_LOGINED).equals("Login_succeed")&&Config.getCachedDATA(MainActivity.this,Config.USER_HEADER_IMAGE)!=null){
+                toolbar.setLogo(new BitmapDrawable(PicUtils.convertStringToIcon(Config.getCachedDATA(MainActivity.this,Config.USER_HEADER_IMAGE))));
+            }else {
+            toolbar.setLogo(R.drawable.user_img);
+        }
+            toolbar.setTitle(R.string.app_name);
+        }
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -56,7 +75,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        if (mViewPager != null) {
+            mViewPager.setAdapter(mSectionsPagerAdapter);
+        }
 
 
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -70,10 +91,26 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         // tabLayout使用viewPager接收的tabSectionAdapter里设置的title
-        tabLayout.setupWithViewPager(mViewPager);
+        if (tabLayout != null) {
+            tabLayout.setupWithViewPager(mViewPager);
+        }
 
     }
 
+    @Override
+    protected void onResume() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        super.onResume();
+        if (toolbar != null) {
+            if (Config.getCachedDATA(MainActivity.this,Config.IS_LOGINED).equals("Login_succeed")&&Config.getCachedDATA(MainActivity.this,Config.USER_HEADER_IMAGE)!=null){
+                toolbar.setLogo(new BitmapDrawable(PicUtils.convertStringToIcon(Config.getCachedDATA(MainActivity.this,Config.USER_HEADER_IMAGE))));
+            }else {
+                toolbar.setLogo(R.drawable.user_img);
+            }
+            toolbar.setTitle(R.string.app_name);
+        }
+        setSupportActionBar(toolbar);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -97,57 +134,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        @Nullable
-        public static Fragment newInstance(int sectionNumber) {
-
-            switch (sectionNumber){
-
-                case 1:
-                    if (hotThreadsFragment!=null){
-                        Log.e(TAG,"!null");
-                        return hotThreadsFragment;
-                    }else {
-                        Log.e(TAG,"null");
-                        return hotThreadsFragment=new HotThreadsFragment();
-                    }
-                case 2:
-                    if (catalogFragment!=null){
-                        return catalogFragment;
-                    }else {
-                        return catalogFragment=new CatalogFragment();
-                    }
-                case 3:
-                    if (profileFragment!=null){
-                        return profileFragment;
-                    }else {
-                        return profileFragment=new ProfileFragment();
-                    }
-            }
-            return null;
-        }
-
-    }
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -155,17 +146,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            //return PlaceholderFragment.newInstance(position + 1);
-
             switch (position) {
                 case 0:
-                    return PlaceholderFragment.newInstance(position + 1);
+                    return new HotThreadsFragment();
                 case 1:
-                    return PlaceholderFragment.newInstance(position + 1);
+                    return new CatalogFragment();
                 case 2:
-                    return PlaceholderFragment.newInstance(position + 1);
+                    return new ProfileFragment();
             }
             return null;
         }
@@ -177,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            Log.e("GetPageTitle","OK");
             switch (position) {
                 case 0:
                     return "热门帖子";

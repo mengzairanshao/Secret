@@ -50,11 +50,14 @@ public class AtyDetail extends AppCompatActivity {
         setHandler();
         button= (Button) findViewById(R.id.detail_comment_button);
         editText= (EditText) findViewById(R.id.detail_comment_editText);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (editText.getText()!=null) {
-                    if (editText.getText().length() <= 5) {
+                    if (Config.getCachedDATA(AtyDetail.this,Config.IS_LOGINED).equals("Logout_succeed")) {
+                        Toast.makeText(AtyDetail.this,R.string.you_has_not_login,Toast.LENGTH_LONG).show();
+                    } else if (editText.getText().length() <= 5){
                         Toast.makeText(AtyDetail.this, R.string.content_cannot_be_less_than_six_words,Toast.LENGTH_LONG).show();
                     } else {
                         final Editable text=editText.getText();

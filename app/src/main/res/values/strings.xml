@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">Secret</string>
-    <string name="phone">Phone</string>
+    <string name="user_name">Username</string>
     <string name="get_code">Get Code</string>
-    <string name="code">Code</string>
-    <string name="login">Login</string>
+    <string name="Password">Password</string>
     <string name="publish_message">Publish Message</string>
     <string name="username_or_password_can_not_be_empty">用户名或者密码不能为空</string>
     <string name="fail">username or password can not be empty</string>
@@ -21,5 +20,11 @@
     <string name="failed_login">登录失败</string>
     <string name="action_refresh">Refresh</string>
     <string name="content_cannot_be_less_than_six_words">回复内容不能少于6个字符</string>
+    <string name="Logout_succeed">成功登出</string>
+    <string name="you_has_not_login">您还没有登陆</string>
+    <string name="not_login_content_can_not_display">您还没有登陆,可能某些内容无法显示</string>
+    <string name="Logout">退出登陆</string>
+    <string name="Login">登陆</string>
+    <string name="you_have_logined">您已登录</string>
 
 </resources>

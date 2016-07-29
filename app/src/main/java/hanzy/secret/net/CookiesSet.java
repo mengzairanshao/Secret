@@ -1,4 +1,5 @@
 package hanzy.secret.net;
+import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
@@ -15,10 +16,9 @@ import java.util.List;
  */
 public class CookiesSet {
     private static String TAG="GetCookies";
-
     public static String getCookieText(Context context) {
-        PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
-        List<Cookie> cookies = myCookieStore.getCookies();
+        PersistentCookieStore cookieStore=new PersistentCookieStore(context);
+        List<Cookie> cookies = cookieStore.getCookies();
         String Value="";
         Log.d(TAG, "cookies.size() = " + cookies.size());
         Utils.setCookies(cookies);
@@ -56,13 +56,13 @@ public class CookiesSet {
 
         //clear the cookies that are on the local disk
         public static void clearCookies(Context context){
-            PersistentCookieStore cookieStore = new PersistentCookieStore(context);
+            PersistentCookieStore cookieStore=new PersistentCookieStore(context);
             cookieStore.clear();
         }
 
         //store the cookies on the local disk
         public static void saveCookies(AsyncHttpClient client, Context context) {
-            PersistentCookieStore cookieStore = new PersistentCookieStore(context);
+            PersistentCookieStore cookieStore=new PersistentCookieStore(context);
             client.setCookieStore(cookieStore);
         }
 

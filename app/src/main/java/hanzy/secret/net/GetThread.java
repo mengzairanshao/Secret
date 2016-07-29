@@ -33,7 +33,7 @@ public class GetThread {
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
+//                    if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
                         Log.e(TAG, "Get Json Data:" + jsonObject.toString());
                         JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("forum_threadlist");
                         length=jsonArray.length();
@@ -53,10 +53,10 @@ public class GetThread {
                             }
 
                         }
-                    } else {
-                        Log.e(TAG,"Failed Get Json Data(auth==null)");
-                        if (failCallback != null) failCallback.onFail();
-                    }
+//                    } else {
+//                        Log.e(TAG,"Failed Get Json Data(auth==null)");
+//                        if (failCallback != null) failCallback.onFail();
+//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if (failCallback != null) failCallback.onFail();

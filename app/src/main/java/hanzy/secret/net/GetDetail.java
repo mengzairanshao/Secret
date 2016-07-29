@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceScreen;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -21,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import hanzy.secret.Message.DetailMessage;
-import hanzy.secret.R;
 import hanzy.secret.secret.Config;
 
 /**
@@ -45,7 +43,7 @@ public class GetDetail {
             public void onSuccess(final String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
+//                    if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
                         Log.e(TAG, "Get Json Data:" + jsonObject.toString());
                         JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("postlist");
                         length = jsonArray.length();
@@ -66,10 +64,10 @@ public class GetDetail {
                             }
                         }
 
-                    } else {
-                        Log.e(TAG, "Failed Get Json Data(auth==null)");
-                        if (failCallback != null) failCallback.onFail();
-                    }
+//                    } else {
+//                        Log.e(TAG, "Failed Get Json Data(auth==null)");
+//                        if (failCallback != null) failCallback.onFail();
+//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if (failCallback != null) failCallback.onFail();
@@ -114,7 +112,7 @@ public class GetDetail {
                     if (jsonObject.has("imagelist")) {
                         for (int j = 0; j < jsonObject1.getJSONArray("imagelist").length(); j++) {
                             str += "<img src=\""
-                                    + Config.NET_URL//<p style="text-align: center;">
+                                    + Config.SITE_URL//<p style="text-align: center;">
                                     + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("url")
                                     + jsonObject1.getJSONObject("attachments").getJSONObject(jsonObject1.getJSONArray("imagelist").get(j).toString()).getString("attachment")
                                     + "\"/><p><strong>"

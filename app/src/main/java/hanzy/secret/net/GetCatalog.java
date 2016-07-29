@@ -25,7 +25,7 @@ public class GetCatalog {
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                    if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
+//                    if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
 
                         Log.e(TAG, "Get Json Data:" + result);
                         JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("catlist");
@@ -55,10 +55,10 @@ public class GetCatalog {
                         }
 
                         if (successCallback != null) successCallback.onSuccess(megs);
-                    } else {
-                        Log.e(TAG,"Failed Get Json Data(auth==null)");
-                        if (failCallback != null) failCallback.onFail();
-                    }
+//                    } else {
+//                        Log.e(TAG,"Failed Get Json Data(auth==null)");
+//                        if (failCallback != null) failCallback.onFail();
+//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if (failCallback != null) failCallback.onFail();

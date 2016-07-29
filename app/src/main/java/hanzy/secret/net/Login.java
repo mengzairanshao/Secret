@@ -21,24 +21,16 @@ public class Login {
                     JSONObject jsonObject=new JSONObject(result);
                         if (jsonObject.getJSONObject("Message").getString("messageval").equals("login_succeed")){
                             Log.e(TAG,"Login Success:"+userName);
-                            if (successCallback!=null)successCallback.onSuccess(result);
+                            Config.cacheDATA(context,"Login_succeed",Config.IS_LOGINED);
+                            Config.cacheDATA(context,jsonObject.getJSONObject("Variables").getString("member_uid"),Config.AUTHOR_ID);
+                            if (successCallback!=null){
+                                successCallback.onSuccess(result);
+                            }
                         }
                         else if(failCallback!=null){
                             Log.e(TAG,"Login Failed:"+userName);
                             failCallback.onFail();
                         }
-                    Config.cacheDATA(context,jsonObject.getJSONObject("Variables").getString("member_uid"),Config.AUTHOR_ID);
-                    new GetPic(context, jsonObject.getJSONObject("Variables").getString("member_uid"), "small", new GetPic.SuccessCallback() {
-                        @Override
-                        public void onSuccess(Object result) {
-                            Config.cacheDATA(context,((String[][]) result)[0][2],Config.USER_HEADER_IMAGE);
-                        }
-                    }, new GetPic.FailCallback() {
-                        @Override
-                        public void onFail() {
-
-                        }
-                    });
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -47,6 +39,7 @@ public class Login {
         }, new NetConnection.FailCallback() {
             @Override
             public void onFail() {
+                Config.cacheDATA(context,"Logout_succeed",Config.IS_LOGINED);
                 Log.e(TAG,"Login Failed(onFail):"+userName);
                 if (failCallback!=null) failCallback.onFail();
             }
