@@ -10,23 +10,25 @@ import java.util.HashMap;
  */
 public class ThreadsMessage {
     private String[][] bitmap;
-    private String tid=null;
-    private String author=null;
-    private String dblastpost=null;
-    private String subject=null;
-    private String views=null;
-    private String replies=null;
-    private String authorid=null;
+    private String tid = null;
+    private String author = null;
+    private String dblastpost = null;
+    private String subject = null;
+    private String views = null;
+    private String replies = null;
+    private String authorid = null;
+    private String dbdateline = null;
 
-    public ThreadsMessage(HashMap<String,Object> hashMap){
-        this.author=hashMap.get("author").toString();
-        this.dblastpost=hashMap.get("dblastpost").toString();
-        this.subject=hashMap.get("subject").toString();
-        this.views=hashMap.get("views").toString();
-        this.replies=hashMap.get("replies").toString();
-        this.tid=hashMap.get("tid").toString();
-        this.bitmap=(String[][]) hashMap.get("bitmap");
-        this.authorid=hashMap.get("authorid").toString();
+    public ThreadsMessage(HashMap<String, Object> hashMap) {
+        this.author = hashMap.get("author").toString();
+        this.dblastpost = hashMap.get("dblastpost").toString();
+        this.subject = hashMap.get("subject").toString();
+        this.views = hashMap.get("views").toString();
+        this.replies = hashMap.get("replies").toString();
+        this.tid = hashMap.get("tid").toString();
+        this.bitmap = (String[][]) hashMap.get("bitmap");
+        this.authorid = hashMap.get("authorid").toString();
+        this.dbdateline = hashMap.get("dbdateline").toString();
     }
 
     public String getAuthor() {
@@ -61,7 +63,11 @@ public class ThreadsMessage {
         return authorid;
     }
 
-    public void setBitmap(int position,String s){
-        bitmap[position][2]=s;
+    public void setBitmap(int position, String s) {
+        bitmap[position][2] = s;
+    }
+
+    public String getDbdateline() {
+        return dbdateline;
     }
 }

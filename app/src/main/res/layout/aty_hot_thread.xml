@@ -9,10 +9,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical">
 
-    <ListView
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/hot_thread_list">
-    </ListView>
+    </com.handmark.pulltorefresh.library.PullToRefreshListView >
 
 </LinearLayout>

@@ -4,39 +4,82 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/text_padding">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/user"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/user">
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="@dimen/user_header_size"
-            android:layout_height="@dimen/user_header_size"
-            android:id="@+id/thread_user_img"/>
-        <TextView
-            android:textColor="#00f"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:id="@+id/thread_author"
-            android:padding="@dimen/text_padding"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true">
+
+            <ImageView
+                android:id="@+id/thread_user_img"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/thread_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="#00f" />
+
+                <TextView
+                    android:id="@+id/thread_dbdateline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/thread_author"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:textSize="@dimen/sub_title_text_size" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true">
+
+            <ImageView
+                android:layout_width="@dimen/pic_size"
+                android:layout_height="@dimen/pic_size"
+                android:layout_gravity="center"
+                android:src="@drawable/view" />
+
+            <TextView
+                android:id="@+id/thread_views"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/text_padding"
+                android:textAppearance="?android:textAppearanceSmall" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/user"
-        android:id="@+id/content">
+        android:layout_below="@id/user">
+
         <TextView
-            android:textAppearance="?android:textAppearanceLarge"
             android:id="@+id/thread_subject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true"
+            android:textAppearance="?android:textAppearanceLarge" />
+
         <TextView
             android:id="@+id/thread_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <ImageView
             android:id="@+id/thread_image"
             android:layout_width="wrap_content"
@@ -44,42 +87,65 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/content">
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:gravity="center">
 
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="@dimen/pic_size"
-            android:layout_height="@dimen/pic_size"
-            android:src="@drawable/view"/>
-        <TextView
-            android:textAppearance="?android:textAppearanceSmall"
-            android:padding="@dimen/text_padding"
-            android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="@dimen/pic_size"
+                android:layout_height="@dimen/pic_size"
+                android:layout_gravity="center"
+                android:src="@drawable/replies" />
+
+            <TextView
+                android:id="@+id/thread_replies"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceSmall" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/thread_views"/>
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="@dimen/pic_size"
-            android:layout_height="@dimen/pic_size"
-            android:src="@drawable/replies"/>
-        <TextView
-            android:textAppearance="?android:textAppearanceSmall"
-            android:padding="@dimen/text_padding"
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="@dimen/pic_size"
+                android:layout_height="@dimen/pic_size"
+                android:layout_gravity="center"
+                android:src="@drawable/date" />
+
+            <TextView
+                android:id="@+id/thread_dblastpost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceSmall" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/thread_replies"/>
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="@dimen/pic_size"
-            android:layout_height="@dimen/pic_size"
-            android:src="@drawable/date"/>
-        <TextView
-            android:textAppearance="?android:textAppearanceSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/thread_dblastpost"/>
+            android:layout_weight="1"
+            android:clickable="true"
+            android:gravity="center_horizontal|center_vertical">
+
+            <TextView
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/more" />
+
+        </LinearLayout>
+
     </LinearLayout>
+
 </RelativeLayout>

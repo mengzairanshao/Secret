@@ -71,7 +71,7 @@ public class GetCatalog {
                 if (failCallback != null) failCallback.onFail();
             }
         }, Config.KEY_MOBILE, Config.VALUE_MOBILE_IS,
-                Config.KEY_MODULE, Config.KEY_MODULE_FORUMINDEX,
+                Config.KEY_MODULE, Config.VALUE_MODULE_FORUMINDEX,
                 Config.KEY_VERSION, Config.VALUE_VERSION_NUM);
 
     }

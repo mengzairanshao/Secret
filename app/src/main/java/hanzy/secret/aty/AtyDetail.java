@@ -16,6 +16,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,17 +38,53 @@ public class AtyDetail extends AppCompatActivity {
     private String TAG="AtyDetail";
     private DetailAdapter detailAdapter;
     private Handler handler;
-    private ListView listView;
+    private PullToRefreshListView listView;
     private List<DetailMessage> detailMessageList = null;
     private Button button;
     private EditText editText;
-
+    private String page="1";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aty_detail);
-        listView = (ListView) findViewById(R.id.detailList);
         final Intent intent = getIntent();
+        listView = (PullToRefreshListView) findViewById(R.id.detailList);
+        listView.setMode(PullToRefreshBase.Mode.BOTH);
+        listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
+                new GetDetail(AtyDetail.this, new GetDetail.SuccessCallback() {
+                    @Override
+                    public void onSuccess(List<DetailMessage> detailMessageList) {
+                        AtyDetail.this.detailMessageList=detailMessageList;
+                        detailAdapter.addAll(AtyDetail.this.detailMessageList);
+                        listView.onRefreshComplete();
+                    }
+                }, new GetDetail.FailCallback() {
+                    @Override
+                    public void onFail() {
+
+                    }
+                },intent.getStringExtra("tid"),"1",handler);
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
+                page=String.valueOf(Integer.parseInt(page)+1);
+                new GetDetail(AtyDetail.this, new GetDetail.SuccessCallback() {
+                    @Override
+                    public void onSuccess(List<DetailMessage> detailMessageList) {
+                        detailAdapter.appendItem(detailMessageList);
+                        listView.onRefreshComplete();
+                    }
+                }, new GetDetail.FailCallback() {
+                    @Override
+                    public void onFail() {
+
+                    }
+                },intent.getStringExtra("tid"),page,handler);
+            }
+        });
         this.setTitle(intent.getStringExtra("subject"));
         setHandler();
         button= (Button) findViewById(R.id.detail_comment_button);
@@ -55,7 +94,7 @@ public class AtyDetail extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (editText.getText()!=null) {
-                    if (Config.getCachedDATA(AtyDetail.this,Config.IS_LOGINED).equals("Logout_succeed")) {
+                    if (Config.getCachedDATA(AtyDetail.this,Config.IS_LOGIN).equals("Logout_succeed")) {
                         Toast.makeText(AtyDetail.this,R.string.you_has_not_login,Toast.LENGTH_LONG).show();
                     } else if (editText.getText().length() <= 5){
                         Toast.makeText(AtyDetail.this, R.string.content_cannot_be_less_than_six_words,Toast.LENGTH_LONG).show();
@@ -86,7 +125,7 @@ public class AtyDetail extends AppCompatActivity {
                 AtyDetail.this.detailMessageList = detailMessageList;
                 detailAdapter = new DetailAdapter(AtyDetail.this);
                 detailAdapter.addAll(detailMessageList);
-                listView.setAdapter(detailAdapter);
+                listView.getRefreshableView().setAdapter(detailAdapter);
             }
         }, new GetDetail.FailCallback() {
             @Override
@@ -98,14 +137,15 @@ public class AtyDetail extends AppCompatActivity {
                 }
 
             }
-        }, intent.getStringExtra("tid"), handler);
+        }, intent.getStringExtra("tid"),"1", handler);
+
     }
 
     public void setHandler() {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                DetailAdapter.handlerSet(msg,detailMessageList,listView,handler,detailAdapter);
+                detailAdapter.handlerSet(msg,detailMessageList);
             }
         };
     }

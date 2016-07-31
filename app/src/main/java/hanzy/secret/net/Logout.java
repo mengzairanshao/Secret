@@ -23,7 +23,7 @@ public class Logout {
                     Log.e(TAG,""+jsonObject.toString());
                     if (jsonObject.getJSONObject("Message").getString("messageval").equals("logout_succeed")){
                         CookiesSet.Utils.clearCookies(context);
-                        Config.cacheDATA(context,"Logout_succeed",Config.IS_LOGINED);
+                        Config.cacheDATA(context,"Logout_succeed",Config.IS_LOGIN);
                         if (successCallback!=null){
                             successCallback.onSuccess(result);
                         }

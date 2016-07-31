@@ -1,6 +1,7 @@
 package hanzy.secret.secret;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,9 @@ public class StartingActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Config.getCachedDATA(StartingActivity.this,Config.IS_LOGIN)==null){
+            Config.InitDATA(StartingActivity.this);
+        }
         startActivity(new Intent(StartingActivity.this,MainActivity.class));
         finish();
     }

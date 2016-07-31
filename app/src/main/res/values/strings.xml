@@ -26,5 +26,6 @@
     <string name="Logout">退出登陆</string>
     <string name="Login">登陆</string>
     <string name="you_have_logined">您已登录</string>
+    <string name="more">···</string>
 
 </resources>

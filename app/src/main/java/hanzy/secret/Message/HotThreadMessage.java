@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class HotThreadMessage {
 
     private String TAG="HotThreadMessage";
-    private String bitmap;
+    private String[][] bitmap;
     private String tid;
     private String fid;
     private String author;
@@ -23,16 +23,16 @@ public class HotThreadMessage {
     private String dblastpost;
 
 
-    public HotThreadMessage(HashMap<String,String> hashMap) {
-        this.author = hashMap.get("author");
-        this.dbdateline = hashMap.get("dbdateline");
-        this.dblastpost = hashMap.get("dblastpost");
-        this.fid = hashMap.get("fid");
-        this.replies = hashMap.get("replies");
-        this.subject = hashMap.get("subject");
-        this.tid = hashMap.get("tid");
-        this.views = hashMap.get("views");
-        this.bitmap=hashMap.get("bitmap");
+    public HotThreadMessage(HashMap<String,Object> hashMap) {
+        this.author = hashMap.get("author").toString();
+        this.dbdateline = hashMap.get("dbdateline").toString();
+        this.dblastpost = hashMap.get("dblastpost").toString();
+        this.fid = hashMap.get("fid").toString();
+        this.replies = hashMap.get("replies").toString();
+        this.subject = hashMap.get("subject").toString();
+        this.tid = hashMap.get("tid").toString();
+        this.views = hashMap.get("views").toString();
+        this.bitmap=(String[][]) hashMap.get("bitmap");
     }
     public String getAuthor() {
         return author;
@@ -66,7 +66,11 @@ public class HotThreadMessage {
         return views;
     }
 
-    public String getBitmap() {
+    public String[][] getBitmap() {
         return bitmap;
+    }
+
+    public void setBitmap(int position, String string) {
+        this.bitmap[position][2] = string;
     }
 }

@@ -1,11 +1,13 @@
 package hanzy.secret.Adapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,6 +23,9 @@ import hanzy.secret.utils.TimeUtils;
  */
 public class HotThreadAdapter extends BaseAdapter{
 
+    private static List<HotThreadMessage> hotThreadMessageList_copy=new ArrayList<>();
+    private static Handler handler;
+    private static ListView listView;
     private LayoutInflater inflater;
     private Context context=null;
     private List<HotThreadMessage> hotThreadMessages=new ArrayList<>();
@@ -32,6 +37,37 @@ public class HotThreadAdapter extends BaseAdapter{
         this.context = context;
         this.inflater=LayoutInflater.from(context);
     }
+
+//    /**
+//     * @param handler
+//     * @param threadsMessageList
+//     * @param listView
+//     * 修改静态变量
+//     */
+//    public static void set(Handler handler, List<HotThreadMessage> threadsMessageList, ListView listView) {
+//        HotThreadAdapter.handler = handler;
+//        HotThreadAdapter.hotThreadMessageList_copy = threadsMessageList;
+//        HotThreadAdapter.listView = listView;
+//    }
+
+//    public static void updateView(int itemIndex) {
+//        View view;
+//        if (itemIndex >= listView.getFirstVisiblePosition() && itemIndex < (listView.getChildCount() + listView.getFirstVisiblePosition())) {
+//            HotThreadMessage hotThreadMessage = hotThreadMessageList_copy.get(itemIndex);
+//            final String bitmap = hotThreadMessage.getBitmap()[0][2];
+//            if (bitmap != null) {
+//                view = listView.getChildAt(itemIndex);
+//                ViewHolder viewHolder = new ViewHolder(view);
+//                viewHolder.author.setText(hotThreadMessage.getAuthor());
+//                viewHolder.dblastpost.setText(TimeUtils.times(Integer.parseInt(hotThreadMessage.getDblastpost()) * 1000L));
+//                //viewHolder.dbdateline.setText(TimeUtils.times(Integer.parseInt(hotThreadMessage.getDbdateline()) * 1000L));
+//                viewHolder.replies.setText(hotThreadMessage.getReplies());
+//                viewHolder.subject1.setText(hotThreadMessage.getSubject());
+//                viewHolder.views.setText(hotThreadMessage.getViews());
+//                viewHolder.user_img.setImageBitmap(PicUtils.createCircleImage(hotThreadMessage.getBitmap()[0][2]));
+//            }
+//        }
+//    }
 
     @Override
     public int getCount() {
@@ -50,7 +86,7 @@ public class HotThreadAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder=null;
+        ViewHolder viewHolder;
         if (convertView==null){
             convertView=inflater.inflate(R.layout.aty_hot_thread_list_cell,null);
             viewHolder=new ViewHolder(convertView);
@@ -64,7 +100,7 @@ public class HotThreadAdapter extends BaseAdapter{
         viewHolder.replies.setText(hotThreadMessage.getReplies());
         viewHolder.subject1.setText(hotThreadMessage.getSubject());
         viewHolder.views.setText(hotThreadMessage.getViews());
-        viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(hotThreadMessage.getBitmap()));
+        viewHolder.user_img.setImageBitmap(PicUtils.createCircleImage(hotThreadMessage.getBitmap()[0][2]));
         return convertView;
     }
 
@@ -100,56 +136,5 @@ public class HotThreadAdapter extends BaseAdapter{
             this.views = (TextView) view.findViewById(R.id.hot_thread_views);
         }
     }
-//    /**
-//     *
-//     *
-//     * @param context  The context where the View associated with this SimpleAdapter is running
-//     * @param data     A List of Maps. Each entry in the List corresponds to one row in the list. The
-//     *                 Maps contain the data for each row, and should include all the entries specified in
-//     *                 "from"
-//     * @param resource Resource identifier of a view layout that defines the views for this list
-//     *                 item. The layout file should include at least those named views defined in "to"
-//     * @param from     A list of column names that will be added to the Map associated with each
-//     *                 item.
-//     * @param to       The views that should display column in the "from" parameter. These should all be
-//     *                 TextViews. The first N views in this list are given the values of the first N columns
-//     */
-//    public HotThreadAdapter(Context context, List<? extends Map<String, ?>> data, int resource, String[] from, int[] to) {
-//        super(context, data, resource, from, to);
-//    }
-//
-//
-//    public static List<Map<String, Object>> GetData(){
-//        return list;
-//    }
-//
-//    public static List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-//    public void setData(){
-//        Map<String, Object> map = new HashMap<String, Object>();
-//        for (int i=0;i<hotThreadMessages.size();i++){
-//            map = new HashMap<String, Object>();
-//            map.put("author",hotThreadMessages.get(i).getAuthor());
-//            map.put("subject",hotThreadMessages.get(i).getSubject());
-//            map.put("views", hotThreadMessages.get(i).getViews());
-//            map.put("replies", hotThreadMessages.get(i).getReplies());
-//            map.put("dblastpost", TimeUtils.times(Integer.parseInt(hotThreadMessages.get(i).getDblastpost())*1000L));
-//            map.put("hot_thread_user_img",hotThreadMessages.get(i).getImage());
-//            list.add(map);
-//            notifyDataSetChanged();
-//        }
-//        //return list;
-//    }
-//
-//    private  List<HotThreadMessage> hotThreadMessages = new ArrayList<HotThreadMessage>();
-//    public int set(List<HotThreadMessage> hotThreadMessages){
-//        this.hotThreadMessages=hotThreadMessages;
-//        setData();
-//        return 1;
-//    }
-//
-//    public List<HotThreadMessage> getHotThreadMessages() {
-//        return hotThreadMessages;
-//    }
-
 
 }

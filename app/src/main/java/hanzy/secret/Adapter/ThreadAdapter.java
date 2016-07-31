@@ -62,10 +62,11 @@ public class ThreadAdapter extends BaseAdapter {
                 ViewHolder viewHolder = new ViewHolder(view);
                 viewHolder.author.setText(threadsMessage.getAuthor());
                 viewHolder.dblastpost.setText(TimeUtils.times(Integer.parseInt(threadsMessage.getDblastpost()) * 1000L));
+                viewHolder.dbdateline.setText(TimeUtils.times(Integer.parseInt(threadsMessage.getDbdateline()) * 1000L));
                 viewHolder.replies.setText(threadsMessage.getReplies());
                 viewHolder.subject1.setText(threadsMessage.getSubject());
                 viewHolder.views.setText(threadsMessage.getViews());
-                viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(threadsMessage.getBitmap()[0][2]));
+                viewHolder.user_img.setImageBitmap(PicUtils.createCircleImage(threadsMessage.getBitmap()[0][2]));
             }
         }
     }
@@ -110,10 +111,11 @@ public class ThreadAdapter extends BaseAdapter {
         ThreadsMessage threadsMessage = getItem(position);
         viewHolder.author.setText(threadsMessage.getAuthor());
         viewHolder.dblastpost.setText(TimeUtils.times(Integer.parseInt(threadsMessage.getDblastpost()) * 1000L));
+        viewHolder.dbdateline.setText(TimeUtils.times(Integer.parseInt(threadsMessage.getDbdateline()) * 1000L));
         viewHolder.replies.setText(threadsMessage.getReplies());
         viewHolder.subject1.setText(threadsMessage.getSubject());
         viewHolder.views.setText(threadsMessage.getViews());
-        viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(threadsMessage.getBitmap()[0][2]));
+        viewHolder.user_img.setImageBitmap(PicUtils.createCircleImage(threadsMessage.getBitmap()[0][2]));
         return convertView;
     }
 
@@ -123,11 +125,13 @@ public class ThreadAdapter extends BaseAdapter {
         public TextView views;
         public TextView replies;
         public TextView dblastpost;
+        public TextView dbdateline;
         public ImageView user_img;
 
         public ViewHolder(View view) {
             this.author = (TextView) view.findViewById(R.id.thread_author);
             this.dblastpost = (TextView) view.findViewById(R.id.thread_dblastpost);
+            this.dbdateline = (TextView) view.findViewById(R.id.thread_dbdateline);
             this.replies = (TextView) view.findViewById(R.id.thread_replies);
             this.subject1 = (TextView) view.findViewById(R.id.thread_subject);
             this.user_img = (ImageView) view.findViewById(R.id.thread_user_img);

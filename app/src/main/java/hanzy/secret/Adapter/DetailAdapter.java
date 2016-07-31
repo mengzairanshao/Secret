@@ -33,15 +33,15 @@ import hanzy.secret.utils.TimeUtils;
  * Created by h on 2016/7/7.
  */
 public class DetailAdapter extends BaseAdapter {
-    private static Handler handler;
-    private static List<DetailMessage> detailMessageList_copy;
-    private static ListView listView;
+//    private static Handler handler;
+//    private static List<DetailMessage> detailMessageList_copy;
+//    private static ListView listView;
     private static String TAG = "DetailAdapter";
     private Context context;
     private LayoutInflater inflater;
     private List<DetailMessage> detailMessageList = new ArrayList<>();
-    private ImageView imageView;
-    private Boolean aBoolean = false;
+//    private ImageView imageView;
+//    private Boolean aBoolean = false;
 
 
     public DetailAdapter(Context context) {
@@ -49,34 +49,34 @@ public class DetailAdapter extends BaseAdapter {
         this.inflater = LayoutInflater.from(context);
     }
 
-    /**
-     * @param handler
-     * @param detailMessageList
-     * @param listView          修改静态变量
-     */
-    public static void set(Handler handler, List<DetailMessage> detailMessageList, ListView listView) {
-        DetailAdapter.handler = handler;
-        DetailAdapter.detailMessageList_copy = detailMessageList;
-        DetailAdapter.listView = listView;
-    }
+//    /**
+//     * @param handler
+//     * @param detailMessageList
+//     * @param listView          修改静态变量
+//     */
+//    public static void set(Handler handler, List<DetailMessage> detailMessageList, ListView listView) {
+//        DetailAdapter.handler = handler;
+//        DetailAdapter.detailMessageList_copy = detailMessageList;
+//        DetailAdapter.listView = listView;
+//    }
 
-    /**
-     * @param itemIndex itemIndex是想要修改的ListView的编号
-     */
-    public static void updateView(int itemIndex) {
-        View view;
-        if (itemIndex >= listView.getFirstVisiblePosition() && itemIndex < (listView.getChildCount() + listView.getFirstVisiblePosition())) {
-            DetailMessage detailMessage = detailMessageList_copy.get(itemIndex);
-            view = listView.getChildAt(itemIndex);
-            ViewHolder viewHolder = new ViewHolder(view);
-            viewHolder.message.setText((Spanned) detailMessage.getMessage());
-            viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[0][2]));
-        }
-    }
+//    /**
+//     * @param itemIndex itemIndex是想要修改的ListView的编号
+//     */
+//    public static void updateView(int itemIndex) {
+//        View view;
+//        if (itemIndex >= listView.getFirstVisiblePosition() && itemIndex < (listView.getChildCount() + listView.getFirstVisiblePosition())) {
+//            DetailMessage detailMessage = detailMessageList_copy.get(itemIndex);
+//            view = listView.getChildAt(itemIndex);
+//            ViewHolder viewHolder = new ViewHolder(view);
+//            viewHolder.message.setText((Spanned) detailMessage.getMessage());
+//            viewHolder.user_img.setImageBitmap(PicUtils.createCircleImage(detailMessage.getBitmap()[0][2]));
+//        }
+//    }
 
-    public static void handlerSet(Message msg, List<DetailMessage> detailMessageList, ListView listView, Handler handler, DetailAdapter detailAdapter) {
+    public void handlerSet(Message msg, List<DetailMessage> detailMessageList) {
         if (msg.what == Config.USER_LOAD_IMAGE) {
-            DetailAdapter.set(handler, detailMessageList, listView);
+            //DetailAdapter.set(handler, detailMessageList, listView);
             String[][] bitmap = (String[][]) msg.obj;
             DetailMessage detailMessage;
             for (int i = 0; i < detailMessageList.size(); i++) {
@@ -85,21 +85,23 @@ public class DetailAdapter extends BaseAdapter {
                     for (int j = 0; j < detailMessage.getBitmap().length; j++) {
                         if (detailMessage.getBitmap()[j][1].equals(bitmap[k][1])) {
                             detailMessageList.get(i).setBitmap(j, bitmap[k][2]);
-                            updateView(i);
+//                            updateView(i);
+                            addAll(detailMessageList);
                         }
                     }
                 }
             }
         }
         if (msg.what == Config.SPANNED_MESSAGE) {
-            DetailAdapter.set(handler, detailMessageList, listView);
+            //DetailAdapter.set(handler, detailMessageList, listView);
             HashMap<String, Object> hashMap = (HashMap<String, Object>) msg.obj;
             DetailMessage detailMessage;
             for (int i = 0; i < detailMessageList.size(); i++) {
                 detailMessage = detailMessageList.get(i);
                 if (detailMessage.getPid() == hashMap.get("pid")) {
                     detailMessageList.get(i).setMessage(hashMap.get("message"));
-                    updateView(i);
+//                    updateView(i);
+                    addAll(detailMessageList);
                 }
             }
         }
@@ -112,7 +114,12 @@ public class DetailAdapter extends BaseAdapter {
 
     public void addAll(List<DetailMessage> detailMessageList) {
         this.detailMessageList = detailMessageList;
-//        notifyDataSetChanged();
+        notifyDataSetChanged();
+    }
+
+    public void appendItem(List<DetailMessage> detailMessageList){
+        this.detailMessageList.addAll(detailMessageList);
+        notifyDataSetChanged();
     }
 
     public void addItem(HashMap<String,Object> hashMap){
@@ -156,11 +163,11 @@ public class DetailAdapter extends BaseAdapter {
             viewHolder.message.setText((Spanned) detailMessage.getMessage());
             //viewHolder.message.setMovementMethod(LinkMovementMethod.getInstance());
         }
-        viewHolder.user_img.setImageBitmap(PicUtils.convertStringToIcon(detailMessage.getBitmap()[0][2]));
+        viewHolder.user_img.setImageBitmap(PicUtils.createCircleImage(detailMessage.getBitmap()[0][2]));
         return convertView;
     }
 
-    public static class ViewHolder {
+    public class ViewHolder {
         public TextView author;
         public TextView message;
         public TextView posttime;

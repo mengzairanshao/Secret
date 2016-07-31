@@ -1,7 +1,6 @@
 package hanzy.secret.aty;
 
 import android.graphics.drawable.BitmapDrawable;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,9 +10,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public static CatalogFragment catalogFragment;
     public static ProfileFragment profileFragment;
     private TabLayout tabLayout;
+    private TextView title;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -53,22 +53,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         CookiesSet.getCookieText(MainActivity.this);
-        if (Config.getCachedDATA(MainActivity.this,Config.IS_LOGINED).equals("Logout_succeed")&&flag) {
+        if (Config.getCachedDATA(MainActivity.this,Config.IS_LOGIN).equals("Logout_succeed")&&flag) {
             Toast.makeText(MainActivity.this, R.string.not_login_content_can_not_display,Toast.LENGTH_LONG).show();
             flag=false;
         }
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-        if (Config.getCachedDATA(MainActivity.this,Config.IS_LOGINED).equals("Login_succeed")&&Config.getCachedDATA(MainActivity.this,Config.USER_HEADER_IMAGE)!=null){
-                toolbar.setLogo(new BitmapDrawable(PicUtils.convertStringToIcon(Config.getCachedDATA(MainActivity.this,Config.USER_HEADER_IMAGE))));
-            }else {
-            toolbar.setLogo(R.drawable.user_img);
-        }
-            toolbar.setTitle(R.string.app_name);
-        }
-        setSupportActionBar(toolbar);
+        title= (TextView) findViewById(R.id.title);
+        assert title != null;
+        title.setText(R.string.app_name);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -102,12 +94,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         super.onResume();
         if (toolbar != null) {
-            if (Config.getCachedDATA(MainActivity.this,Config.IS_LOGINED).equals("Login_succeed")&&Config.getCachedDATA(MainActivity.this,Config.USER_HEADER_IMAGE)!=null){
-                toolbar.setLogo(new BitmapDrawable(PicUtils.convertStringToIcon(Config.getCachedDATA(MainActivity.this,Config.USER_HEADER_IMAGE))));
+            if (Config.getCachedDATA(MainActivity.this,Config.IS_LOGIN).equals("Login_succeed")&&Config.getCachedDATA(MainActivity.this,Config.USER_HEADER_IMAGE)!=null){
+                toolbar.setLogo(new BitmapDrawable(PicUtils.createCircleImage(Config.getCachedDATA(MainActivity.this,Config.USER_HEADER_IMAGE))));
             }else {
                 toolbar.setLogo(R.drawable.user_img);
             }
-            toolbar.setTitle(R.string.app_name);
+            toolbar.setTitle("");
         }
         setSupportActionBar(toolbar);
     }

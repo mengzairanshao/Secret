@@ -39,8 +39,8 @@ public class AtyThreads extends AppCompatActivity {
         Intent i=getIntent();
         listView= (ListView) findViewById(R.id.threadlist);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        assert toolbar!=null;
         toolbar.setTitle(i.getStringExtra("name"));
-//        toolbar.inflateMenu(R.menu.menu_aty_thread);
         toolbar.setNavigationIcon(R.drawable.left);
         setSupportActionBar(toolbar);
         setHandler();
@@ -83,8 +83,6 @@ public class AtyThreads extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
             Intent intent=new Intent(AtyThreads.this,AtyDetail.class);
-            Log.e(TAG,"position="+position+"   tid="+threadsMessageList.get(position).getTid());
-            Log.e(TAG,"position="+position+"   subject="+threadsMessageList.get(position).getSubject());
             intent.putExtra("tid",threadsMessageList.get(position).getTid());
             intent.putExtra("subject",threadsMessageList.get(position).getSubject());
             startActivity(intent);

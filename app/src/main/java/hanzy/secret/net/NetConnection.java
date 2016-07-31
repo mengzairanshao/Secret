@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -46,7 +47,6 @@ public class NetConnection {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     Log.e(TAG,"POST成功");
                     String json=new String(responseBody);
-                    Log.e(TAG,json);
                     if (successCallback!=null)successCallback.onSuccess(json);
                 }
 
@@ -93,16 +93,17 @@ public class NetConnection {
         }
     }
 
-        public static interface SuccessCallback {
+        public interface SuccessCallback {
             void onSuccess(String result);
         }
 
-        public static interface FailCallback {
+        public interface FailCallback {
             void onFail();
         }
 
     private static ConnectivityManager connectivityManager;
 
+    @NonNull
     public static String isMobileNetworkAvailable(Context context){
         if (null==connectivityManager){
             connectivityManager= (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

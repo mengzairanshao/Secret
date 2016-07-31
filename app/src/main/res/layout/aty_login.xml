@@ -14,14 +14,15 @@
         android:layout_height="50dp"
         android:id="@+id/icon"
         android:src="@mipmap/ic_launcher"
+        android:layout_above="@+id/user"
         android:layout_centerHorizontal="true" />
 
     <LinearLayout
-        android:layout_below="@id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/user"
+        android:layout_above="@+id/password"
         android:layout_centerHorizontal="true">
         <TextView
             android:layout_width="wrap_content"
@@ -40,8 +41,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/password"
-        android:layout_below="@id/user"
-        android:layout_centerHorizontal="true">
+        android:layout_above="@+id/btnLogin"
+        android:layout_alignEnd="@+id/user">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,7 +61,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/btnLogin"
         android:text="@string/Login"
-        android:layout_below="@+id/password"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

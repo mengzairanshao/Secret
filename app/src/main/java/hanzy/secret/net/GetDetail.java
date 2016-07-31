@@ -34,8 +34,7 @@ public class GetDetail {
     private JSONObject jsonObject1 = new JSONObject();
     private int length = 0;
 
-    public GetDetail(final Context context, final SuccessCallback successCallback, final FailCallback failCallback, final String tid, Handler handler) {
-
+    public GetDetail(final Context context, final SuccessCallback successCallback, final FailCallback failCallback, final String tid,String page ,Handler handler) {
         this.context = context;
         this.handler = handler;
         new NetConnection(context, Config.BASE_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
@@ -43,7 +42,6 @@ public class GetDetail {
             public void onSuccess(final String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-//                    if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
                         Log.e(TAG, "Get Json Data:" + jsonObject.toString());
                         JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("postlist");
                         length = jsonArray.length();
@@ -63,11 +61,6 @@ public class GetDetail {
                                 GetPic();
                             }
                         }
-
-//                    } else {
-//                        Log.e(TAG, "Failed Get Json Data(auth==null)");
-//                        if (failCallback != null) failCallback.onFail();
-//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if (failCallback != null) failCallback.onFail();
@@ -79,7 +72,7 @@ public class GetDetail {
             public void onFail() {
                 if (failCallback != null) failCallback.onFail();
             }
-        }, "version", "4", "module", "viewthread", "tid", tid);
+        }, Config.KEY_VERSION, Config.VALUE_VERSION_NUM, Config.KEY_MODULE, "viewthread", Config.KEY_TID, tid,Config.KEY_PAGE,page);
 
     }
 

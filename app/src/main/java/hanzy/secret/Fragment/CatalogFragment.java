@@ -37,7 +37,6 @@ public class CatalogFragment extends Fragment{
         View view = inflater.inflate(R.layout.aty_catalog, container, false);
         lv= (ListView) view.findViewById(R.id.Catalog_list);
         if (rootView==null){
-            Log.e(TAG,"onCreateView1");
             rootView=view;
         }else {
             ViewGroup parent = (ViewGroup) rootView.getParent();

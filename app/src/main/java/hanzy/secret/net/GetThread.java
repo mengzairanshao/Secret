@@ -33,30 +33,25 @@ public class GetThread {
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-//                    if (!jsonObject.getJSONObject("Variables").getString("auth").equals("null")) {
                         Log.e(TAG, "Get Json Data:" + jsonObject.toString());
                         JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("forum_threadlist");
                         length=jsonArray.length();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject1= jsonArray.getJSONObject(i);
-                            final HashMap<String, Object> data=setData(jsonObject1,"author","dblastpost","subject","views","replies","tid","authorid");
+                            final HashMap<String, Object> data=setData(jsonObject1,"author","dblastpost","subject","views","replies","tid","authorid","dbdateline");
                             final String[][] bitmap=new String[1][3];
                             bitmap[0][0]=jsonObject1.getString("authorid");
-                            bitmap[0][1]=Config.PIC_URL+"?uid="+jsonObject1.getString("authorid")+"&size=small";
+                            bitmap[0][1]=Config.PIC_URL+"?uid="+jsonObject1.getString("authorid")+"&size="+Config.VALUE_USER_HEADER_IMAGE_SIZE;
                             data.put("bitmap",bitmap);
                             sortList(megs,data);
                             if (successCallback != null){
                                 successCallback.onSuccess(megs);
                                 if (megs.size()==length) {
-                                    GetPic(successCallback, failCallback);
+                                    GetPic();
                                 }
                             }
 
                         }
-//                    } else {
-//                        Log.e(TAG,"Failed Get Json Data(auth==null)");
-//                        if (failCallback != null) failCallback.onFail();
-//                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if (failCallback != null) failCallback.onFail();
@@ -71,7 +66,7 @@ public class GetThread {
         }, "version","4","module","forumdisplay","fid",fid,"page","1") ;
     }
 
-    private void GetPic(final SuccessCallback successCallback, final FailCallback failCallback){
+    private void GetPic(){
         for (i=0;i<megs.size();i++){
             new GetPic(context, megs.get(i).getBitmap()[0][1], new GetPic.SuccessCallback() {
                 @Override
@@ -90,15 +85,13 @@ public class GetThread {
         }
     }
 
-    public static interface SuccessCallback {
+    public interface SuccessCallback {
         void onSuccess(List<ThreadsMessage> threadsMessageList);
     }
 
-    public static interface FailCallback {
+    public interface FailCallback {
         void onFail();
     }
-
-
 
     private HashMap<String, Object> setData(JSONObject jsonObject, String... strings) {
         final HashMap<String, Object> data = new HashMap<>();

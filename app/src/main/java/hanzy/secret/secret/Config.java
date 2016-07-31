@@ -21,11 +21,14 @@ public class Config {
     public static final String KEY_ACTION ="action";
     public static final String KEY_MOBILE ="mobile";
     public static final String KEY_MODULE ="module";
-    public static final String KEY_MODULE_FORUMINDEX ="forumindex";
     public static final String KEY_VERSION ="version";
+    public static final String KEY_TID="tid";
+    public static final String KEY_PAGE="page";
 
+    public static final String VALUE_MODULE_FORUMINDEX ="forumindex";
     public static final String VALUE_MOBILE_IS ="no";
     public static final String VALUE_VERSION_NUM = "4";
+    public static final String VALUE_USER_HEADER_IMAGE_SIZE ="small";
 
     public static final int SPANNED_MESSAGE=2;
     public static final int USER_LOAD_IMAGE=1;
@@ -33,7 +36,7 @@ public class Config {
     public static final String USER_HEADER_IMAGE="USER_HEADER_IMAGE";
     public static final String FORM_HASH = "FORM_HASH";
     public static final String AUTHOR_ID ="AUTHOR_ID";
-    public static final String IS_LOGINED="IS_LOGINED";
+    public static final String IS_LOGIN ="IS_LOGIN";
 
     public static String NUM="0";
 
@@ -45,5 +48,9 @@ public class Config {
         Editor e = context.getSharedPreferences(APP_ID, Context.MODE_PRIVATE).edit();
         e.putString(key, data);
         e.commit();
+    }
+
+    public static void InitDATA(Context context){
+        Config.cacheDATA(context,"Logout_succeed",Config.IS_LOGIN);
     }
 }

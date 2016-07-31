@@ -11,13 +11,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="hanzy.secret.aty.AtyDetail">
 
-    <ListView
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/detailList"
         android:layout_above="@+id/linearLayout"
         android:layout_alignParentEnd="false">
-    </ListView>
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
 
 
     <LinearLayout

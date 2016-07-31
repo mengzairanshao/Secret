@@ -2,6 +2,8 @@ package hanzy.secret.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import java.util.List;
 
@@ -25,19 +30,39 @@ import hanzy.secret.net.NetConnection;
  */
 public class HotThreadsFragment extends Fragment{
 
+    private Handler handler;
     private View rootView;
     private HotThreadsFragment hotThreadsFragment;
     private String TAG="HotThreadsFragment";
-    private List<HotThreadMessage> hotThreadMessages=null;
-    private ListView lv;
+    private List<HotThreadMessage> hotThreadMessageList=null;
+    private PullToRefreshListView listView;
+    private HotThreadAdapter hotThreadAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.aty_hot_thread, container, false);
-        lv= (ListView) view.findViewById(R.id.hot_thread_list);
+        listView= (PullToRefreshListView ) view.findViewById(R.id.hot_thread_list);
+        hotThreadAdapter=new HotThreadAdapter(getActivity());
+        listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                new GetHotThread(getActivity(), new GetHotThread.SuccessCallback() {
+                    @Override
+                    public void onSuccess(List<HotThreadMessage> hotThreadMessageList) {
+                        HotThreadsFragment.this.hotThreadMessageList=hotThreadMessageList;
+                        hotThreadAdapter.addAll(HotThreadsFragment.this.hotThreadMessageList);
+                        listView.onRefreshComplete();
+                    }
+                }, new GetHotThread.FailCallback() {
+                    @Override
+                    public void onFail() {
+
+                    }
+                },handler);
+            }
+        });
         if (rootView==null){
-            Log.e(TAG,"onCreateView1");
             rootView=view;
         }else {
             ViewGroup parent = (ViewGroup) rootView.getParent();
@@ -46,17 +71,18 @@ public class HotThreadsFragment extends Fragment{
             }
             return rootView;
         }
-        Log.e(TAG,"onCreateView0");
+        setHandler();
         new GetHotThread(getActivity(), new GetHotThread.SuccessCallback() {
             @Override
-            public void onSuccess(List<HotThreadMessage> hotThreadMessages) {
+            public void onSuccess(List<HotThreadMessage> hotThreadMessageList) {
                 if (NetConnection.isMobileNetworkAvailable(getActivity()).equals("mobile")){
                     Toast.makeText(getActivity(),R.string.MobileNetwork,Toast.LENGTH_LONG).show();
                 }
-                HotThreadsFragment.this.hotThreadMessages=hotThreadMessages;
+                HotThreadsFragment.this.hotThreadMessageList=hotThreadMessageList;
                 HotThreadAdapter hotThreadAdapter=new HotThreadAdapter(getActivity());
-                hotThreadAdapter.addAll(hotThreadMessages);
-                lv.setAdapter(hotThreadAdapter);
+                hotThreadAdapter.addAll(hotThreadMessageList);
+                HotThreadsFragment.this.hotThreadAdapter=hotThreadAdapter;
+                listView.setAdapter(hotThreadAdapter);
             }
         }, new GetHotThread.FailCallback() {
             @Override
@@ -68,18 +94,42 @@ public class HotThreadsFragment extends Fragment{
                 }
 
             }
-        });
-        lv.setOnItemClickListener(new OnItemClickListenerImp());
+        },handler);
+        listView.setOnItemClickListener(new OnItemClickListenerImp());
         return view;
     }
     public class OnItemClickListenerImp implements AdapterView.OnItemClickListener {
 
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
+            Log.e(TAG,""+listView.getRefreshableView().getFirstVisiblePosition());
+            Log.e(TAG,""+position);
             Intent intent=new Intent(getActivity(),AtyDetail.class);
-            intent.putExtra("tid",hotThreadMessages.get(position).getTid());
-            intent.putExtra("subject",hotThreadMessages.get(position).getSubject());
+            intent.putExtra("tid",hotThreadMessageList.get(position-1).getTid());
+            intent.putExtra("subject",hotThreadMessageList.get(position-1).getSubject());
             startActivity(intent);
         }
+    }
+
+    public void setHandler(){
+        handler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                if(msg.what==1)
+                {
+                    //HotThreadAdapter.set(handler,hotThreadMessageList,listView);
+                    String[][] bitmap=(String[][]) msg.obj;
+                    for (String[] aBitmap : bitmap) {
+                        for (int i = 0; i < hotThreadMessageList.size(); i++) {
+                            HotThreadMessage threadsMessage = hotThreadMessageList.get(i);
+                            if (threadsMessage.getBitmap()[0][1].equals(aBitmap[1])) {
+                                hotThreadMessageList.get(i).setBitmap(0, bitmap[0][2]);
+                                hotThreadAdapter.addAll(hotThreadMessageList);
+                            }
+                        }
+                    }
+                }
+            }
+        };
     }
 }

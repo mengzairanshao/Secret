@@ -17,11 +17,11 @@ public class Login {
             @Override
             public void onSuccess(String result) {
                 try {
-                    Log.e(TAG,"Result"+result);
                     JSONObject jsonObject=new JSONObject(result);
-                        if (jsonObject.getJSONObject("Message").getString("messageval").equals("login_succeed")){
+                    Log.e(TAG,"Result"+jsonObject.toString());
+                    if (jsonObject.getJSONObject("Message").getString("messageval").equals("login_succeed")){
                             Log.e(TAG,"Login Success:"+userName);
-                            Config.cacheDATA(context,"Login_succeed",Config.IS_LOGINED);
+                            Config.cacheDATA(context,"Login_succeed",Config.IS_LOGIN);
                             Config.cacheDATA(context,jsonObject.getJSONObject("Variables").getString("member_uid"),Config.AUTHOR_ID);
                             if (successCallback!=null){
                                 successCallback.onSuccess(result);
@@ -39,7 +39,7 @@ public class Login {
         }, new NetConnection.FailCallback() {
             @Override
             public void onFail() {
-                Config.cacheDATA(context,"Logout_succeed",Config.IS_LOGINED);
+                Config.cacheDATA(context,"Logout_succeed",Config.IS_LOGIN);
                 Log.e(TAG,"Login Failed(onFail):"+userName);
                 if (failCallback!=null) failCallback.onFail();
             }
