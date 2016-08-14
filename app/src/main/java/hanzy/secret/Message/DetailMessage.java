@@ -18,6 +18,7 @@ public class DetailMessage{
     private String author=null;
     private String dbdateline=null;
     private String subject=null;
+    private String maxposition=null;
     private Object message=null;
 
     public DetailMessage(HashMap<String,Object> data){
@@ -27,6 +28,7 @@ public class DetailMessage{
         this.message=data.get("message");
         this.tid=data.get("tid").toString();
         this.pid=data.get("pid").toString();
+        this.maxposition=data.get("maxposition").toString();
         if (data.containsKey("bitmap")) this.bitmap=(String[][]) data.get("bitmap");
     }
 
@@ -64,5 +66,13 @@ public class DetailMessage{
 
     public void setMessage(Object message) {
         this.message = message;
+    }
+
+    public String getMaxposition() {
+        return maxposition;
+    }
+
+    public String getDbdateline() {
+        return dbdateline;
     }
 }

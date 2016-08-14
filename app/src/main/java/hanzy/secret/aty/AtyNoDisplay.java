@@ -16,6 +16,7 @@ import hanzy.secret.secret.Config;
  */
 public class AtyNoDisplay extends Activity{
 
+    private String TAG="AtyNoDisplay";
     private int num=2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

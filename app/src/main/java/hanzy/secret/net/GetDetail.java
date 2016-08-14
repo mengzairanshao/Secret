@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.WindowManager;
 
 import org.json.JSONArray;
@@ -21,6 +20,7 @@ import java.util.List;
 
 import hanzy.secret.Message.DetailMessage;
 import hanzy.secret.secret.Config;
+import hanzy.secret.utils.logUtils;
 
 /**
  * Created by h on 2016/7/7.
@@ -34,7 +34,7 @@ public class GetDetail {
     private JSONObject jsonObject1 = new JSONObject();
     private int length = 0;
 
-    public GetDetail(final Context context, final SuccessCallback successCallback, final FailCallback failCallback, final String tid,String page ,Handler handler) {
+    public GetDetail(final Context context, final SuccessCallback successCallback, final FailCallback failCallback, String tid, String page,String ppp, Handler handler) {
         this.context = context;
         this.handler = handler;
         new NetConnection(context, Config.BASE_URL, HttpMethod.GET, new NetConnection.SuccessCallback() {
@@ -42,25 +42,25 @@ public class GetDetail {
             public void onSuccess(final String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                        Log.e(TAG, "Get Json Data:" + jsonObject.toString());
-                        JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("postlist");
-                        length = jsonArray.length();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            jsonObject1 = jsonArray.getJSONObject(i);
-                            HashMap<String, Object> data = new HashMap<>();
-                            setData(data, jsonObject1, "author", "dbdateline", "message", "tid", "pid");
-                            bitmap = new String[1][3];
-                            bitmap[0][0] = jsonObject1.getString("authorid");
-                            bitmap[0][1] = Config.PIC_URL + "?uid=" + jsonObject1.getString("authorid") + "&size=small";
-                            data.put("bitmap", bitmap);
-                            sortList(megs, data);
+                    logUtils.log(context,TAG, "Get Json Data:" + jsonObject.toString());
+                    JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("postlist");
+                    length = jsonArray.length();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        jsonObject1 = jsonArray.getJSONObject(i);
+                        HashMap<String, Object> data = new HashMap<>();
+                        setData(data, jsonObject,"author", "dbdateline", "message", "tid", "pid");
+                        bitmap = new String[1][3];
+                        bitmap[0][0] = jsonObject1.getString("authorid");
+                        bitmap[0][1] = Config.PIC_URL + "?uid=" + jsonObject1.getString("authorid") + "&size=small";
+                        data.put("bitmap", bitmap);
+                        sortList(megs, data);
+                        if (megs.size() == length) {
                             if (successCallback != null) {
                                 successCallback.onSuccess(megs);
                             }
-                            if (megs.size() == length) {
-                                GetPic();
-                            }
+                            GetPic();
                         }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     if (failCallback != null) failCallback.onFail();
@@ -72,7 +72,7 @@ public class GetDetail {
             public void onFail() {
                 if (failCallback != null) failCallback.onFail();
             }
-        }, Config.KEY_VERSION, Config.VALUE_VERSION_NUM, Config.KEY_MODULE, "viewthread", Config.KEY_TID, tid,Config.KEY_PAGE,page);
+        }, Config.KEY_VERSION, Config.VALUE_VERSION_NUM, Config.KEY_MODULE, "viewthread", Config.KEY_TID, tid, Config.KEY_PAGE, page,Config.KEY_PAGE_SIZE,ppp);
 
     }
 
@@ -97,12 +97,20 @@ public class GetDetail {
         }
     }
 
-    private void setData(final HashMap<String, Object> data, final JSONObject jsonObject, String... strings) {
+    private void setData(final HashMap<String, Object> data, final JSONObject jsonObject,String... strings) {
+        String[] params={"maxposition"};
+        for (int i=0;i<params.length;i++){
+            try {
+                data.put(params[i],jsonObject.getJSONObject("Variables").getJSONObject("thread").getString(params[i]));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         for (final String string : strings) {
             try {
                 if (string.equals("message")) {
-                    String str = jsonObject.getString(string);
-                    if (jsonObject.has("imagelist")) {
+                    String str = jsonObject1.getString(string);
+                    if (jsonObject1.has("imagelist")) {
                         for (int j = 0; j < jsonObject1.getJSONArray("imagelist").length(); j++) {
                             str += "<img src=\""
                                     + Config.SITE_URL//<p style="text-align: center;">
@@ -113,7 +121,7 @@ public class GetDetail {
                                     + "</strong></p>";
                         }
                     }
-                    Spanned spanned = Html.fromHtml(jsonObject.getString(string));
+                    Spanned spanned = Html.fromHtml(jsonObject1.getString(string));
                     data.put(string, spanned);
                     final String finalStr = str;
                     Thread t = new Thread(new Runnable() {
@@ -163,7 +171,7 @@ public class GetDetail {
                     });
                     t.start();
                 } else {
-                    data.put(string, jsonObject.getString(string));
+                    data.put(string, jsonObject1.getString(string));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

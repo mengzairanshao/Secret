@@ -23,9 +23,7 @@ public class StartingActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Config.getCachedDATA(StartingActivity.this,Config.IS_LOGIN)==null){
-            Config.InitDATA(StartingActivity.this);
-        }
+        Config.Init(StartingActivity.this);
         startActivity(new Intent(StartingActivity.this,MainActivity.class));
         finish();
     }

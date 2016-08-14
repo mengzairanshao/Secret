@@ -22,7 +22,7 @@ import hanzy.secret.R;
 public class AtyForums extends AppCompatActivity {
 
     HashMap<String,String>hashMap;
-    private ListView lv=null;
+    private ListView lv;
     private String[] values;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +45,11 @@ public class AtyForums extends AppCompatActivity {
     public List<Map<String, Object>> getData(HashMap<String,String> hashMap) {
         JSONObject jsonObject;
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map;
         for (String value : values) {
             try {
                 jsonObject = new JSONObject(hashMap.get(value));
-                map = new HashMap<String, Object>();
+                map = new HashMap<>();
                 map.put("text", jsonObject.getString("name"));
                 map.put("topic", jsonObject.getString("threads"));
                 map.put("news_num", jsonObject.getString("todayposts"));

@@ -28,29 +28,30 @@ import hanzy.secret.net.NetConnection;
 /**
  * Created by h on 2016/7/11.
  */
-public class HotThreadsFragment extends Fragment{
+public class HotThreadsFragment extends Fragment {
 
     private Handler handler;
     private View rootView;
-    private HotThreadsFragment hotThreadsFragment;
-    private String TAG="HotThreadsFragment";
-    private List<HotThreadMessage> hotThreadMessageList=null;
+    private String TAG = "HotThreadsFragment";
+    private List<HotThreadMessage> hotThreadMessageList = null;
     private PullToRefreshListView listView;
+    private ListView listViewAct;
     private HotThreadAdapter hotThreadAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.aty_hot_thread, container, false);
-        listView= (PullToRefreshListView ) view.findViewById(R.id.hot_thread_list);
-        hotThreadAdapter=new HotThreadAdapter(getActivity());
+        listView = (PullToRefreshListView) view.findViewById(R.id.hot_thread_list);
+        listViewAct = listView.getRefreshableView();
+        hotThreadAdapter = new HotThreadAdapter(getActivity());
         listView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
                 new GetHotThread(getActivity(), new GetHotThread.SuccessCallback() {
                     @Override
                     public void onSuccess(List<HotThreadMessage> hotThreadMessageList) {
-                        HotThreadsFragment.this.hotThreadMessageList=hotThreadMessageList;
+                        HotThreadsFragment.this.hotThreadMessageList = hotThreadMessageList;
                         hotThreadAdapter.addAll(HotThreadsFragment.this.hotThreadMessageList);
                         listView.onRefreshComplete();
                     }
@@ -59,14 +60,14 @@ public class HotThreadsFragment extends Fragment{
                     public void onFail() {
 
                     }
-                },handler);
+                }, handler);
             }
         });
-        if (rootView==null){
-            rootView=view;
-        }else {
+        if (rootView == null) {
+            rootView = view;
+        } else {
             ViewGroup parent = (ViewGroup) rootView.getParent();
-            if (parent!=null){
+            if (parent != null) {
                 parent.removeView(rootView);
             }
             return rootView;
@@ -75,50 +76,40 @@ public class HotThreadsFragment extends Fragment{
         new GetHotThread(getActivity(), new GetHotThread.SuccessCallback() {
             @Override
             public void onSuccess(List<HotThreadMessage> hotThreadMessageList) {
-                if (NetConnection.isMobileNetworkAvailable(getActivity()).equals("mobile")){
-                    Toast.makeText(getActivity(),R.string.MobileNetwork,Toast.LENGTH_LONG).show();
+                if (hotThreadMessageList != null) {
+                    if (NetConnection.isMobileNetworkAvailable(getActivity()).equals("mobile")) {
+                        Toast.makeText(getActivity(), R.string.MobileNetwork, Toast.LENGTH_LONG).show();
+                    }
+                    HotThreadsFragment.this.hotThreadMessageList = hotThreadMessageList;
+                    HotThreadAdapter hotThreadAdapter = new HotThreadAdapter(getActivity());
+                    hotThreadAdapter.addAll(hotThreadMessageList);
+                    HotThreadsFragment.this.hotThreadAdapter = hotThreadAdapter;
+                    listViewAct.setAdapter(hotThreadAdapter);
+                } else {
+                    Toast.makeText(getActivity(), R.string.no_more, Toast.LENGTH_LONG).show();
                 }
-                HotThreadsFragment.this.hotThreadMessageList=hotThreadMessageList;
-                HotThreadAdapter hotThreadAdapter=new HotThreadAdapter(getActivity());
-                hotThreadAdapter.addAll(hotThreadMessageList);
-                HotThreadsFragment.this.hotThreadAdapter=hotThreadAdapter;
-                listView.setAdapter(hotThreadAdapter);
             }
         }, new GetHotThread.FailCallback() {
             @Override
             public void onFail() {
-                if (NetConnection.isMobileNetworkAvailable(getActivity()).equals("none")){
-                    Toast.makeText(getActivity(),R.string.NetworkFailure,Toast.LENGTH_LONG).show();
-                }else if (NetConnection.isMobileNetworkAvailable(getActivity()).equals("mobile")||NetConnection.isMobileNetworkAvailable(getActivity()).equals("wifi")){
-                    Toast.makeText(getActivity(),R.string.LoadFailure,Toast.LENGTH_LONG).show();
+                if (NetConnection.isMobileNetworkAvailable(getActivity()).equals("none")) {
+                    Toast.makeText(getActivity(), R.string.NetworkFailure, Toast.LENGTH_LONG).show();
+                } else if (NetConnection.isMobileNetworkAvailable(getActivity()).equals("mobile") || NetConnection.isMobileNetworkAvailable(getActivity()).equals("wifi")) {
+                    Toast.makeText(getActivity(), R.string.LoadFailure, Toast.LENGTH_LONG).show();
                 }
 
             }
-        },handler);
-        listView.setOnItemClickListener(new OnItemClickListenerImp());
+        }, handler);
+        listViewAct.setOnItemClickListener(new OnItemClickListenerImp());
         return view;
     }
-    public class OnItemClickListenerImp implements AdapterView.OnItemClickListener {
 
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                                long id) {
-            Log.e(TAG,""+listView.getRefreshableView().getFirstVisiblePosition());
-            Log.e(TAG,""+position);
-            Intent intent=new Intent(getActivity(),AtyDetail.class);
-            intent.putExtra("tid",hotThreadMessageList.get(position-1).getTid());
-            intent.putExtra("subject",hotThreadMessageList.get(position-1).getSubject());
-            startActivity(intent);
-        }
-    }
-
-    public void setHandler(){
-        handler=new Handler(){
+    public void setHandler() {
+        handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                if(msg.what==1)
-                {
-                    //HotThreadAdapter.set(handler,hotThreadMessageList,listView);
-                    String[][] bitmap=(String[][]) msg.obj;
+                if (msg.what == 1) {
+                    String[][] bitmap = (String[][]) msg.obj;
                     for (String[] aBitmap : bitmap) {
                         for (int i = 0; i < hotThreadMessageList.size(); i++) {
                             HotThreadMessage threadsMessage = hotThreadMessageList.get(i);
@@ -131,5 +122,16 @@ public class HotThreadsFragment extends Fragment{
                 }
             }
         };
+    }
+
+    public class OnItemClickListenerImp implements AdapterView.OnItemClickListener {
+
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
+            Intent intent = new Intent(getActivity(), AtyDetail.class);
+            intent.putExtra("tid", hotThreadMessageList.get(position - 1).getTid());
+            intent.putExtra("subject", hotThreadMessageList.get(position - 1).getSubject());
+            startActivity(intent);
+        }
     }
 }

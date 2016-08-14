@@ -27,5 +27,6 @@
     <string name="Login">登陆</string>
     <string name="you_have_logined">您已登录</string>
     <string name="more">···</string>
+    <string name="no_more">没有更多了哦</string>
 
 </resources>

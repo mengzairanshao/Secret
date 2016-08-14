@@ -1,29 +1,20 @@
 package hanzy.secret.Adapter;
 
 import android.content.Context;
-import android.os.Handler;
 import android.os.Message;
 import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import hanzy.secret.Message.DetailMessage;
-import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.R;
 import hanzy.secret.secret.Config;
 import hanzy.secret.utils.PicUtils;
@@ -33,16 +24,10 @@ import hanzy.secret.utils.TimeUtils;
  * Created by h on 2016/7/7.
  */
 public class DetailAdapter extends BaseAdapter {
-//    private static Handler handler;
-//    private static List<DetailMessage> detailMessageList_copy;
-//    private static ListView listView;
     private static String TAG = "DetailAdapter";
     private Context context;
     private LayoutInflater inflater;
     private List<DetailMessage> detailMessageList = new ArrayList<>();
-//    private ImageView imageView;
-//    private Boolean aBoolean = false;
-
 
     public DetailAdapter(Context context) {
         this.context = context;

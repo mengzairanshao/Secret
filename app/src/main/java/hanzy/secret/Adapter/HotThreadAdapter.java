@@ -38,37 +38,6 @@ public class HotThreadAdapter extends BaseAdapter{
         this.inflater=LayoutInflater.from(context);
     }
 
-//    /**
-//     * @param handler
-//     * @param threadsMessageList
-//     * @param listView
-//     * 修改静态变量
-//     */
-//    public static void set(Handler handler, List<HotThreadMessage> threadsMessageList, ListView listView) {
-//        HotThreadAdapter.handler = handler;
-//        HotThreadAdapter.hotThreadMessageList_copy = threadsMessageList;
-//        HotThreadAdapter.listView = listView;
-//    }
-
-//    public static void updateView(int itemIndex) {
-//        View view;
-//        if (itemIndex >= listView.getFirstVisiblePosition() && itemIndex < (listView.getChildCount() + listView.getFirstVisiblePosition())) {
-//            HotThreadMessage hotThreadMessage = hotThreadMessageList_copy.get(itemIndex);
-//            final String bitmap = hotThreadMessage.getBitmap()[0][2];
-//            if (bitmap != null) {
-//                view = listView.getChildAt(itemIndex);
-//                ViewHolder viewHolder = new ViewHolder(view);
-//                viewHolder.author.setText(hotThreadMessage.getAuthor());
-//                viewHolder.dblastpost.setText(TimeUtils.times(Integer.parseInt(hotThreadMessage.getDblastpost()) * 1000L));
-//                //viewHolder.dbdateline.setText(TimeUtils.times(Integer.parseInt(hotThreadMessage.getDbdateline()) * 1000L));
-//                viewHolder.replies.setText(hotThreadMessage.getReplies());
-//                viewHolder.subject1.setText(hotThreadMessage.getSubject());
-//                viewHolder.views.setText(hotThreadMessage.getViews());
-//                viewHolder.user_img.setImageBitmap(PicUtils.createCircleImage(hotThreadMessage.getBitmap()[0][2]));
-//            }
-//        }
-//    }
-
     @Override
     public int getCount() {
         return hotThreadMessages.size();

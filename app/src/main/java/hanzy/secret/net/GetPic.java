@@ -51,11 +51,11 @@ public class GetPic {
         });
     }
 
-    public static interface SuccessCallback {
+    public interface SuccessCallback {
         void onSuccess(Object result);
     }
 
-    public static interface FailCallback {
+    public interface FailCallback {
         void onFail();
     }
 }

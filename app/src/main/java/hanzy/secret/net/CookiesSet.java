@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import hanzy.secret.utils.logUtils;
+
 /**
  * Created by h on 2016/6/29.
  */
@@ -20,7 +22,7 @@ public class CookiesSet {
         PersistentCookieStore cookieStore=new PersistentCookieStore(context);
         List<Cookie> cookies = cookieStore.getCookies();
         String Value="";
-        Log.d(TAG, "cookies.size() = " + cookies.size());
+        logUtils.log(context,TAG, "cookies.size() = " + cookies.size());
         Utils.setCookies(cookies);
         for (Cookie cookie : cookies) {
             if(cookie.getName().contains("auth")) Value=cookie.getValue();
@@ -37,7 +39,7 @@ public class CookiesSet {
             }
         }
 
-        Log.e("cookie", stringBuffer.toString());
+        logUtils.log(context,TAG, stringBuffer.toString());
         return Value;
     }
 
