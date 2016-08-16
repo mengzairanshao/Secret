@@ -2,12 +2,11 @@ package hanzy.secret.net;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import hanzy.secret.secret.Config;
-import hanzy.secret.utils.PicUtils;
 
 /**
  * Created by h on 2016/7/11.
+ *
  */
 public class GetPic {
 

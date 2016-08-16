@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -150,7 +149,7 @@ public class AtyDetail extends AppCompatActivity {
     public void setReply(Editable text, String result) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-        HashMap<String, Object> hashMap = new HashMap<String, Object>();
+        HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("message", text);
         logUtils.log(AtyDetail.this,TAG, "emoji" + text);
         editText.setText("");
@@ -163,13 +162,13 @@ public class AtyDetail extends AppCompatActivity {
         String[] str = {"member_username", "tid", "pid"};
         try {
             JSONObject jsonObject = new JSONObject(result);
-            Log.e(TAG, "result" + jsonObject.toString());
+            logUtils.log(AtyDetail.this, TAG, jsonObject.toString());
             jsonObject = jsonObject.getJSONObject("Variables");
-            for (int i = 0; i < str.length; i++) {
-                if (str[i].equals("member_username")) {
-                    hashMap.put("author", jsonObject.getString(str[i]));
+            for (String aStr : str) {
+                if (aStr.equals("member_username")) {
+                    hashMap.put("author", jsonObject.getString(aStr));
                 } else {
-                    hashMap.put(str[i], jsonObject.getString(str[i]));
+                    hashMap.put(aStr, jsonObject.getString(aStr));
                 }
             }
             String[][] bitmap = new String[1][3];

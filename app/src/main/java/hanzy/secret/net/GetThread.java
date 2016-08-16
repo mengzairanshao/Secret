@@ -3,7 +3,6 @@ package hanzy.secret.net;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,9 +13,11 @@ import java.util.List;
 
 import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.secret.Config;
+import hanzy.secret.utils.logUtils;
 
 /**
  * Created by h on 2016/6/30.
+ *
  */
 public class GetThread {
     private Handler handler;
@@ -33,7 +34,7 @@ public class GetThread {
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObject = new JSONObject(result);
-                        Log.e(TAG, "Get Json Data:" + jsonObject.toString());
+                    logUtils.log(context, TAG, "Get Json Data:" + jsonObject.toString());
                         JSONArray jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("forum_threadlist");
                         length=jsonArray.length();
                         for (int i = 0; i < jsonArray.length(); i++) {

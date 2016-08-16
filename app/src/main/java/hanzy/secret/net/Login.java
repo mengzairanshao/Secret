@@ -4,9 +4,11 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 import hanzy.secret.secret.Config;
+import hanzy.secret.utils.logUtils;
 
 /**
  * Created by h on 2016/6/29.
+ *
  */
 public class Login {
     public String TAG="Login";
@@ -18,9 +20,9 @@ public class Login {
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObject=new JSONObject(result);
-                    Log.e(TAG,"Result"+jsonObject.toString());
+                    logUtils.log(context, TAG, "Result" + jsonObject.toString());
                     if (jsonObject.getJSONObject("Message").getString("messageval").equals("login_succeed")){
-                            Log.e(TAG,"Login Success:"+userName);
+                        logUtils.log(context, TAG, "Login Success:" + userName);
                             Config.cacheDATA(context,"Login_succeed",Config.IS_LOGIN);
                             Config.cacheDATA(context,jsonObject.getJSONObject("Variables").getString("member_uid"),Config.AUTHOR_ID);
                             if (successCallback!=null){
@@ -28,7 +30,7 @@ public class Login {
                             }
                         }
                         else if(failCallback!=null){
-                            Log.e(TAG,"Login Failed:"+userName);
+                        logUtils.log(context, TAG, "Login Failed:" + userName);
                             failCallback.onFail();
                         }
                 } catch (JSONException e) {
@@ -40,18 +42,18 @@ public class Login {
             @Override
             public void onFail() {
                 Config.cacheDATA(context,"Logout_succeed",Config.IS_LOGIN);
-                Log.e(TAG,"Login Failed(onFail):"+userName);
+                logUtils.log(context, TAG, "Login Failed(onFail):" + userName);
                 if (failCallback!=null) failCallback.onFail();
             }
         },Config.KEY_UERNAME,userName,Config.KEY_PASSWORD,password);
 
     }
 
-    public static interface SuccessCallback{
+    public interface SuccessCallback {
         void onSuccess(String result);
     }
 
-    public static interface FailCallback{
+    public interface FailCallback {
         void onFail();
     }
 }

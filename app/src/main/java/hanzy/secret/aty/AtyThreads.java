@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +23,7 @@ import hanzy.secret.net.NetConnection;
 
 /**
  * Created by h on 2016/7/6.
+ *
  */
 public class AtyThreads extends AppCompatActivity {
 

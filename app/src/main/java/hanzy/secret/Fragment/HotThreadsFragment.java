@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +26,7 @@ import hanzy.secret.net.NetConnection;
 
 /**
  * Created by h on 2016/7/11.
+ *
  */
 public class HotThreadsFragment extends Fragment {
 

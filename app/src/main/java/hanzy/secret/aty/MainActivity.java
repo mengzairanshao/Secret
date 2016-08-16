@@ -1,5 +1,6 @@
 package hanzy.secret.aty;
 
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -28,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Boolean flag=true;
     private static String TAG="MainActivity";
-    public static HotThreadsFragment hotThreadsFragment;
-    public static CatalogFragment catalogFragment;
-    public static ProfileFragment profileFragment;
     private TabLayout tabLayout;
     private TextView title;
 
@@ -95,9 +93,9 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if (toolbar != null) {
             if (Config.getCachedDATA(MainActivity.this,Config.IS_LOGIN).equals("Login_succeed")&&Config.getCachedDATA(MainActivity.this,Config.USER_HEADER_IMAGE)!=null){
-                toolbar.setLogo(new BitmapDrawable(PicUtils.createCircleImage(Config.getCachedDATA(MainActivity.this,Config.USER_HEADER_IMAGE))));
+                toolbar.setLogo(new BitmapDrawable(this.getResources(), PicUtils.createCircleImage(Config.getCachedDATA(MainActivity.this, Config.USER_HEADER_IMAGE))));
             }else {
-                toolbar.setLogo(R.drawable.user_img);
+                toolbar.setLogo(new BitmapDrawable(this.getResources(), PicUtils.createCircleImage(BitmapFactory.decodeResource(this.getResources(), R.drawable.user_img))));
             }
             toolbar.setTitle("");
         }

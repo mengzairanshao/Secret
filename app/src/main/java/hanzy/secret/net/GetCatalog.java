@@ -1,7 +1,6 @@
 package hanzy.secret.net;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,6 +16,7 @@ import hanzy.secret.utils.logUtils;
 
 /**
  * Created by h on 2016/6/29.
+ *
  */
 public class GetCatalog {
     public String TAG = "GetCatalog";
@@ -38,7 +38,7 @@ public class GetCatalog {
                         for (int j = 0; j < jsonObject.getJSONArray("forums").length(); j++) {
                             formList[j] = jsonObject.getJSONArray("forums").getString(j);
                         }
-                        HashMap<String, String> hashMap = new HashMap<String, String>();
+                        HashMap<String, String> hashMap = new HashMap<>();
                         jsonObject = new JSONObject(result);
                         jsonArray = jsonObject.getJSONObject("Variables").getJSONArray("forumlist");
                         for (int j = 0; j < jsonArray.length(); j++) {

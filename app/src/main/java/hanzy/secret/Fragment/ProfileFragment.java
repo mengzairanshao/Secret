@@ -20,10 +20,12 @@ import hanzy.secret.net.HttpMethod;
 import hanzy.secret.net.Logout;
 import hanzy.secret.net.NetConnection;
 import hanzy.secret.secret.Config;
+import hanzy.secret.utils.logUtils;
 
 
 /**
  * Created by h on 2016/7/11.
+ *
  */
 public class ProfileFragment extends Fragment{
 
@@ -85,9 +87,8 @@ public class ProfileFragment extends Fragment{
                     @Override
                     public void onSuccess(String result) {
                         try {
-                            Log.e(TAG,"Profile:"+result);
                             JSONObject jsonObject=new JSONObject(result);
-                            Log.e(TAG,"Profile:"+jsonObject.toString());
+                            logUtils.log(getActivity(), TAG, "Profile:" + jsonObject);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

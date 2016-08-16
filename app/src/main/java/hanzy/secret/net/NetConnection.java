@@ -5,25 +5,24 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
-import org.json.JSONObject;
 
 import hanzy.secret.aty.AtyLogin;
-import hanzy.secret.secret.Config;
 import hanzy.secret.utils.PicUtils;
 import hanzy.secret.utils.logUtils;
 
 
 /**
  * Created by h on 2016/6/28.
+ *
  */
 public class NetConnection {
     private static Bitmap bitmap = null;
@@ -35,7 +34,7 @@ public class NetConnection {
         if (httpMethod.equals(HttpMethod.POST)) {
             AsyncHttpClient client;
             RequestParams params = new RequestParams();
-            //保存cookie，自动保存到了shareprefercece
+            //保存cookie，自动保存到了sharePreference
             Activity activity = (Activity) context;
             if (activity instanceof AtyLogin) {
                 client = new AsyncHttpClient();
@@ -76,12 +75,17 @@ public class NetConnection {
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     if (statusCode == 200) {
                         String json = new String(responseBody);
-                        logUtils.log(context, TAG, "GET连接成功");
-                        for (int i = 0; i < headers.length; i++) {
-                            if (headers[i].getName().equals("Content-Type") && headers[i].getValue().contains("image")) {
+                        Boolean hasPic = false;
+                        for (Header header : headers) {
+                            if (header.getName().equals("Content-Type") && header.getValue().contains("image")) {
+                                hasPic = true;
                                 bitmap = BitmapFactory.decodeByteArray(responseBody, 0, responseBody.length);
                                 json = PicUtils.convertIconToString(bitmap);
+                                logUtils.log(context, TAG, "GET连接成功(获取图片)");
                             }
+                        }
+                        if (!hasPic) {
+                            logUtils.log(context, TAG, "GET连接成功");
                         }
                         if (successCallback != null) successCallback.onSuccess(json);
                     } else {
@@ -103,7 +107,7 @@ public class NetConnection {
         if (null == connectivityManager) {
             connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         }
-        NetworkInfo wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo wifiInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         NetworkInfo mobileInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         if (wifiInfo.isConnected()) {
             return "wifi";

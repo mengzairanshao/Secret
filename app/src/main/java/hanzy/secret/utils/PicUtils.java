@@ -15,8 +15,9 @@ public class PicUtils {
     /**
      * 图片转成string
      *
-     * @param bitmap
-     * @return
+     * @param  bitmap @Bitmap
+     *
+     * @return string
      */
     public static String convertIconToString(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();// outputstream
@@ -28,12 +29,13 @@ public class PicUtils {
     /**
      * string转成bitmap
      *
-     * @param st
+     * @param st @String
+     * @return bitmap or null
      */
     @Nullable
     public static Bitmap convertStringToIcon(String st) {
         // OutputStream out;
-        Bitmap bitmap = null;
+        Bitmap bitmap;
         try {
             // out = new FileOutputStream("/sdcard/aa.jpg");
             byte[] bitmapArray;
@@ -51,13 +53,46 @@ public class PicUtils {
     /**
      * 根据原图和变长绘制圆形图片
      *
-     * @return
+     * @return bitmap
      */
     public static Bitmap createCircleImage(String bitmapStr)
     {
         Bitmap source=PicUtils.convertStringToIcon(bitmapStr);
-        int min=0;
+        int min;
         if (source!=null){
+            min = source.getWidth();
+            final Paint paint = new Paint();
+            paint.setAntiAlias(true);
+            Bitmap target = Bitmap.createBitmap(min, min, Bitmap.Config.ARGB_8888);
+            /**
+             * 产生一个同样大小的画布
+             */
+            Canvas canvas = new Canvas(target);
+            /**
+             * 首先绘制圆形
+             */
+            canvas.drawCircle(min / 2, min / 2, min / 2, paint);
+            /**
+             * 使用SRC_IN
+             */
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+            /**
+             * 绘制图片
+             */
+            canvas.drawBitmap(source, 0, 0, paint);
+            return target;
+        }
+        return source;
+    }
+
+    /**
+     * 根据原图和变长绘制圆形图片
+     *
+     * @return bitmap
+     */
+    public static Bitmap createCircleImage(Bitmap source) {
+        int min;
+        if (source != null) {
             min = source.getWidth();
             final Paint paint = new Paint();
             paint.setAntiAlias(true);

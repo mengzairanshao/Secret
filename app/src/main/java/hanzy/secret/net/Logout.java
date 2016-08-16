@@ -7,9 +7,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import hanzy.secret.secret.Config;
+import hanzy.secret.utils.logUtils;
 
 /**
  * Created by h on 2016/7/27.
+ *
  */
 public class Logout {
 
@@ -20,7 +22,7 @@ public class Logout {
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonObject=new JSONObject(result);
-                    Log.e(TAG,""+jsonObject.toString());
+                    logUtils.log(context, TAG, jsonObject.toString());
                     if (jsonObject.getJSONObject("Message").getString("messageval").equals("logout_succeed")){
                         CookiesSet.Utils.clearCookies(context);
                         Config.cacheDATA(context,"Logout_succeed",Config.IS_LOGIN);
@@ -40,11 +42,11 @@ public class Logout {
         },Config.KEY_MODULE,"login",Config.KEY_ACTION,"logout",Config.KEY_VERSION,"4");
     }
 
-    public static interface SuccessCallback {
+    public interface SuccessCallback {
         void onSuccess(String result);
     }
 
-    public static interface FailCallback {
+    public interface FailCallback {
         void onFail();
     }
 }

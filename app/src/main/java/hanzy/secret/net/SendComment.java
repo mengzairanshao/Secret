@@ -7,9 +7,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import hanzy.secret.secret.Config;
+import hanzy.secret.utils.logUtils;
 
 /**
  * Created by h on 2016/7/23.
+ *
  */
 public class SendComment {
 
@@ -17,7 +19,7 @@ public class SendComment {
     private String url;
 
     public SendComment(Context context, Object object, final SuccessCallback successCallback, FailCallback failCallback,String... kvs) {
-        Log.e(TAG,"formhash="+Config.getCachedDATA(context,Config.FORM_HASH));
+        logUtils.log(context, TAG, "formhash=" + Config.getCachedDATA(context, Config.FORM_HASH));
         String params="";
         for (int i=0;i<kvs.length;i+=2){
             params=params+"&"+kvs[i]+"="+kvs[i+1];
@@ -44,11 +46,11 @@ public class SendComment {
         },"formhash",Config.getCachedDATA(context,Config.FORM_HASH),"message",object.toString());
     }
 
-    public static interface SuccessCallback {
+    public interface SuccessCallback {
         void onSuccess(String result);
     }
 
-    public static interface FailCallback {
+    public interface FailCallback {
         void onFail();
     }
 }

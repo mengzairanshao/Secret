@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,12 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import hanzy.secret.Message.HotThreadMessage;
-import hanzy.secret.Message.ThreadsMessage;
 import hanzy.secret.secret.Config;
 import hanzy.secret.utils.logUtils;
 
 /**
  * Created by h on 2016/7/9.
+ *
  */
 public class GetHotThread {
     private Handler handler;
